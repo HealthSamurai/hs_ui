@@ -1,1 +1,8 @@
+.cpcache
+.shadow-cljs
 _site
+node_modules
+package-lock.json
+resources/public/js/storybook
+resources/public/js/components
+resources/public/css/tailwind.css

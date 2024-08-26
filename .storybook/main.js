@@ -6,6 +6,7 @@ const config = {
   addons: [
     "@storybook/addon-docs",
     "@storybook/addon-controls",
+    "@storybook/addon-a11y",
     "storybook-dark-mode"
   ],
   staticDirs: ['../resources/public'],
