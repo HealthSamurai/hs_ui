@@ -70,5 +70,4 @@
   pages
   {:desc ""
    :task (do (run 'build)
-             (shell "npx" "storybook" "build" "-o" "docs"))}
-  }}
+             (shell "npx" "storybook" "build" "-o" "_site"))}}}
