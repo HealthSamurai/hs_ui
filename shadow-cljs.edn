@@ -1,0 +1,13 @@
+{:deps     true
+ :dev-http {3000 {:root "resources/public"}}
+ :builds
+ {:components
+  {:target     :browser
+   :output-dir "resources/public/js/components"
+   :asset-path "/js"
+   :modules    {:components {:entries [hs-ui.core]}}}
+
+  :storybook
+  {:target     :npm-module
+   :ns-regexp  "-stories$"
+   :output-dir "resources/public/js/storybook"}}}

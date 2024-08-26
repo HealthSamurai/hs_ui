@@ -1,0 +1,54 @@
+{:tasks
+ {:init
+  (def config
+    {:tailwind {:input  "tailwind.css"
+                :output "resources/public/css/tailwind.css"}})
+
+  :enter
+  (let [task (current-task)]
+    (println (format "\033[1;32m[HS-UI]\033[0;32m %s start\033[0m %s" (:name task) (:desc task))))
+
+  :leave
+  (let [task (current-task)]
+    (println (format "\033[1;32m[HS-UI]\033[0;32m %s end\033[0m" (:name task))))
+
+  npm-install
+  {:desc "Installs all npm dependencies"
+   :task (shell "npm" "install")}
+
+  init
+  {:desc "Initializes the project"
+   :task (run 'npm-install)}
+
+  deinit
+  {:desc "Deinitializes the project"
+   :task (do
+           (babashka.fs/delete-tree "node_modules")
+           (babashka.fs/delete-tree "package-lock.json")
+           (babashka.fs/delete-tree ".cpcache")
+           (babashka.fs/delete-tree ".shadow-cljs")
+           (babashka.fs/delete-tree "resources/public/js/storybook")
+           (babashka.fs/delete-tree "resources/public/js/components")
+           (babashka.fs/delete-tree (get-in config [:tailwind :output])))}
+
+  tailwind-watch
+  {:desc "Watches for changes in the Tailwind CSS source file and regenerates the output CSS"
+   :task (shell "npx" "tailwindcss"
+                "-i" (-> config :tailwind :input)
+                "-o" (-> config :tailwind :output)
+                "--watch")}
+
+
+  shadow-watch
+  {:desc "Watches Components and Storybook for changes"
+   :task (do
+           (future (run 'tailwind-watch))
+           (clojure "-M:shadow watch components storybook"))}
+
+  story
+  {:desc "Starts the Storybook development server"
+   :task (shell "npx" "storybook" "dev" "-p" "5555")}
+
+  dev
+  {:desc "Starts the development environment"
+   :task (run 'shadow-watch)}}}

@@ -1,0 +1,21 @@
+{
+    "name": "hs-ui",
+    "description": "UI Components",
+    "version": "1.0.0",
+    "author": "Health Samurai",
+    "license": "MIT",
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-aria-components": "^1.3.3",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@storybook/addon-controls": "^7.6.7",
+        "@storybook/addon-docs": "^7.6.7",
+        "@storybook/react": "^7.6.7",
+        "@storybook/react-webpack5": "^7.6.7",
+        "storybook": "^7.6.7",
+        "storybook-dark-mode": "^4.0.2",
+        "tailwindcss": "^3.4.10"
+    }
+}
