@@ -12,6 +12,7 @@
     "devDependencies": {
         "@storybook/addon-controls": "^7.6.7",
         "@storybook/addon-docs": "^7.6.7",
+        "@storybook/addon-styling-webpack": "^1.0.0",
         "@storybook/react": "^7.6.7",
         "@storybook/react-webpack5": "^7.6.7",
         "storybook": "^7.6.7",

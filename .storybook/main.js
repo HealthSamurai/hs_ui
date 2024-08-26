@@ -8,6 +8,7 @@ const config = {
     "@storybook/addon-controls",
     "storybook-dark-mode"
   ],
+  staticDirs: ['../resources/public'],
   framework: {
     name: "@storybook/react-webpack5",
     options: {

@@ -38,6 +38,11 @@
                 "-o" (-> config :tailwind :output)
                 "--watch")}
 
+  tailwind-release
+  {:desc ""
+   :task (shell "npx" "tailwindcss"
+                "-i" (-> config :tailwind :input)
+                "-o" (-> config :tailwind :output))}
 
   shadow-watch
   {:desc "Watches Components and Storybook for changes"
@@ -45,10 +50,25 @@
            (future (run 'tailwind-watch))
            (clojure "-M:shadow watch components storybook"))}
 
+  shadow-release
+  {:desc ""
+   :task (clojure "-M:shadow release components storybook")}
+
   story
   {:desc "Starts the Storybook development server"
    :task (shell "npx" "storybook" "dev" "-p" "5555")}
 
   dev
   {:desc "Starts the development environment"
-   :task (run 'shadow-watch)}}}
+   :task (run 'shadow-watch)}
+
+  build
+  {:desc ""
+   :task (do (run 'shadow-release)
+             (run 'tailwind-release))}
+
+  pages
+  {:desc ""
+   :task (do (run 'build)
+             (shell "npx" "storybook" "build" "-o" "docs"))}
+  }}

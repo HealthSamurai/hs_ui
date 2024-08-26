@@ -1,8 +1,5 @@
 module.exports = {
-  content: [
-    "./resources/public/js/components/components.js",
-    "./resources/public/js/components/cljs-runtime/*.js"
-  ],
+  content: ["./src/**/*.{clj,cljc,cljs}"],
   darkMode: 'selector',
   theme: {
     extend: {
@@ -21,8 +18,8 @@ module.exports = {
         'button-critical-disabled': '#DBDDE3'
       },
       colors: {
-        'button-primary-text': '#FFF',
-        'button-critical-text': '#FFF',
+        'button-primary-text':  '#FFF',
+        'button-critical-text': '#FFF'
       },
       padding: {
         'x1': '8px',
@@ -32,7 +29,7 @@ module.exports = {
         default: ["Inter", "sans-serif"]
       },
       boxShadow: {
-        'button-primary': '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
+        'button-primary':  '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
         'button-critical': '0px 1px 2px 0px rgba(0, 0, 0, 0.05)'
       }
     }

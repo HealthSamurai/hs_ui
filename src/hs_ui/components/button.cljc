@@ -38,7 +38,7 @@
         properties (cond-> properties
                      loading
                      (assoc :isDisabled true :data-aria-busy true))]
-    [:> c/Button
+    [:> #?(:cljs c/Button :clj nil)
      (utils/merge-props
       {:className (cond-> base-class
                     (= variant "primary")

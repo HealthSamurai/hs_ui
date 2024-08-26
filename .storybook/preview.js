@@ -1,4 +1,3 @@
-import '../resources/public/css/tailwind.css';
 import { themes } from '@storybook/theming';
 
 export const parameters = {
