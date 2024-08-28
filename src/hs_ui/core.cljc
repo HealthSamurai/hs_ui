@@ -22,3 +22,8 @@
   (into
    [hs-ui.components.button/component (assoc props :variant "tertiary")]
    children))
+
+(defn button-xs [props & children]
+  (into
+   [hs-ui.components.button/component (assoc props :variant "xs")]
+   children))

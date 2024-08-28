@@ -4,12 +4,14 @@
             #?(:cljs ["@ariakit/react" :as kit])))
 
 (def base-class
-  ["px-x3"
-   "py-x1"
+  ["px-[theme(padding.x3)]"
+   "py-[theme(padding.x1)]"
    "h-[36px]"
    "inline-flex"
-   "rounded-m"
+   "border"
+   "border-[theme(colors.border-default)]"
    "font-semibold"
+   "rounded-[theme(borderRadius.m)]"
    "select-none"
    "aria-busy:relative"
    "items-center"
@@ -17,34 +19,52 @@
    "focus-visible:ring"])
 
 (def primary-class
-  ["shadow-button-primary"
-   "bg-button-primary-default"
-   "text-button-primary-text"
-   "hover:bg-button-primary-hovered"
-   "disabled:bg-button-primary-disabled"
-   "aria-busy:bg-button-primary-disabled"])
+  ["shadow-[theme(boxShadow.button-primary)]"
+   "bg-[theme(backgroundColor.button-primary-default)]"
+   "text-[theme(colors.button-primary-text)]"
+   "hover:bg-[theme(backgroundColor.button-primary-hovered)]"
+   "disabled:bg-[theme(backgroundColor.button-primary-disabled)]"
+   "aria-busy:bg-[theme(backgroundColor.button-primary-disabled)]"])
 
 (def critical-class
-  ["shadow-button-critical"
-   "bg-button-critical-default"
-   "text-button-critical-text"
-   "hover:bg-button-critical-hovered"
-   "disabled:bg-button-critical-disabled"
-   "aria-busy:bg-button-critical-disabled"])
+  ["shadow-[theme(boxShadow.button-critical)]"
+   "bg-[theme(backgroundColor.button-critical-default)]"
+   "text-[theme(colors.button-critical-text)]"
+   "hover:bg-[theme(backgroundColor.button-critical-hovered)]"
+   "disabled:bg-[theme(backgroundColor.button-critical-disabled)]"
+   "aria-busy:bg-[theme(backgroundColor.button-critical-disabled)]"])
 
 (def secondary-class
-  ["border"
-   "border-border-default"
-   "bg-button-secondary-default"
-   "text-button-secondary-text-default"
-   "disabled:text-button-secondary-text-disabled"
-   "hover:text-button-secondary-text-hovered"
-   "hover:bg-button-secondary-hovered"])
+  ["bg-[theme(backgroundColor.button-secondary-default)]"
+   "text-[theme(colors.button-secondary-text)]"
+   "disabled:text-[theme(colors.button-secondary-text-default)]"
+   "hover:text-[theme(colors.button-secondary-text-hovered)]"
+   "hover:bg-[theme(backgroundColor.button-secondary-hovered)]"])
 
 (def tertiary-class
-  ["text-button-tertiary-text-default"
-   "hover:text-button-tertiary-text-hovered"
-   "disabled:text-button-tertiary-text-disabled"])
+  ["border-transparent"
+   "text-[theme(colors.button-tertiary-text-default)]"
+   "font-semibold"
+   "hover:text-[theme(colors.button-tertiary-text-hovered)]"
+   "disabled:text-[theme(colors.button-tertiary-text-disabled)]"])
+
+(def xs-class
+  ["h-auto"
+   "bg-[theme(backgroundColor.button-xs)]"
+   "text-[theme(colors.button-xs-text)]"
+   "border-[theme(borderColor.button-xs)]"
+   "rounded-[theme(borderRadius.s)]"
+   "font-size-[theme(fontSize.button-xs)]"
+   "leading-[theme(lineHeight.button-xs)]"
+   "px-[theme(padding.x1)]"
+   "font-medium"
+   "py-[1.5px]"
+   "hover:bg-[theme(backgroundColor.button-xs-hovered)]"
+   "hover:border-[theme(borderColor.button-xs-hovered)]"
+   "disabled:bg-[theme(backgroundColor.button-xs)]"
+   "disabled:text-[theme(colors.button-xs-text-disabled)]"
+   "aria-busy:bg-[theme(backgroundColor.button-xs)]"
+   "aria-busy:text-[theme(colors.button-xs-text-disabled)]"])
 
 (defn component
   [user-properties & children]
@@ -60,7 +80,8 @@
                   (= variant "critical")  (utils/class-names critical-class)
                   (= variant "secondary") (utils/class-names secondary-class)
                   (= variant "tertiary")  (utils/class-names tertiary-class)
-                  (not (:loading user-properties)) (utils/class-names ["[&_svg]:mr-x1" "[&_svg]:text-icon"]))]
+                  (= variant "xs")        (utils/class-names xs-class)
+                  (not (:loading user-properties)) (utils/class-names ["[&_svg]:mr-[theme(margin.x1)]" "[&_svg]:text-icon"]))]
     (if (:href properties)
       [:a (utils/merge-props {:class [classes "text-link"]} properties) children]
       [:>

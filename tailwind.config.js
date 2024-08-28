@@ -10,15 +10,21 @@ module.exports = {
         'l':  '8px'
       },
       backgroundColor: {
-        'button-primary-default':   '#2278E1',
-        'button-primary-hovered':   '#0960CA',
-        'button-primary-disabled':  '#DBDDE3',
-        'button-critical-default':  '#DF351F',
-        'button-critical-hovered':  '#BE2F1C',
-        'button-critical-disabled': '#DBDDE3',
+        'button-primary-default':    '#2278E1',
+        'button-primary-hovered':    '#0960CA',
+        'button-primary-disabled':   '#DBDDE3',
+        'button-critical-default':   '#DF351F',
+        'button-critical-hovered':   '#BE2F1C',
+        'button-critical-disabled':  '#DBDDE3',
         'button-secondary-default':  '#FFF',
         'button-secondary-hovered':  '#F9F9F9',
-        'button-secondary-disabled': '#DBDDE3'
+        'button-secondary-disabled': '#DBDDE3',
+        'button-xs':                 '#F9FAFB',
+        'button-xs-hovered':         'transparent'
+      },
+      borderColor: {
+        'button-xs': '#D3E9FE',
+        'button-xs-hovered': '#2278E1'
       },
       colors: {
         'link': '#226AE1',
@@ -32,6 +38,8 @@ module.exports = {
         'button-tertiary-text-default': '#90959F',
         'button-tertiary-text-hovered': '#1D2331',
         'button-tertiary-text-disabled': '#CCCED3',
+        'button-xs-text': '#2278E1',
+        'button-xs-text-disabled': '#D3E9FE'
       },
       padding: {
         'x1': '8px',
@@ -43,6 +51,12 @@ module.exports = {
       },
       fontFamily: {
         default: ["Inter", "sans-serif"]
+      },
+      fontSize: {
+        'button-xs': '12px'
+      },
+      lineHeight: {
+        'button-xs': '16px'
       },
       boxShadow: {
         'button-primary':  '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',

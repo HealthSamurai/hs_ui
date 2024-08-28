@@ -23,3 +23,4 @@
 (def ^:export Critical  (clj->js {:args {:variant "critical"}}))
 (def ^:export Secondary (clj->js {:args {:variant "secondary"}}))
 (def ^:export Tertiary  (clj->js {:args {:variant "tertiary"}}))
+(def ^:export XS        (clj->js {:args {:variant "xs"}}))
