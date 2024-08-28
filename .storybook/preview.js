@@ -4,6 +4,6 @@ export const parameters = {
   darkMode: {
     stylePreview: true,
     dark:  {...themes.dark, appPreviewBg: 'transparent'},
-    light: {...themes.light, appPreviewBg: 'transparent'}
+    light: {...themes.light, appBg: 'white'}
   }
 };
