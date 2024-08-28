@@ -21,6 +21,8 @@ module.exports = {
         'button-secondary-disabled': '#DBDDE3'
       },
       colors: {
+        'link': '#226AE1',
+        'icon': '#83868E',
         'button-primary-text':  '#FFF',
         'button-critical-text': '#FFF',
         'button-secondary-text-default': '#90959F',
@@ -32,6 +34,10 @@ module.exports = {
         'button-tertiary-text-disabled': '#CCCED3',
       },
       padding: {
+        'x1': '8px',
+        'x3': '24px'
+      },
+      margin: {
         'x1': '8px',
         'x3': '24px'
       },

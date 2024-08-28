@@ -54,15 +54,17 @@
         properties (cond-> properties
                      loading
                      (assoc :disabled true
-                            :aria-busy true))]
-    [:>
-     #?(:cljs kit/Button)
-     (utils/merge-props
-      {:className (cond-> base-class
-                    (= variant "primary")   (utils/class-names primary-class)
-                    (= variant "critical")  (utils/class-names critical-class)
-                    (= variant "secondary") (utils/class-names secondary-class)
-                    (= variant "tertiary")  (utils/class-names tertiary-class))}
-      properties)
-     (if loading [:span.contents.invisible children] children)
-     (when loading [:div.flex.items-center.justify-center.absolute.inset-0 hs-ui.svg.loading/svg])]))
+                            :aria-busy true))
+        classes (cond-> base-class
+                  (= variant "primary")   (utils/class-names primary-class)
+                  (= variant "critical")  (utils/class-names critical-class)
+                  (= variant "secondary") (utils/class-names secondary-class)
+                  (= variant "tertiary")  (utils/class-names tertiary-class)
+                  (not (:loading user-properties)) (utils/class-names ["[&_svg]:mr-x1" "[&_svg]:text-icon"]))]
+    (if (:href properties)
+      [:a (utils/merge-props {:class [classes "text-link"]} properties) children]
+      [:>
+       #?(:cljs kit/Button)
+       (utils/merge-props {:className classes} properties)
+       (if loading [:span.contents.invisible children] children)
+       (when loading [:div.flex.items-center.justify-center.absolute.inset-0 hs-ui.svg.loading/svg])])))
