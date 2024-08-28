@@ -11,7 +11,10 @@
    "rounded-m"
    "font-semibold"
    "select-none"
-   "aria-busy:relative"])
+   "aria-busy:relative"
+   "items-center"
+   "focus:outline-none"
+   "focus-visible:ring"])
 
 (def primary-class
   ["shadow-button-primary"
@@ -30,8 +33,8 @@
    "aria-busy:bg-button-critical-disabled"])
 
 (def secondary-class
-  ["outline"
-   "outline-border-default"
+  ["border"
+   "border-border-default"
    "bg-button-secondary-default"
    "text-button-secondary-text-default"
    "disabled:text-button-secondary-text-disabled"
