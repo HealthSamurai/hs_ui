@@ -57,6 +57,10 @@ module.exports = {
       fontSize: {
         'button-xs': '12px'
       },
+      borderColor: {
+        'button-xs': '#D3E9FE',
+        'button-xs-hovered': '#2278E1'
+      },
       lineHeight: {
         'button-xs': '16px'
       }

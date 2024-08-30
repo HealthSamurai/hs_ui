@@ -8,8 +8,6 @@
    "py-[theme(padding.x1)]"
    "h-[36px]"
    "inline-flex"
-   "border"
-   "border-[theme(colors.border-default)]"
    "font-semibold"
    "rounded-[theme(borderRadius.m)]"
    "select-none"
@@ -50,10 +48,11 @@
 
 (def xs-class
   ["h-auto"
+   "border"
    "bg-[theme(backgroundColor.button-xs)]"
    "text-[theme(colors.button-xs-text)]"
    "border-[theme(borderColor.button-xs)]"
-   "rounded-[theme(borderRadius.s)]"
+   "rounded-[theme(borderRadius.S)]"
    "font-size-[theme(fontSize.button-xs)]"
    "leading-[theme(lineHeight.button-xs)]"
    "px-[theme(padding.x1)]"
