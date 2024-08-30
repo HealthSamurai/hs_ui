@@ -1,7 +1,10 @@
 (ns hs-ui.core
-  (:require [hs-ui.components.button]))
+  (:require
+   [hs-ui.components.button]
+   [hs-ui.components.dropdown]))
 
-(def button hs-ui.components.button/component)
+(def button   hs-ui.components.button/component)
+(def dropdown hs-ui.components.dropdown/component)
 
 (defn button-primary  [props & children]
   (into

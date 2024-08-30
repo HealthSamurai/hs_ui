@@ -5,9 +5,22 @@ module.exports = {
     extend: {
       borderRadius: {
         'xs': '2px',
-        's':  '4px',
+        'S':  '4px',
         'm':  '6px',
         'l':  '8px'
+      },
+      padding: {
+        'x1': '8px',
+        'x3': '24px'
+      },
+      margin: {
+        'x1': '8px',
+        'x3': '24px'
+      },
+      boxShadow: {
+        'button-primary':  '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
+        'button-critical': '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
+        'combobox-popover': '0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)'
       },
       backgroundColor: {
         'button-primary-default':    '#2278E1',
@@ -18,13 +31,10 @@ module.exports = {
         'button-critical-disabled':  '#DBDDE3',
         'button-secondary-default':  '#FFF',
         'button-secondary-hovered':  '#F9F9F9',
+        'listItem-hovered':  '#F9F9F9',
         'button-secondary-disabled': '#DBDDE3',
         'button-xs':                 '#F9FAFB',
         'button-xs-hovered':         'transparent'
-      },
-      borderColor: {
-        'button-xs': '#D3E9FE',
-        'button-xs-hovered': '#2278E1'
       },
       colors: {
         'link': '#226AE1',
@@ -34,20 +44,12 @@ module.exports = {
         'button-secondary-text-default': '#90959F',
         'button-secondary-text-hovered': '#1D2331',
         'button-secondary-text-disabled': '#CCCED3',
-        'border-default': '#EBECEE',
+        'border-default': '#CCCED3',
         'button-tertiary-text-default': '#90959F',
         'button-tertiary-text-hovered': '#1D2331',
         'button-tertiary-text-disabled': '#CCCED3',
         'button-xs-text': '#2278E1',
         'button-xs-text-disabled': '#D3E9FE'
-      },
-      padding: {
-        'x1': '8px',
-        'x3': '24px'
-      },
-      margin: {
-        'x1': '8px',
-        'x3': '24px'
       },
       fontFamily: {
         default: ["Inter", "sans-serif"]
@@ -57,10 +59,6 @@ module.exports = {
       },
       lineHeight: {
         'button-xs': '16px'
-      },
-      boxShadow: {
-        'button-primary':  '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
-        'button-critical': '0px 1px 2px 0px rgba(0, 0, 0, 0.05)'
       }
     }
   },
