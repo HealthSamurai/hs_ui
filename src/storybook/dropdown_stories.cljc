@@ -10,7 +10,8 @@
     :render    (fn [args]
                  (let [args  (js->clj args {:keywordize-keys true})
                        props (dissoc args :_content)]
-                   (utils/reagent-as-element [hs-ui.core/dropdown  props (:_content args)])))
+                   (utils/reagent-as-element [:div {:style {:width 312}}
+                                              [hs-ui.core/dropdown  props (:_content args)]])))
     :args      {:_content "Save"
                 :disabled false
                 :loading  false}

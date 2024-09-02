@@ -22,6 +22,9 @@ module.exports = {
         'button-critical': '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
         'combobox-popover': '0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)'
       },
+      textColor: {
+        'elements-readable': '#1D2331'
+      },
       backgroundColor: {
         'button-primary-default':    '#2278E1',
         'button-primary-hovered':    '#0960CA',
@@ -32,6 +35,7 @@ module.exports = {
         'button-secondary-default':  '#FFF',
         'button-secondary-hovered':  '#F9F9F9',
         'listItem-hovered':  '#F9F9F9',
+        'listItem-selected':  '#EBECEE',
         'button-secondary-disabled': '#DBDDE3',
         'button-xs':                 '#F9FAFB',
         'button-xs-hovered':         'transparent',
@@ -50,7 +54,7 @@ module.exports = {
         'button-tertiary-text-hovered': '#1D2331',
         'button-tertiary-text-disabled': '#CCCED3',
         'button-xs-text': '#2278E1',
-        'button-xs-text-disabled': '#D3E9FE'
+        'button-xs-text-disabled': '#D3E9FE',
       },
       fontFamily: {
         default: ["Inter", "sans-serif"]

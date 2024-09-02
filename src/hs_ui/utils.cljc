@@ -2,6 +2,11 @@
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
                      [reagent.core])))
 
+(defn ratom
+  [value]
+  #?(:cljs (reagent.core/atom value)
+     :clj  nil))
+
 (defn merge-props
   [properties-a properties-b]
   #?(:cljs (reagent.core/merge-props properties-a properties-b)

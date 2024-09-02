@@ -21,26 +21,45 @@
            :stroke-linejoin "round"}]])
 
 (defn combobox-items
-  [props & children]
-  [:> #?(:cljs kit/ComboboxItem) (assoc props :className "py-[4px] mx-[6px] hover:bg-listItem-hovered rounded-m flex items-center px-[15px] py-[8px]")
-   [:span {:class "text-[#90959F] mr-[8px]"} temp-test-svg]
-   children])
+  [selected-value props]
+  [:> #?(:cljs kit/ComboboxItem)
+   (-> (assoc props
+              :className
+              (cond-> "bg-white h-[32px] py-[4px] hover:bg-listItem-hovered rounded-m flex items-center px-[15px] py-[8px] z-20"
+                (= @selected-value (:value props))
+                (utils/class-names "bg-[theme(backgroundColor.listItem-selected)] [&_svg]:text-[theme(textColor.elements-readable)]")
+                (not (= @selected-value (:value props)))
+                (utils/class-names "[&_svg]:text-[#90959F]")))
+       (dissoc :label))
+   [:span {:class "mr-[8px]"} temp-test-svg]
+   (:label props)])
+
+(def test-items
+  [{:value "1" :label "Account"}
+   {:value "2" :label "ActivityDefinition"}
+   {:value "3" :label "AdverseEvent"}
+   {:value "4" :label "AllergyIntolerance"}
+   {:value "5" :label "ActivityAppointment"}
+   {:value "6" :label "MedicinalProductUndesirableEffect"}])
 
 (defn component
   [user-properties & children]
-  [:> #?(:cljs kit/ComboboxProvider)
-   [:div.relative
-    [:> #?(:cljs kit/Combobox)
-     {:className "border border-1 border-border-default rounded-S px-[12px] pl-[36px] py-[5.5px] w-[312px] focus:outline-none placeholder:text-[#CCCED3] z-10"
-      :placeholder " Search"}]
-    [:div.absolute.top-0.left-0 {:class "mt-[8px] ml-[12px]"} hs-ui.svg.search/svg]]
-   [:> #?(:cljs kit/ComboboxPopover)
-    {:className "bg-white border border-1 border-border-default rounded-m mt-[-40px] pt-[48px] pb-[10px] z-[-1] mx-[-7px] h-max-[200px] shadow-combobox-popover"
-     :sameWidth true}
-    [combobox-items {:value "1"} "Account"]
-    [combobox-items {:value "2"} "ActivityDefinition"]
-    [combobox-items {:value "3"} "AdverseEvent"]
-    [combobox-items {:value "4"} "AllergyIntolerance"]
-    [combobox-items {:value "5"} "ActivityAppointment"]
-    [combobox-items {:value "6"} "MedicinalProductUndesirableEffect"]
-    ]])
+  (let [selected-value (utils/ratom (:value user-properties))]
+    (fn [user-properties & children]
+      [:> #?(:cljs kit/ComboboxProvider)
+       {:setValue (fn [value] (reset! selected-value value))}
+       [:div.relative
+        [:> #?(:cljs kit/Combobox)
+         {:className "border h-[32px] border-1 border-border-default rounded-m px-[12px] pl-[36px] py-[5.5px] focus:outline-none placeholder:text-[#CCCED3] z-10 w-full group"
+          :placeholder " Search"}]
+        (when @selected-value
+          [:> #?(:cljs kit/ComboboxDisclosure)
+           {:className "group-[aria-expanded]:bg-red-500 absolute top-0 left-0 w-full z-10"}
+           [combobox-items selected-value (first (filter #(= @selected-value (:value %)) test-items))]])
+        [:div.absolute.top-0.left-0 {:class "mt-[8px] ml-[12px]"} hs-ui.svg.search/svg]]
+       [:> #?(:cljs kit/ComboboxPopover)
+        {:className "bg-white border border-1 border-border-default rounded-m mt-[-40px] pt-[48px] pb-[10px] z-[-1] mx-[-7px] h-max-[200px] shadow-combobox-popover"
+         :sameWidth true}
+        (for [item test-items] ^{:key (:value item)}
+          [:div {:class "mx-[6px]"}
+           [combobox-items selected-value item]])]])))
