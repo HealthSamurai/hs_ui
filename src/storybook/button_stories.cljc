@@ -17,7 +17,8 @@
     :argTypes  {:variant  {:control "select" :options ["primary" "critical" "tertiary"]}
                 :disabled {:control "boolean"}
                 :loading  {:control "boolean"}
-                :_content {:control "text"}}}))
+                :_content {:control "text"}
+                :href     {:control "text"}}}))
 
 (def ^:export Primary   (clj->js {:args {:variant "primary"}}))
 (def ^:export Critical  (clj->js {:args {:variant "critical"}}))

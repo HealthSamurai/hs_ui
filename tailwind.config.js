@@ -34,7 +34,8 @@ module.exports = {
         'listItem-hovered':  '#F9F9F9',
         'button-secondary-disabled': '#DBDDE3',
         'button-xs':                 '#F9FAFB',
-        'button-xs-hovered':         'transparent'
+        'button-xs-hovered':         'transparent',
+        'input-background': '#FFF'
       },
       colors: {
         'link': '#226AE1',
@@ -59,7 +60,8 @@ module.exports = {
       },
       borderColor: {
         'button-xs': '#D3E9FE',
-        'button-xs-hovered': '#2278E1'
+        'button-xs-hovered': '#2278E1',
+        'input-default': '#CCCED3'
       },
       lineHeight: {
         'button-xs': '16px'
