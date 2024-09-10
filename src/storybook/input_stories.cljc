@@ -10,7 +10,7 @@
 
 (def ^:export default
   (clj->js
-   {:title     "Molucules/Input"
+   {:title  "Molecules/Input"
     :render (fn [args]
               (let [args  (js->clj args {:keywordize-keys true})
                     props (dissoc args :_content)]
@@ -21,7 +21,11 @@
                    kit/Form
                    [hs-ui.core/input props (:_content args)]]])))
     :component (utils/reagent-reactify-component hs-ui.core/input)
-    :args      {:placeholder "example"}
-    :argTypes  {:placeholder {:control "text"}}}))
+    :args      {:placeholder "example"
+                :disabled    false
+                :class       "w-[407px]"}
+    :argTypes  {:placeholder {:control "text"}
+                :disabled    {:control "boolean"}
+                :class       {:control "text"}}}))
 
-(def ^:export Single-line (clj->js {:args {:variant "primary"}}))
+(def ^:export Single-line (clj->js {}))
