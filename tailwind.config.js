@@ -20,10 +20,12 @@ module.exports = {
       boxShadow: {
         'button-primary':  '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
         'button-critical': '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
-        'combobox-popover': '0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)'
+        'combobox-popover': '0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'input-default': '0px 0px 0px 1px #D1D5DB inset, 0px 1px 2px 0px rgba(0, 0, 0, 0.05)'
       },
       textColor: {
-        'elements-readable': '#1D2331'
+        'elements-readable': '#1D2331',
+        'color-elements-disabled': '#CCCED3'
       },
       backgroundColor: {
         'button-primary-default':    '#2278E1',
@@ -42,6 +44,11 @@ module.exports = {
         'input-background': '#FFF'
       },
       colors: {
+        'color-surface-1': '#F9F9F9',
+        'color-elements-assistive': '#90959F',
+        'color-cta': '#2278E1',
+        'color-border-default': '#CCCED3',
+
         'link': '#226AE1',
         'icon': '#83868E',
         'button-primary-text':  '#FFF',
@@ -60,7 +67,8 @@ module.exports = {
         default: ["Inter", "sans-serif"]
       },
       fontSize: {
-        'button-xs': '12px'
+        'button-xs': '12px',
+        'assistive': ['12px', '18px']
       },
       borderColor: {
         'button-xs': '#D3E9FE',

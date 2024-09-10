@@ -15,3 +15,8 @@
   [component]
   #?(:cljs (reagent.core/create-class component)
      :clj  component))
+
+(defn ratom
+  [value]
+  #?(:cljs (reagent.core/atom value)
+     :clj  component))

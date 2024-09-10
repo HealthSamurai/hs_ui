@@ -2,11 +2,17 @@
   (:require
    [hs-ui.components.button]
    [hs-ui.components.dropdown]
-   [hs-ui.components.input]))
+   [hs-ui.components.input]
+   [hs-ui.components.checkbox]
+
+   [hs-ui.organisms.checkbox]))
 
 (def button   hs-ui.components.button/component)
 (def dropdown hs-ui.components.dropdown/component)
 (def input    hs-ui.components.input/component)
+(def checkbox hs-ui.components.checkbox/component)
+
+(def org-checkbox hs-ui.organisms.checkbox/component)
 
 (defn button-primary  [props & children]
   (into
