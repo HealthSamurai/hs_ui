@@ -4,7 +4,7 @@
 (defn label
   [props & children]
   (into
-   [:label (utils/merge-props {:class "inline-block font-semibold leading-normal m-0"} props)]
+   [:label (utils/merge-props {:class "inline-block font-semibold leading-normal m-0 text-[theme(colors.color-elements-readable)]"} props)]
    children))
 
 (defn assistive
