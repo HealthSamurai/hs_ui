@@ -1,5 +1,7 @@
 (ns hs-ui.core
   (:require
+   [hs-ui.text]
+
    [hs-ui.components.button]
    [hs-ui.components.dropdown]
    [hs-ui.components.input]
@@ -13,6 +15,12 @@
 (def checkbox hs-ui.components.checkbox/component)
 
 (def org-checkbox hs-ui.organisms.checkbox/component)
+(def org-input    hs-ui.organisms.input/component)
+
+(def text-page-header    hs-ui.text/page-header)
+(def text-section-header hs-ui.text/section-header)
+(def text-label          hs-ui.text/label)
+(def text-assistive      hs-ui.text/assistive)
 
 (defn button-primary  [props & children]
   (into

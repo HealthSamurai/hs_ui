@@ -46,6 +46,7 @@ module.exports = {
       colors: {
         'color-surface-1': '#F9F9F9',
         'color-elements-assistive': '#90959F',
+        'color-elements-readable': '#1D2331',
         'color-cta': '#2278E1',
         'color-border-default': '#CCCED3',
 
@@ -64,11 +65,14 @@ module.exports = {
         'button-xs-text-disabled': '#D3E9FE',
       },
       fontFamily: {
-        default: ["Inter", "sans-serif"]
+        default: ["Inter", "sans-serif"],
+        heading: ["Metropolis", "sans-serif"]
       },
       fontSize: {
         'button-xs': '12px',
-        'assistive': ['12px', '18px']
+        'assistive': ['12px', '18px'],
+        'section-header': ['16px', '28px'],
+        'page-header': ['22px', '24px']
       },
       borderColor: {
         'button-xs': '#D3E9FE',
