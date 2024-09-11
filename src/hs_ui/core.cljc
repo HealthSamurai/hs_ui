@@ -7,7 +7,8 @@
    [hs-ui.components.input]
    [hs-ui.components.checkbox]
 
-   [hs-ui.organisms.checkbox]))
+   [hs-ui.organisms.checkbox]
+   [hs-ui.organisms.input]))
 
 (def button   hs-ui.components.button/component)
 (def dropdown hs-ui.components.dropdown/component)

@@ -25,7 +25,6 @@
 
 (defn component
   [user-properties & children]
-  [:>
-   #?(:cljs kit/FormInput)
+  [:input
    (utils/merge-props {:className (utils/class-names base-class (:class user-properties))}
                       (dissoc user-properties :class))])
