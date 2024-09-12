@@ -7,9 +7,6 @@
   (clj->js
    {:title     "Organisms/Checkbox"
     :component (utils/reagent-reactify-component hs-ui.core/org-checkbox)
-    :render (fn [args]
-              (let [props (js->clj args {:keywordize-keys true})]
-                (utils/reagent-as-element [hs-ui.core/org-checkbox props])))
     :args      {:label     "New UI"
                 :assistive "Better navigation and many other interface improvements"
                 :checked   false
