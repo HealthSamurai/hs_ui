@@ -11,4 +11,4 @@
     (if (:checked props)
       [:span {:class "ml-[12px]"} "Enabled"]
       [:span {:class "ml-[12px]"} "Disabled"])]
-   [hs-ui.text/assistive {:class "pt-[12px]"} (:assistive props)]])
+   [hs-ui.text/assistive {:class "block pt-[12px]"} (:assistive props)]])
