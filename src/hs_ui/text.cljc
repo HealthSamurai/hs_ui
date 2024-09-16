@@ -10,7 +10,7 @@
 (defn assistive
   [props & children]
   (into
-   [:span (utils/merge-props {:class "text-assistive font-normal text-[theme(colors.color-elements-assistive)]"} props)]
+   [:span (utils/merge-props {:class "text-assistive text-[theme(colors.color-elements-assistive)]"} props)]
    children))
 
 (defn section-header

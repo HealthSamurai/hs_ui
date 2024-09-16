@@ -9,6 +9,9 @@ module.exports = {
         'm':  '6px',
         'l':  '8px'
       },
+      spacing: {
+        "half": "4px"
+      },
       padding: {
         'x1': '8px',
         'x3': '24px'
@@ -45,7 +48,7 @@ module.exports = {
       },
       colors: {
         'color-surface-1': '#F9F9F9',
-        'color-elements-assistive': '#90959F',
+        'color-elements-assistive': '#727885',
         'color-elements-readable': '#1D2331',
         'color-cta': '#2278E1',
         'color-border-default': '#CCCED3',

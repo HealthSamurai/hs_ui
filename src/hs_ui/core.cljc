@@ -7,6 +7,7 @@
    [hs-ui.components.dropdown]
    [hs-ui.components.input]
    [hs-ui.components.checkbox]
+   [hs-ui.components.content-expand]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]))
@@ -15,6 +16,7 @@
 (def dropdown hs-ui.components.dropdown/component)
 (def input    hs-ui.components.input/component)
 (def checkbox hs-ui.components.checkbox/component)
+(def content-expand hs-ui.components.content-expand/component)
 
 (def org-checkbox hs-ui.organisms.checkbox/component)
 (def org-input    hs-ui.organisms.input/component)
