@@ -1,6 +1,7 @@
 (ns hs-ui.core
   (:require
    [hs-ui.text]
+   [hs-ui.graphic]
 
    [hs-ui.components.button]
    [hs-ui.components.dropdown]
@@ -22,6 +23,8 @@
 (def text-section-header hs-ui.text/section-header)
 (def text-label          hs-ui.text/label)
 (def text-assistive      hs-ui.text/assistive)
+
+(def separator hs-ui.graphic/separator)
 
 (defn button-primary  [props & children]
   (into

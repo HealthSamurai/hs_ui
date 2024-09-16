@@ -49,6 +49,7 @@ module.exports = {
         'color-elements-readable': '#1D2331',
         'color-cta': '#2278E1',
         'color-border-default': '#CCCED3',
+        'color-separator': '#EBECEE',
 
         'link': '#226AE1',
         'icon': '#83868E',
