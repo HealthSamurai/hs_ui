@@ -237,66 +237,66 @@
   },
   "spacing": {
     "x1": {
-      "$type": "number",
-      "$value": 8
+      "$type": "dimension",
+      "$value": "8px"
     },
     "x1point5": {
-      "$type": "number",
-      "$value": 12
+      "$type": "dimension",
+      "$value": "12px"
     },
     "x2": {
-      "$type": "number",
-      "$value": 16
+      "$type": "dimension",
+      "$value": "16px"
     },
     "x4": {
-      "$type": "number",
-      "$value": 32
+      "$type": "dimension",
+      "$value": "32px"
     },
     "x6": {
-      "$type": "number",
-      "$value": 48
+      "$type": "dimension",
+      "$value": "48px"
     },
     "x8": {
-      "$type": "number",
-      "$value": 64
+      "$type": "dimension",
+      "$value": "64px"
     },
     "quarter": {
-      "$type": "number",
-      "$value": 2
+      "$type": "dimension",
+      "$value": "2px"
     },
     "half": {
-      "$type": "number",
-      "$value": 4
+      "$type": "dimension",
+      "$value": "4px"
     },
     "x12": {
-      "$type": "number",
-      "$value": 96
+      "$type": "dimension",
+      "$value": "96px"
     },
     "x3": {
-      "$type": "number",
-      "$value": 24
+      "$type": "dimension",
+      "$value": "24px"
     }
   },
   "corner": {
     "max": {
-      "$type": "number",
-      "$value": 999
+      "$type": "dimension",
+      "$value": "999px"
     },
     "s": {
-      "$type": "number",
-      "$value": 4
+      "$type": "dimension",
+      "$value": "4px"
     },
     "m": {
-      "$type": "number",
-      "$value": 6
+      "$type": "dimension",
+      "$value": "6px"
     },
     "l": {
-      "$type": "number",
-      "$value": 8
+      "$type": "dimension",
+      "$value": "8px"
     },
     "xs": {
-      "$type": "number",
-      "$value": 2
+      "$type": "dimension",
+      "$value": "2px"
     }
   }
 }
