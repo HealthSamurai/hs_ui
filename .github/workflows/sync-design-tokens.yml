@@ -1,0 +1,32 @@
+name: Sync Design Tokens
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-design-tokens:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history to make a proper commit
+      - name: Set up Babashka
+        uses: borkdude/setup-babashka@v1
+      - name: Run sync_design_tokens.clj
+        run: bb sync_design_tokens.clj
+      - name: Commit and Push Changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Changes detected. Committing and pushing..."
+            git config user.name "GitHub Action"
+            git config user.email "action@github.com"
+            git add .
+            git commit -m "Update design tokens [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
