@@ -21,10 +21,16 @@
 (def org-checkbox hs-ui.organisms.checkbox/component)
 (def org-input    hs-ui.organisms.input/component)
 
-(def text-page-header    hs-ui.text/page-header)
-(def text-section-header hs-ui.text/section-header)
-(def text-label          hs-ui.text/label)
-(def text-assistive      hs-ui.text/assistive)
+(def text-page-header          hs-ui.text/page-header)
+(def text-section-header       hs-ui.text/section-header)
+(def text-button-label-regular hs-ui.text/button-label-regular)
+(def text-label                hs-ui.text/label)
+(def text-link                 hs-ui.text/link)
+(def text-value                hs-ui.text/value)
+(def text-code                 hs-ui.text/code)
+(def text-counter              hs-ui.text/counter)
+(def text-button-label-xs      hs-ui.text/button-label-xs)
+(def text-assistive            hs-ui.text/assistive)
 
 (def separator hs-ui.graphic/separator)
 

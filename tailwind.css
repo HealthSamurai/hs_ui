@@ -13,6 +13,111 @@
 }
 
 @layer components {
+
+  .txt-page-header {
+    color: var(--color-elements-readable, #1D2331);
+    font-family: Metropolis;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.44px;
+  }
+
+  .txt-section-header {
+    color: var(--color-elements-readable, #1D2331);
+    font-family: Metropolis;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+  }
+
+  .txt-button-label-regular {
+    color: var(--color-elements-readable, #1D2331);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  .txt-label {
+    color: var(--color-elements-readable, #1D2331);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .txt-link {
+    color: var(--color-cta, #2278E1);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 21px;
+    text-decoration-line: underline;
+    text-underline-offset: 3px;
+  }
+
+  .txt-value {
+    color: var(--color-elements-readable, #1D2331);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  .txt-body {
+    color: var(--color-elements-readable, #1D2331);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+  }
+
+  .txt-code {
+    color: var(--color-elements-readable, #1D2331);
+    font-family: "JetBrains Mono";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+  }
+
+  .txt-counter {
+    color: var(--color-critical-default, #D72710);
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+  }
+
+  .txt-button-label-xs {
+    color: var(--color-cta, #2278E1);
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: -0.12px;
+    text-transform: uppercase;
+  }
+
+  .txt-assistive {
+    color: var(--color-elements-assistive, #727885);
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+  }
+
   input[type=checkbox] {
     display: none;
   }
