@@ -1,9 +1,9 @@
 {
   "tokenSetOrder": [
     "Typography",
-    "Global/Light",
-    "Global/Dark",
-    "Alias/Light",
-    "Alias/Dark"
+    "Global/ThemeLight",
+    "Global/ThemeDark",
+    "Alias/ThemeLight",
+    "Alias/ThemeDark"
   ]
 }
