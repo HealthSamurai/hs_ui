@@ -15,18 +15,8 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all history to make a proper commit
 
-      - name: Install Babashka
-        run: |
-          # Download the latest Babashka release
-          curl -sLo bb.zip https://github.com/babashka/babashka/releases/latest/download/babashka-standalone-linux-amd64.zip
-          # Unzip the downloaded file
-          unzip bb.zip
-          # Move the bb binary to a directory in PATH
-          sudo mv bb /usr/local/bin/
-          # Clean up
-          rm bb.zip
-          # Verify installation
-          bb --version
+      - name: Set up Babashka
+        uses: babashka/setup-babashka@v2
 
       - name: Run sync_design_tokens.clj
         run: bb sync_design_tokens.clj
