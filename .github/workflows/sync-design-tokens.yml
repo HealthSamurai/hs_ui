@@ -15,8 +15,13 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all history to make a proper commit
 
-      - name: Set up Babashka
-        uses: babashka/setup-babashka@v2
+      - name: Install bb
+        uses: DeLaGuardo/setup-clojure@12.5
+        with:
+          # Install just one or all simultaneously
+          # The value must indicate a particular version of the tool, or use 'latest'
+          # to always provision the latest version
+          bb: 0.7.8                    # Babashka
 
       - name: Run sync_design_tokens.clj
         run: bb sync_design_tokens.clj
