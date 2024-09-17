@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+@layer base {
+    html {
+        @apply font-default antialiased;
+        line-height: 20px;
+        font-size: 14px;
+        font-style: normal;
+        color: #1D2331;
+    }
+
+    html {
+        {{lightThemeVars}}
+    }
+
+    html body.dark {
+        {{darkThemeVars}}
+    }
+}
+
+@layer components {
+  input[type=checkbox] {
+    display: none;
+  }
+
+  .slide-toggle {
+    display: block;
+    position: relative;
+    flex: none;
+    width: 40px;
+    height: 24.2px;
+    border-radius: 30px;
+    background-color: #CCCED3;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    z-index: 1;
+  }
+  .slide-toggle::before,
+  .slide-toggle::after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: 2px;
+    border-radius: 30px;
+    height: 20px;
+    width: 20px;
+    background-color: #CCCED3;
+    transform: translate3d(0, 0, 0);
+    transition: 0.2s cubic-bezier(0, 1.1, 1, 1.1);
+  }
+  .slide-toggle::before {
+    z-index: -1;
+    width: 34px;
+    right: 2px;
+    transform: scale(1);
+  }
+  .slide-toggle::after {
+    z-index: 1;
+    width: 20px;
+    left: 2px;
+    background-color: white;
+  }
+  input:checked + .slide-toggle {
+    background-color: #2278E1;
+  }
+  input:checked + .slide-toggle::before {
+    transform: scale(0);
+  }
+  input:checked + .slide-toggle::after {
+    transform: translate3d(16px, 0, 0);
+  }
+}
