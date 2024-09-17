@@ -4,7 +4,8 @@
 
 @layer base {
     html {
-        @apply font-default antialiased;
+        @apply antialiased;
+        font-family: Inter;
         line-height: 20px;
         font-size: 14px;
         font-style: normal;
@@ -15,7 +16,7 @@
         {{lightThemeVars}}
     }
 
-    html body.dark {
+    html.dark {
         {{darkThemeVars}}
     }
 }

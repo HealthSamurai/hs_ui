@@ -93,7 +93,8 @@
     (traverse-tree
      (fn [acc node path]
        (if (and (map? node)
-                (= #{"$value" "$type"} (set (keys node))))
+                (contains? node "$type")
+                (contains? node "$value"))
          (let [node-value (get node "$value")
                node-type (get node "$type")]
            (conj acc (format "--%s: %s"

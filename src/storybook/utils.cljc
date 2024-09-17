@@ -1,6 +1,8 @@
 (ns storybook.utils
   #?(:cljs (:require [reagent.core])))
 
+;; html.light html.dark
+
 (defn reagent-reactify-component
   [component]
   #?(:cljs (reagent.core/reactify-component component)
