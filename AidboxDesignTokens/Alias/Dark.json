@@ -1,0 +1,122 @@
+{
+  "color": {
+    "elements-readable": {
+      "value": "{color.grey.20}",
+      "type": "color",
+      "description": "most contrast color for texts, icons, all things readable"
+    },
+    "cta": {
+      "value": "{color.blue.70}",
+      "type": "color"
+    },
+    "critical-default": {
+      "value": "{color.red.70}",
+      "type": "color"
+    },
+    "elements-disabled": {
+      "value": "{color.grey.90}",
+      "type": "color"
+    },
+    "elements-assistive": {
+      "value": "{color.grey.55}",
+      "type": "color"
+    },
+    "surface-0": {
+      "value": "{color.grey.110}",
+      "type": "color"
+    },
+    "border-default": {
+      "value": "{color.grey.80}",
+      "type": "color"
+    },
+    "surface-selected": {
+      "value": "{color.grey.90}",
+      "type": "color"
+    },
+    "cta-hover": {
+      "value": "{color.blue.80}",
+      "type": "color"
+    },
+    "critical-hover": {
+      "value": "{color.red.80}",
+      "type": "color"
+    },
+    "surface-1": {
+      "value": "{color.grey.95}",
+      "type": "color"
+    },
+    "border-XS-critical": {
+      "value": "{color.red.50}",
+      "type": "color"
+    },
+    "border-XS-critical-hover": {
+      "value": "{color.red.40}",
+      "type": "color"
+    },
+    "elements-green": {
+      "value": "#669018",
+      "type": "color"
+    },
+    "elements-yellow": {
+      "value": "#ff971c",
+      "type": "color"
+    },
+    "border-XS-regular": {
+      "value": "{color.blue.90}",
+      "type": "color"
+    },
+    "border-XS-regular-hover": {
+      "value": "{color.blue.50}",
+      "type": "color"
+    },
+    "separator": {
+      "value": "{color.grey.90}",
+      "type": "color"
+    },
+    "surface-info": {
+      "value": "{color.blue.100}",
+      "type": "color"
+    },
+    "surface-warning": {
+      "value": "{color.yellow.100}",
+      "type": "color"
+    },
+    "surface-alert": {
+      "value": "{color.red.100}",
+      "type": "color"
+    },
+    "elements-warning": {
+      "value": "{color.yellow.30}",
+      "type": "color"
+    },
+    "code-red": {
+      "value": "#cd6153",
+      "type": "color"
+    },
+    "code-blue": {
+      "value": "#358fea",
+      "type": "color"
+    },
+    "elements-readable-inv": {
+      "value": "{color.grey.20}",
+      "type": "color",
+      "description": "most contrast color for texts, icons, all things readable"
+    },
+    "logo-readable": {
+      "value": "{color.grey.60}",
+      "type": "color"
+    },
+    "elements-links": {
+      "value": "{color.code-blue}",
+      "type": "color"
+    },
+    "elements-info": {
+      "value": "{color.blue.30}",
+      "type": "color"
+    },
+    "elements-alert": {
+      "value": "{color.red.30}",
+      "type": "color"
+    }
+  }
+}
