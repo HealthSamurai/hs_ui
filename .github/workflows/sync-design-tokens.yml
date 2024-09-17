@@ -8,7 +8,7 @@ on:
 jobs:
   sync-design-tokens:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: "!contains(github.event.head_commit.message, 'Update design tokens')"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -35,7 +35,7 @@ jobs:
             git config user.name "GitHub Action"
             git config user.email "action@github.com"
             git add .
-            git commit -m "Update design tokens [skip ci]"
+            git commit -m "Update design tokens"
             git push
           else
             echo "No changes to commit."
