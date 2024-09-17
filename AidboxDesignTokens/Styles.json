@@ -290,5 +290,47 @@
       "$type": "dimension",
       "$value": "0px"
     }
+  },
+  "ShadowInputActive": {
+    "$type": "boxShadow",
+    "$value": [
+      {
+        "color": "#d1d5db",
+        "type": "innerShadow",
+        "x": 0,
+        "y": 0,
+        "blur": 0,
+        "spread": 1
+      },
+      {
+        "color": "#0000000d",
+        "type": "dropShadow",
+        "x": 0,
+        "y": 1,
+        "blur": 2,
+        "spread": 0
+      }
+    ]
+  },
+  "ShadowDropdown": {
+    "$type": "boxShadow",
+    "$value": [
+      {
+        "color": "#0000001a",
+        "type": "dropShadow",
+        "x": 0,
+        "y": 10,
+        "blur": 15,
+        "spread": -3
+      },
+      {
+        "color": "#0000000d",
+        "type": "dropShadow",
+        "x": 0,
+        "y": 4,
+        "blur": 6,
+        "spread": -2
+      }
+    ]
   }
 }
