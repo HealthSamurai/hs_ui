@@ -1,118 +1,119 @@
 {
   "fontFamilies": {
     "metropolis": {
-      "value": "Metropolis",
-      "type": "fontFamilies"
+      "$type": "fontFamilies",
+      "$value": "Metropolis"
     },
     "inter": {
-      "value": "Inter",
-      "type": "fontFamilies"
+      "$type": "fontFamilies",
+      "$value": "Inter"
     },
     "jetbrains-mono": {
-      "value": "JetBrains Mono",
-      "type": "fontFamilies"
+      "$type": "fontFamilies",
+      "$value": "JetBrains Mono"
     }
   },
   "lineHeights": {
     "0": {
-      "value": "24",
-      "type": "lineHeights"
+      "$type": "lineHeights",
+      "$value": "24"
     },
     "1": {
-      "value": "28",
-      "type": "lineHeights"
+      "$type": "lineHeights",
+      "$value": "28"
     },
     "2": {
-      "value": "20",
-      "type": "lineHeights"
+      "$type": "lineHeights",
+      "$value": "20"
     },
     "3": {
-      "value": "AUTO",
-      "type": "lineHeights"
+      "$type": "lineHeights",
+      "$value": "AUTO"
     },
     "4": {
-      "value": "150%",
-      "type": "lineHeights"
+      "$type": "lineHeights",
+      "$value": "150%"
     },
     "5": {
-      "value": "16",
-      "type": "lineHeights"
+      "$type": "lineHeights",
+      "$value": "16"
     }
   },
   "fontWeights": {
     "metropolis-0": {
-      "value": "Medium",
-      "type": "fontWeights"
+      "$type": "fontWeights",
+      "$value": "Medium"
     },
     "metropolis-1": {
-      "value": "Semi Bold",
-      "type": "fontWeights"
+      "$type": "fontWeights",
+      "$value": "Semi Bold"
     },
     "inter-2": {
-      "value": "Semi Bold",
-      "type": "fontWeights"
+      "$type": "fontWeights",
+      "$value": "Semi Bold"
     },
     "inter-3": {
-      "value": "Medium",
-      "type": "fontWeights"
+      "$type": "fontWeights",
+      "$value": "Medium"
     },
     "inter-4": {
-      "value": "Regular",
-      "type": "fontWeights"
+      "$type": "fontWeights",
+      "$value": "Regular"
     },
     "inter-5": {
-      "value": "Bold",
-      "type": "fontWeights"
+      "$type": "fontWeights",
+      "$value": "Bold"
     },
     "jetbrains-mono-6": {
-      "value": "Regular",
-      "type": "fontWeights"
+      "$type": "fontWeights",
+      "$value": "Regular"
     }
   },
   "fontSize": {
     "0": {
-      "value": "12",
-      "type": "fontSizes"
+      "$type": "fontSizes",
+      "$value": "12"
     },
     "1": {
-      "value": "14",
-      "type": "fontSizes"
+      "$type": "fontSizes",
+      "$value": "14"
     },
     "2": {
-      "value": "16",
-      "type": "fontSizes"
+      "$type": "fontSizes",
+      "$value": "16"
     },
     "3": {
-      "value": "22",
-      "type": "fontSizes"
+      "$type": "fontSizes",
+      "$value": "22"
     }
   },
   "letterSpacing": {
     "0": {
-      "value": "-2%",
-      "type": "letterSpacing"
+      "$type": "letterSpacing",
+      "$value": "-2%"
     },
     "1": {
-      "value": "0%",
-      "type": "letterSpacing"
+      "$type": "letterSpacing",
+      "$value": "0%"
     },
     "2": {
-      "value": "-1%",
-      "type": "letterSpacing"
+      "$type": "letterSpacing",
+      "$value": "-1%"
     }
   },
   "paragraphSpacing": {
     "0": {
-      "value": "0",
-      "type": "paragraphSpacing"
+      "$type": "paragraphSpacing",
+      "$value": "0"
     },
     "1": {
-      "value": "8",
-      "type": "paragraphSpacing"
+      "$type": "paragraphSpacing",
+      "$value": "8"
     }
   },
   "Page header": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.metropolis}",
       "fontWeight": "{fontWeights.metropolis-0}",
       "lineHeight": "{lineHeights.0}",
@@ -122,11 +123,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Section header": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.metropolis}",
       "fontWeight": "{fontWeights.metropolis-1}",
       "lineHeight": "{lineHeights.1}",
@@ -136,11 +137,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Button label Regular": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.inter}",
       "fontWeight": "{fontWeights.inter-2}",
       "lineHeight": "{lineHeights.2}",
@@ -150,11 +151,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Label": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.inter}",
       "fontWeight": "{fontWeights.inter-3}",
       "lineHeight": "{lineHeights.3}",
@@ -164,11 +165,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Value": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.inter}",
       "fontWeight": "{fontWeights.inter-4}",
       "lineHeight": "{lineHeights.0}",
@@ -178,11 +179,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Body": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.inter}",
       "fontWeight": "{fontWeights.inter-4}",
       "lineHeight": "{lineHeights.4}",
@@ -192,11 +193,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Link CTA": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.inter}",
       "fontWeight": "{fontWeights.inter-3}",
       "lineHeight": "{lineHeights.4}",
@@ -206,11 +207,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.underline}"
-    },
-    "type": "typography"
+    }
   },
   "Assistive": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.inter}",
       "fontWeight": "{fontWeights.inter-4}",
       "lineHeight": "{lineHeights.4}",
@@ -220,11 +221,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Counter": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.inter}",
       "fontWeight": "{fontWeights.inter-5}",
       "lineHeight": "{lineHeights.4}",
@@ -234,11 +235,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Button label XS": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.inter}",
       "fontWeight": "{fontWeights.inter-3}",
       "lineHeight": "{lineHeights.5}",
@@ -248,11 +249,11 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.uppercase}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "Code": {
-    "value": {
+    "$type": "typography",
+    "$value": {
       "fontFamily": "{fontFamilies.jetbrains-mono}",
       "fontWeight": "{fontWeights.jetbrains-mono-6}",
       "lineHeight": "{lineHeights.4}",
@@ -262,33 +263,32 @@
       "paragraphIndent": "{paragraphIndent.0}",
       "textCase": "{textCase.none}",
       "textDecoration": "{textDecoration.none}"
-    },
-    "type": "typography"
+    }
   },
   "textCase": {
     "none": {
-      "value": "none",
-      "type": "textCase"
+      "$type": "textCase",
+      "$value": "none"
     },
     "uppercase": {
-      "value": "uppercase",
-      "type": "textCase"
+      "$type": "textCase",
+      "$value": "uppercase"
     }
   },
   "textDecoration": {
     "none": {
-      "value": "none",
-      "type": "textDecoration"
+      "$type": "textDecoration",
+      "$value": "none"
     },
     "underline": {
-      "value": "underline",
-      "type": "textDecoration"
+      "$type": "textDecoration",
+      "$value": "underline"
     }
   },
   "paragraphIndent": {
     "0": {
-      "value": "0px",
-      "type": "dimension"
+      "$type": "dimension",
+      "$value": "0px"
     }
   }
 }
