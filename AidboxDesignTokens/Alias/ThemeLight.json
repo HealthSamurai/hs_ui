@@ -1,122 +1,122 @@
 {
   "color": {
     "elements-readable": {
-      "value": "{color.grey.90}",
-      "type": "color",
-      "description": "most contrast color for texts, icons, all things readable"
+      "$type": "color",
+      "$value": "{color.grey.90}",
+      "$description": "most contrast color for texts, icons, all things readable"
     },
     "cta": {
-      "value": "{color.blue.60-brand}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.blue.60-brand}"
     },
     "critical-default": {
-      "value": "{color.red.65}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.red.65}"
     },
     "elements-disabled": {
-      "value": "{color.grey.30}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.grey.30}"
     },
     "elements-assistive": {
-      "value": "{color.grey.55}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.grey.55}"
     },
     "surface-0": {
-      "value": "{color.grey.0}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.grey.0}"
     },
     "border-default": {
-      "value": "{color.grey.30}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.grey.30}"
     },
     "surface-selected": {
-      "value": "{color.grey.20}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.grey.20}"
     },
     "cta-hover": {
-      "value": "{color.blue.70}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.blue.70}"
     },
     "critical-hover": {
-      "value": "{color.red.70}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.red.70}"
     },
     "surface-1": {
-      "value": "{color.grey.5}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.grey.5}"
     },
     "border-XS-critical": {
-      "value": "{color.red.50}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.red.50}"
     },
     "border-XS-critical-hover": {
-      "value": "{color.red.40}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.red.40}"
     },
     "elements-green": {
-      "value": "#6d9f0f",
-      "type": "color"
+      "$type": "color",
+      "$value": "#6d9f0f"
     },
     "elements-yellow": {
-      "value": "#ff971c",
-      "type": "color"
+      "$type": "color",
+      "$value": "#ff971c"
     },
     "border-XS-regular": {
-      "value": "{color.blue.30}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.blue.30}"
     },
     "border-XS-regular-hover": {
-      "value": "{color.blue.50}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.blue.50}"
     },
     "separator": {
-      "value": "{color.grey.20}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.grey.20}"
     },
     "surface-info": {
-      "value": "{color.blue.10}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.blue.10}"
     },
     "surface-warning": {
-      "value": "{color.yellow.10}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.yellow.10}"
     },
     "surface-alert": {
-      "value": "{color.red.10}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.red.10}"
     },
     "elements-warning": {
-      "value": "{color.yellow.70}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.yellow.70}"
     },
     "code-red": {
-      "value": "#cd6153",
-      "type": "color"
+      "$type": "color",
+      "$value": "#cd6153"
     },
     "code-blue": {
-      "value": "#358fea",
-      "type": "color"
+      "$type": "color",
+      "$value": "#358fea"
     },
     "elements-readable-inv": {
-      "value": "{color.grey.0}",
-      "type": "color",
-      "description": "most contrast color for texts, icons, all things readable"
+      "$type": "color",
+      "$value": "{color.grey.0}",
+      "$description": "most contrast color for texts, icons, all things readable"
     },
     "logo-readable": {
-      "value": "#1d2331",
-      "type": "color"
+      "$type": "color",
+      "$value": "#1d2331"
     },
     "elements-links": {
-      "value": "{color.blue.60-brand}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.blue.60-brand}"
     },
     "elements-info": {
-      "value": "{color.blue.60-brand}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.blue.60-brand}"
     },
     "elements-alert": {
-      "value": "{color.red.65}",
-      "type": "color"
+      "$type": "color",
+      "$value": "{color.red.65}"
     }
   }
 }
