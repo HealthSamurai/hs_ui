@@ -24,7 +24,7 @@ jobs:
           bb: 0.7.8                    # Babashka
 
       - name: Run sync_design_tokens.clj
-        run: bb sync_design_tokens.clj
+        run: bb ./scripts/sync_design_tokens.clj
 
       - name: Commit and Push Changes
         env:
