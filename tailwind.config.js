@@ -3,90 +3,121 @@ module.exports = {
   darkMode: 'selector',
   theme: {
     extend: {
-      borderRadius: {
-        'xs': '2px',
-        'S':  '4px',
-        'm':  '6px',
-        'l':  '8px'
-      },
-      spacing: {
-        "half": "4px"
-      },
-      padding: {
-        'x1': '8px',
-        'x3': '24px'
-      },
-      margin: {
-        'x1': '8px',
-        'x3': '24px'
-      },
-      boxShadow: {
-        'button-primary':  '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
-        'button-critical': '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
-        'combobox-popover': '0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        'input-default': '0px 0px 0px 1px #D1D5DB inset, 0px 1px 2px 0px rgba(0, 0, 0, 0.05)'
-      },
-      textColor: {
-        'elements-readable': '#1D2331',
-        'color-elements-disabled': '#CCCED3'
-      },
-      backgroundColor: {
-        'button-primary-default':    '#2278E1',
-        'button-primary-hovered':    '#0960CA',
-        'button-primary-disabled':   '#DBDDE3',
-        'button-critical-default':   '#DF351F',
-        'button-critical-hovered':   '#BE2F1C',
-        'button-critical-disabled':  '#DBDDE3',
-        'button-secondary-default':  '#FFF',
-        'button-secondary-hovered':  '#F9F9F9',
-        'listItem-hovered':  '#F9F9F9',
-        'listItem-selected':  '#EBECEE',
-        'button-secondary-disabled': '#DBDDE3',
-        'button-xs':                 '#F9FAFB',
-        'button-xs-hovered':         'transparent',
-        'input-background': '#FFF'
-      },
-      colors: {
-        'color-surface-1': '#F9F9F9',
-        'color-elements-assistive': '#727885',
-        'color-elements-readable': '#1D2331',
-        'color-cta': '#2278E1',
-        'color-border-default': '#CCCED3',
-        'color-separator': '#EBECEE',
-
-        'link': '#226AE1',
-        'icon': '#83868E',
-        'button-primary-text':  '#FFF',
-        'button-critical-text': '#FFF',
-        'button-secondary-text-default': '#90959F',
-        'button-secondary-text-hovered': '#1D2331',
-        'button-secondary-text-disabled': '#CCCED3',
-        'border-default': '#CCCED3',
-        'button-tertiary-text-default': '#90959F',
-        'button-tertiary-text-hovered': '#1D2331',
-        'button-tertiary-text-disabled': '#CCCED3',
-        'button-xs-text': '#2278E1',
-        'button-xs-text-disabled': '#D3E9FE',
-      },
-      fontFamily: {
-        default: ["Inter", "sans-serif"],
-        heading: ["Metropolis", "sans-serif"]
-      },
-      fontSize: {
-        'button-xs': '12px',
-        'assistive': ['12px', '18px'],
-        'section-header': ['16px', '28px'],
-        'page-header': ['22px', '24px']
-      },
-      borderColor: {
-        'button-xs': '#D3E9FE',
-        'button-xs-hovered': '#2278E1',
-        'input-default': '#CCCED3'
-      },
-      lineHeight: {
-        'button-xs': '16px'
-      }
-    }
+  "colors" : {
+    "blue" : {
+      "50" : "var(--color-blue-50)",
+      "30" : "var(--color-blue-30)",
+      "80" : "var(--color-blue-80)",
+      "20" : "var(--color-blue-20)",
+      "115" : "var(--color-blue-115)",
+      "5" : "var(--color-blue-5)",
+      "100" : "var(--color-blue-100)",
+      "90" : "var(--color-blue-90)",
+      "110" : "var(--color-blue-110)",
+      "70" : "var(--color-blue-70)",
+      "60-brand" : "var(--color-blue-60-brand)",
+      "10" : "var(--color-blue-10)",
+      "40" : "var(--color-blue-40)"
+    },
+    "surface-info" : "var(--color-surface-info)",
+    "elements-assistive" : "var(--color-elements-assistive)",
+    "surface-alert" : "var(--color-surface-alert)",
+    "code-blue" : "var(--color-code-blue)",
+    "surface-1" : "var(--color-surface-1)",
+    "elements-disabled" : "var(--color-elements-disabled)",
+    "surface-0" : "var(--color-surface-0)",
+    "grey" : {
+      "50" : "var(--color-grey-50)",
+      "60" : "var(--color-grey-60)",
+      "30" : "var(--color-grey-30)",
+      "80" : "var(--color-grey-80)",
+      "20" : "var(--color-grey-20)",
+      "5" : "var(--color-grey-5)",
+      "100" : "var(--color-grey-100)",
+      "90" : "var(--color-grey-90)",
+      "110" : "var(--color-grey-110)",
+      "70" : "var(--color-grey-70)",
+      "0" : "var(--color-grey-0)",
+      "95" : "var(--color-grey-95)",
+      "55" : "var(--color-grey-55)",
+      "10" : "var(--color-grey-10)",
+      "40" : "var(--color-grey-40)"
+    },
+    "logo-readable" : "var(--color-logo-readable)",
+    "elements-yellow" : "var(--color-elements-yellow)",
+    "cta" : "var(--color-cta)",
+    "elements-warning" : "var(--color-elements-warning)",
+    "border-XS-critical" : "var(--color-border-XS-critical)",
+    "cta-hover" : "var(--color-cta-hover)",
+    "yellow" : {
+      "50" : "var(--color-yellow-50)",
+      "30" : "var(--color-yellow-30)",
+      "80" : "var(--color-yellow-80)",
+      "20" : "var(--color-yellow-20)",
+      "115" : "var(--color-yellow-115)",
+      "5" : "var(--color-yellow-5)",
+      "100" : "var(--color-yellow-100)",
+      "90" : "var(--color-yellow-90)",
+      "110" : "var(--color-yellow-110)",
+      "70" : "var(--color-yellow-70)",
+      "60-brand" : "var(--color-yellow-60-brand)",
+      "10" : "var(--color-yellow-10)",
+      "40" : "var(--color-yellow-40)"
+    },
+    "surface-selected" : "var(--color-surface-selected)",
+    "green" : {
+      "60" : "var(--color-green-60)"
+    },
+    "critical-default" : "var(--color-critical-default)",
+    "red" : {
+      "50" : "var(--color-red-50)",
+      "30" : "var(--color-red-30)",
+      "80" : "var(--color-red-80)",
+      "20" : "var(--color-red-20)",
+      "115" : "var(--color-red-115)",
+      "5" : "var(--color-red-5)",
+      "100" : "var(--color-red-100)",
+      "90" : "var(--color-red-90)",
+      "110" : "var(--color-red-110)",
+      "70" : "var(--color-red-70)",
+      "60-brand" : "var(--color-red-60-brand)",
+      "10" : "var(--color-red-10)",
+      "65" : "var(--color-red-65)",
+      "40" : "var(--color-red-40)"
+    },
+    "elements-green" : "var(--color-elements-green)",
+    "elements-links" : "var(--color-elements-links)",
+    "border-XS-regular-hover" : "var(--color-border-XS-regular-hover)",
+    "border-default" : "var(--color-border-default)",
+    "border-XS-critical-hover" : "var(--color-border-XS-critical-hover)",
+    "elements-info" : "var(--color-elements-info)",
+    "critical-hover" : "var(--color-critical-hover)",
+    "code-red" : "var(--color-code-red)",
+    "border-XS-regular" : "var(--color-border-XS-regular)",
+    "separator" : "var(--color-separator)",
+    "elements-alert" : "var(--color-elements-alert)",
+    "surface-warning" : "var(--color-surface-warning)"
+  },
+  "spacing" : {
+    "x1" : "var(--spacing-x1)",
+    "x6" : "var(--spacing-x6)",
+    "x3" : "var(--spacing-x3)",
+    "half" : "var(--spacing-half)",
+    "x8" : "var(--spacing-x8)",
+    "x12" : "var(--spacing-x12)",
+    "x4" : "var(--spacing-x4)",
+    "quarter" : "var(--spacing-quarter)",
+    "x2" : "var(--spacing-x2)",
+    "x1point5" : "var(--spacing-x1point5)"
+  },
+  "borderRadius" : {
+    "max" : "var(--corner-max)",
+    "s" : "var(--corner-s)",
+    "m" : "var(--corner-m)",
+    "l" : "var(--corner-l)",
+    "xs" : "var(--corner-xs)"
+  }
+}
   },
   plugins: []
 }
