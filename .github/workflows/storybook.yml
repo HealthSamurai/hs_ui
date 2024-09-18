@@ -40,12 +40,29 @@ jobs:
             ~/.m2/repository
             ~/.gitlibs
             ~/.deps.clj
+            **/node_modules
           # List all files containing dependencies:
-          key: cljdeps-${{ hashFiles('deps.edn') }}
+          key: cljdeps-${{ hashFiles('deps.edn', 'package-lock.json') }}
           # key: cljdeps-${{ hashFiles('deps.edn', 'bb.edn') }}
           # key: cljdeps-${{ hashFiles('project.clj') }}
           # key: cljdeps-${{ hashFiles('build.boot') }}
           restore-keys: cljdeps-
+      - name: Run sync_design_tokens.clj
+        run: bb ./scripts/sync_design_tokens.clj
+      - name: Commit and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Changes detected. Committing and pushing..."
+            git config user.name "GitHub Action"
+            git config user.email "action@github.com"
+            git add .
+            git commit -m "Update design tokens"
+            git push
+          else
+            echo "No changes to commit."
+          fi
       - name: Setup GH Pages
         uses: actions/configure-pages@v3
       - name: Initialize project
