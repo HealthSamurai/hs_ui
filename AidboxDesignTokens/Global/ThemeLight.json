@@ -278,23 +278,23 @@
     }
   },
   "corner": {
-    "max": {
+    "corner-max": {
       "$type": "dimension",
       "$value": "999px"
     },
-    "s": {
+    "corner-s": {
       "$type": "dimension",
       "$value": "4px"
     },
-    "m": {
+    "corner-m": {
       "$type": "dimension",
       "$value": "6px"
     },
-    "l": {
+    "corner-l": {
       "$type": "dimension",
       "$value": "8px"
     },
-    "xs": {
+    "corner-xs": {
       "$type": "dimension",
       "$value": "2px"
     }

@@ -297,6 +297,26 @@
     "xs": {
       "$type": "dimension",
       "$value": "2px"
+    },
+    "corner-max": {
+      "$type": "dimension",
+      "$value": "999px"
+    },
+    "corner-s": {
+      "$type": "dimension",
+      "$value": "4px"
+    },
+    "corner-m": {
+      "$type": "dimension",
+      "$value": "6px"
+    },
+    "corner-l": {
+      "$type": "dimension",
+      "$value": "8px"
+    },
+    "corner-xs": {
+      "$type": "dimension",
+      "$value": "2px"
     }
   }
 }
