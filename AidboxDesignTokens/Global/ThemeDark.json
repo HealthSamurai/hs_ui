@@ -278,26 +278,6 @@
     }
   },
   "corner": {
-    "max": {
-      "$type": "dimension",
-      "$value": "999px"
-    },
-    "s": {
-      "$type": "dimension",
-      "$value": "4px"
-    },
-    "m": {
-      "$type": "dimension",
-      "$value": "6px"
-    },
-    "l": {
-      "$type": "dimension",
-      "$value": "8px"
-    },
-    "xs": {
-      "$type": "dimension",
-      "$value": "2px"
-    },
     "corner-max": {
       "$type": "dimension",
       "$value": "999px"
