@@ -111,11 +111,11 @@ module.exports = {
     "x1point5" : "var(--spacing-x1point5)"
   },
   "borderRadius" : {
-    "max" : "var(--corner-max)",
-    "s" : "var(--corner-s)",
-    "m" : "var(--corner-m)",
-    "l" : "var(--corner-l)",
-    "xs" : "var(--corner-xs)"
+    "corner-max" : "var(--corner-corner-max)",
+    "corner-s" : "var(--corner-corner-s)",
+    "corner-m" : "var(--corner-corner-m)",
+    "corner-l" : "var(--corner-corner-l)",
+    "corner-xs" : "var(--corner-corner-xs)"
   }
 }
   },
