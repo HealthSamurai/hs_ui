@@ -19,7 +19,7 @@
     },
     "elements-assistive": {
       "$type": "color",
-      "$value": "#f00"
+      "$value": "{color.grey.55}"
     },
     "surface-0": {
       "$type": "color",
