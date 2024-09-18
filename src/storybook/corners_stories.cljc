@@ -6,7 +6,7 @@
 
 (defn box
   [class]
-  [:div.p-x2.border.border-red-500 {:class class}])
+  [:div.p-x2.border.border-red-500 {:class class} "." class])
 
 (defn ^:export XS
   [props]
