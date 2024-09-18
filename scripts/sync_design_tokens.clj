@@ -135,7 +135,9 @@
   (let [alias? (not global?)]
     (traverse-tree
      (fn [acc node path]
-       (if (and (map? node) (= #{"$value" "$type"} (set (keys node))))
+       (if (and (map? node)
+                (contains? node "$type")
+                (contains? node "$value"))
          (let [node-value (get node "$value")
                node-type (get node "$type")]
            (assoc-in acc (update path 0 design-tokens<>tailwind-configs) (hide-value-under-var-call path)))

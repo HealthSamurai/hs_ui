@@ -4,87 +4,132 @@
             #?(:cljs ["@ariakit/react" :as kit])))
 
 (def base-class
-  ["px-[theme(padding.x3)]"
-   "py-[theme(padding.x1)]"
+  ["px-[theme(spacing.x3)]"
+   "py-[theme(spacing.x1)]"
    "h-[36px]"
    "inline-flex"
    "font-semibold"
-   "rounded-[theme(borderRadius.m)]"
+   "rounded-[theme(borderRadius.corner-m)]"
    "select-none"
-   "aria-busy:relative"
    "items-center"
-   "focus:outline-none"
-   "focus-visible:ring"])
+   "disabled:cursor-not-allowed"
+   "aria-busy:relative"
+   "aria-busy:cursor-wait"])
 
 (def primary-class
-  ["shadow-[theme(boxShadow.button-primary)]"
-   "bg-[theme(backgroundColor.button-primary-default)]"
-   "text-[theme(colors.button-primary-text)]"
-   "hover:bg-[theme(backgroundColor.button-primary-hovered)]"
-   "disabled:bg-[theme(backgroundColor.button-primary-disabled)]"
-   "aria-busy:bg-[theme(backgroundColor.button-primary-disabled)]"])
+  ["shadow-button"
+   "bg-[theme(colors.cta)]"
+   "txt-button-label-regular"
+   "!text-[theme(colors.elements-readable-inv)]"
+   ;; Disabled
+   "disabled:bg-[theme(colors.elements-disabled)]"
+   ;; Loading
+   "aria-busy:bg-[theme(colors.cta-hover)]"
+   ;; Hovered
+   "hover:bg-[theme(colors.cta-hover)]"
+   "data-[hovered=true]:bg-[theme(colors.cta-hover)]"])
 
 (def critical-class
-  ["shadow-[theme(boxShadow.button-critical)]"
-   "bg-[theme(backgroundColor.button-critical-default)]"
-   "text-[theme(colors.button-critical-text)]"
-   "hover:bg-[theme(backgroundColor.button-critical-hovered)]"
-   "disabled:bg-[theme(backgroundColor.button-critical-disabled)]"
-   "aria-busy:bg-[theme(backgroundColor.button-critical-disabled)]"])
+  ["shadow-button"
+   "bg-[theme(colors.critical-default)]"
+   "!text-[theme(colors.elements-readable-inv)]"
+   ;; Disabled
+   "disabled:bg-[theme(colors.elements-disabled)]"
+   ;; Loading
+   "aria-busy:bg-[theme(colors.critical-hover)]"
+   ;; Hovered
+   "hover:bg-[theme(colors.critical-hover)]"
+   "data-[hovered=true]:bg-[theme(colors.critical-hover)]"])
 
 (def secondary-class
-  ["bg-[theme(backgroundColor.button-secondary-default)]"
-   "text-[theme(colors.button-secondary-text)]"
-   "disabled:text-[theme(colors.button-secondary-text-default)]"
-   "hover:text-[theme(colors.button-secondary-text-hovered)]"
-   "hover:bg-[theme(backgroundColor.button-secondary-hovered)]"])
+  ["border"
+   "border-[theme(colors.border-default)]"
+   "!text-[theme(colors.elements-assistive)]"
+   ;; Disabled
+   "disabled:!text-[theme(colors.elements-disabled)]"
+   "disabled:bg-transparent"
+   ;; Hovered
+   "hover:!text-[theme(colors.elements-readable)]"
+   "hover:bg-[theme(colors.surface-1)]"
+   "data-[hovered=true]:!text-[theme(colors.elements-readable)]"
+   "data-[hovered=true]:bg-[theme(colors.surface-1)]"])
 
 (def tertiary-class
-  ["border-transparent"
-   "text-[theme(colors.button-tertiary-text-default)]"
-   "font-semibold"
-   "hover:text-[theme(colors.button-tertiary-text-hovered)]"
-   "disabled:text-[theme(colors.button-tertiary-text-disabled)]"])
+  ["!text-[theme(colors.elements-assistive)]"
+   ;; Disabled
+   "disabled:!text-[theme(colors.elements-disabled)]"
+   ;; Hovered
+   "hover:!text-[theme(colors.elements-readable)]"
+   "data-[hovered=true]:!text-[theme(colors.elements-readable)]"])
+
+(def slim-class
+  ["txt-label"
+   "!text-[theme(colors.elements-assistive)]"
+   "[&_svg]:ml-x1"
+   "[&_svg]:text-[theme(colors.elements-readable)]"
+   ;; Disabled
+   "disabled:!text-[theme(colors.elements-disabled)]"
+   ;; Hovered
+   "hover:!text-[theme(colors.elements-readable)]"
+   "data-[hovered=true]:!text-[theme(colors.elements-readable)]"])
 
 (def xs-class
-  ["h-auto"
+  ["h-[24px]"
    "border"
-   "bg-[theme(backgroundColor.button-xs)]"
-   "text-[theme(colors.button-xs-text)]"
-   "border-[theme(borderColor.button-xs)]"
-   "rounded-[theme(borderRadius.S)]"
-   "font-size-[theme(fontSize.button-xs)]"
-   "leading-[theme(lineHeight.button-xs)]"
+   "border-[theme(colors.border-XS-regular)]"
+   "rounded-[theme(borderRadius.corner-s)]"
+   "bg-[theme(colors.surface-1)]"
+   "txt-button-label-xs"
    "px-[theme(padding.x1)]"
-   "font-medium"
    "py-[1.5px]"
-   "hover:bg-[theme(backgroundColor.button-xs-hovered)]"
-   "hover:border-[theme(borderColor.button-xs-hovered)]"
-   "disabled:bg-[theme(backgroundColor.button-xs)]"
-   "disabled:text-[theme(colors.button-xs-text-disabled)]"
-   "aria-busy:bg-[theme(backgroundColor.button-xs)]"
-   "aria-busy:text-[theme(colors.button-xs-text-disabled)]"])
+   ;; Hovered
+   "hover:bg-[theme(colors.surface-0)]"
+   "hover:border-[theme(colors.border-XS-regular-hover)]"
+   "data-[hovered=true]:bg-[theme(colors.surface-0)]"
+   "data-[hovered=true]:border-[theme(colors.border-XS-regular-hover)]"
+   ;; Loading
+   "aria-busy:bg-[theme(colors.button-xs)]"
+   "aria-busy:text-[theme(colors.border-XS-regular)]"])
+
+(def xs-red-class
+  ["h-[24px]"
+   "border"
+   "border-[theme(colors.border-XS-critical)]"
+   "rounded-[theme(borderRadius.corner-s)]"
+   "bg-[theme(colors.critical-default)]"
+   "txt-button-label-xs"
+   "!text-[theme(colors.elements-readable-inv)]"
+   "px-[theme(padding.x1)]"
+   "py-[1.5px]"
+   ;; Hovered
+   "hover:bg-[theme(colors.critical-hover)]"
+   "hover:border-[theme(colors.border-XS-critical-hover)]"
+   "data-[hovered=true]:bg-[theme(colors.critical-hover)]"
+   "data-[hovered=true]:border-[theme(colors.border-XS-critical-hover)]"
+   ;; Loading
+   "aria-busy:bg-[theme(colors.critical-default)]"
+   "aria-busy:!text-[theme(colors.border-XS-critical)]"
+   "aria-busy:border-[theme(colors.border-XS-critical)]"])
 
 (defn component
   [user-properties & children]
   (let [properties (dissoc user-properties :loading :variant)
         variant    (:variant user-properties "primary")
         loading    (:loading user-properties false)
-        properties (cond-> properties
-                     loading
-                     (assoc :disabled true
-                            :aria-busy true))
-        classes (cond-> base-class
-                  (= variant "primary")   (utils/class-names primary-class)
-                  (= variant "critical")  (utils/class-names critical-class)
-                  (= variant "secondary") (utils/class-names secondary-class)
-                  (= variant "tertiary")  (utils/class-names tertiary-class)
-                  (= variant "xs")        (utils/class-names xs-class)
-                  (not (:loading user-properties)) (utils/class-names ["[&_svg]:mr-[theme(margin.x1)]" "[&_svg]:text-icon"]))]
+        properties (cond-> properties loading (assoc :disabled true :aria-busy true))
+        classes    (cond-> base-class
+                     (= variant "primary")   (utils/class-names primary-class)
+                     (= variant "critical")  (utils/class-names critical-class)
+                     (= variant "secondary") (utils/class-names secondary-class)
+                     (= variant "tertiary")  (utils/class-names tertiary-class)
+                     (= variant "xs")        (utils/class-names xs-class)
+                     (= variant "xs-red")    (utils/class-names xs-red-class)
+                     (= variant "slim")      (utils/class-names slim-class))]
     (if (:href properties)
       [:a (utils/merge-props {:class [classes "text-link"]} properties) children]
-      [:>
-       #?(:cljs kit/Button)
-       (utils/merge-props {:className classes} properties)
-       (if loading [:span.contents.invisible children] children)
-       (when loading [:div.flex.items-center.justify-center.absolute.inset-0 hs-ui.svg.loading/svg])])))
+      [:button (utils/merge-props {:class classes} properties)
+       (if (and loading (contains? #{"primary" "critical"} variant))
+         [:<>
+          [:div.flex.items-center.justify-center.absolute.inset-0.animate-spin hs-ui.svg.loading/svg]
+          [:span.contents.invisible children]]
+         children)])))

@@ -58,3 +58,13 @@
   (into
    [hs-ui.components.button/component (assoc props :variant "xs")]
    children))
+
+(defn button-xs-red [props & children]
+  (into
+   [hs-ui.components.button/component (assoc props :variant "xs-red")]
+   children))
+
+(defn button-slim [props & children]
+  (into
+   [hs-ui.components.button/component (assoc props :variant "slim")]
+   children))
