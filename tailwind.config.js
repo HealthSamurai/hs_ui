@@ -23,6 +23,7 @@ module.exports = {
     "elements-assistive" : "var(--color-elements-assistive)",
     "surface-alert" : "var(--color-surface-alert)",
     "code-blue" : "var(--color-code-blue)",
+    "elements-readable" : "var(--color-elements-readable)",
     "surface-1" : "var(--color-surface-1)",
     "elements-disabled" : "var(--color-elements-disabled)",
     "surface-0" : "var(--color-surface-0)",
@@ -64,6 +65,7 @@ module.exports = {
       "10" : "var(--color-yellow-10)",
       "40" : "var(--color-yellow-40)"
     },
+    "elements-readable-inv" : "var(--color-elements-readable-inv)",
     "surface-selected" : "var(--color-surface-selected)",
     "green" : {
       "60" : "var(--color-green-60)"
