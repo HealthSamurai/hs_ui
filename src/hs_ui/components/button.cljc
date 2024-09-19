@@ -1,5 +1,5 @@
 (ns hs-ui.components.button
-  (:require [hs-ui.utils :as utils]
+ (:require [hs-ui.utils :as utils]
             [hs-ui.svg.loading]
             #?(:cljs ["@ariakit/react" :as kit])))
 
@@ -27,10 +27,13 @@
    "aria-busy:bg-[theme(colors.cta-hover)]"
    ;; Hovered
    "hover:bg-[theme(colors.cta-hover)]"
-   "data-[hovered=true]:bg-[theme(colors.cta-hover)]"])
+   "data-[hovered=true]:bg-[theme(colors.cta-hover)]"
+   ;; Click
+   "active:bg-[theme(colors.cta)]"])
 
 (def critical-class
   ["shadow-button"
+   "txt-button-label-regular"
    "bg-[theme(colors.critical-default)]"
    "!text-[theme(colors.elements-readable-inv)]"
    ;; Disabled
@@ -39,10 +42,13 @@
    "aria-busy:bg-[theme(colors.critical-hover)]"
    ;; Hovered
    "hover:bg-[theme(colors.critical-hover)]"
-   "data-[hovered=true]:bg-[theme(colors.critical-hover)]"])
+   "data-[hovered=true]:bg-[theme(colors.critical-hover)]"
+   ;; Click
+   "active:bg-[theme(colors.critical-default)]"])
 
 (def secondary-class
   ["border"
+   "txt-button-label-regular"
    "border-[theme(colors.border-default)]"
    "!text-[theme(colors.elements-assistive)]"
    ;; Disabled
@@ -52,21 +58,26 @@
    "hover:!text-[theme(colors.elements-readable)]"
    "hover:bg-[theme(colors.surface-1)]"
    "data-[hovered=true]:!text-[theme(colors.elements-readable)]"
-   "data-[hovered=true]:bg-[theme(colors.surface-1)]"])
+   "data-[hovered=true]:bg-[theme(colors.surface-1)]"
+   ;; Click
+   "active:bg-transparent"])
 
 (def tertiary-class
   ["!text-[theme(colors.elements-assistive)]"
+   "txt-button-label-regular"
    ;; Disabled
    "disabled:!text-[theme(colors.elements-disabled)]"
    ;; Hovered
    "hover:!text-[theme(colors.elements-readable)]"
-   "data-[hovered=true]:!text-[theme(colors.elements-readable)]"])
+   "data-[hovered=true]:!text-[theme(colors.elements-readable)]"
+   ;; Click
+   "active:!text-[theme(colors.elements-assistive)]"])
 
 (def slim-class
   ["txt-label"
    "!text-[theme(colors.elements-assistive)]"
    "[&_svg]:ml-x1"
-   "[&_svg]:text-[theme(colors.elements-readable)]"
+   "[&_svg]:enabled:text-[theme('colors.elements-readable')]"
    ;; Disabled
    "disabled:!text-[theme(colors.elements-disabled)]"
    ;; Hovered
@@ -81,7 +92,8 @@
    "bg-[theme(colors.surface-1)]"
    "txt-button-label-xs"
    "px-[theme(padding.x1)]"
-   "py-[1.5px]"
+   "pt-[2.5px]"
+   "pb-[1.5px]"
    ;; Hovered
    "hover:bg-[theme(colors.surface-0)]"
    "hover:border-[theme(colors.border-XS-regular-hover)]"
@@ -100,7 +112,8 @@
    "txt-button-label-xs"
    "!text-[theme(colors.elements-readable-inv)]"
    "px-[theme(padding.x1)]"
-   "py-[1.5px]"
+   "pt-[2.5px]"
+   "pb-[1.5px]"
    ;; Hovered
    "hover:bg-[theme(colors.critical-hover)]"
    "hover:border-[theme(colors.border-XS-critical-hover)]"

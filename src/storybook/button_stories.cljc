@@ -66,7 +66,7 @@
             :args     {:loading false
                        :data-hovered false}
             :render   (fn [args]
-                        (utils/reagent-as-element [hs-ui.core/button-xs-red (js->clj args {:keywordize-keys true}) "VALIDATE"]))}))
+                        (utils/reagent-as-element [:div {:class "rounded-corner-s bg-critical-default w-screen p-5"} [hs-ui.core/button-xs-red (js->clj args {:keywordize-keys true}) "VALIDATE"]]))}))
 
 (def ^:export Slim
   (clj->js {:argTypes {:disabled     {:control "boolean"}
