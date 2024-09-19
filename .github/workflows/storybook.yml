@@ -1,4 +1,4 @@
-name: Deploy demo UI to GitHub Pages
+кname: Deploy demo UI to GitHub Pages
 
 on:
   push:
@@ -51,7 +51,7 @@ jobs:
         run: bb ./scripts/sync_design_tokens.clj
       - name: Commit and Push Changes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             echo "Changes detected. Committing and pushing..."
