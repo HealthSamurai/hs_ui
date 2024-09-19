@@ -19,7 +19,7 @@ bb story
 
 # Development
 ``` zsh
-bb init  
+bb init
 bb dev
 ```
 
