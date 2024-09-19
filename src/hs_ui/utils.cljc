@@ -2,14 +2,17 @@
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
                      [reagent.core])))
 
+(defn remove-custom-properties
+  [properties]
+  (reduce-kv
+   (fn [acc k v]
+     (cond-> acc (= "c" (namespace k)) (dissoc k)))
+   properties
+   properties))
+
 (defn ratom
   [value]
   #?(:cljs (reagent.core/atom value)
-     :clj  nil))
-
-(defn merge-props
-  [properties-a properties-b]
-  #?(:cljs (reagent.core/merge-props properties-a properties-b)
      :clj  nil))
 
 (defn class-names
@@ -19,4 +22,13 @@
                  b (reagent.core/class-names b)
                  r (tw-merge/twMerge a b)]
              r)
+     :clj  nil))
+
+(defn merge-props
+  [properties-a properties-b]
+  #?(:cljs (reagent.core/merge-props
+            (assoc (remove-custom-properties properties-a)
+                   :class (class-names (:class properties-a)
+                                       (:class properties-b)))
+            (dissoc (remove-custom-properties properties-b) :class))
      :clj  nil))

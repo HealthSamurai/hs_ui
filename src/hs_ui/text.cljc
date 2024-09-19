@@ -41,9 +41,4 @@
 
 (defn assistive
   [props & children]
-  (into
-   [:span (utils/merge-props {:class (utils/class-names "inline-block txt-assistive"
-                                                        (:class props))}
-                             (dissoc props :class))]
-   children))
-
+  (into [:span (utils/merge-props {:class "inline-block txt-assistive"} props)] children))

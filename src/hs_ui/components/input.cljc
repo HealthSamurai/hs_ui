@@ -1,30 +1,36 @@
 (ns hs-ui.components.input
   (:require [hs-ui.utils :as utils]
-            #?(:cljs ["@ariakit/react" :as kit])))
+            [hs-ui.text]
+            [hs-ui.components.button]
+            [hs-ui.svg.warning]))
 
 (def base-class
-  ["flex"
-   "font-normal"
-   "w-full"
-   "h-[36px]"
-   "px-3"
-   "py-1.5"
-   "justify-between"
-   "items-center"
-   "flex-shrink-0"
+  ["h-[36px]"
+   "txt-value"
    "border"
-   "border-[theme(colors.color-border-default)]"
-   "rounded-[theme(borderRadius.m)]"
-   "bg-[theme(backgroundColor.input-background)]"
-   "text-[theme(textColor.elements-readable)]"
-   "placeholder:text-[theme(textColor.color-elements-disabled)]"
-   "shadow-[theme(boxShadow.input-default)]"
-   "outline-[theme(colors.color-cta)]"
-   "disabled:bg-[theme(colors.color-surface-1)]"
-   "disabled:text-[theme(colors.color-elements-assistive)]"])
+   "outline-none"
+   "border-[theme(colors.border-default)]"
+   "rounded-[theme(borderRadius.corner-m)]"
+   "bg-[theme(colors.surface-0)]"
+   "px-[11px]"
+   "placeholder:text-[theme(colors.elements-disabled)]"
+   "placeholder:txt-value"
+   ;; Disabled
+   "disabled:bg-[theme(colors.surface-1)]"
+   "disabled:text-[theme(colors.elements-assistive)]"
+   ;; Invalid
+   "data-[invalid=true]:border-[theme(colors.critical-default)]"
+   "data-[invalid=true]:text-[theme(colors.critical-default)]"])
 
 (defn component
-  [user-properties & children]
-  [:input
-   (utils/merge-props {:className (utils/class-names base-class (:class user-properties))}
-                      (dissoc user-properties :class))])
+  [properties]
+  [:fieldset {:class "relative w-fit"}
+   (when-let [slot-left (:slot/left properties)]
+     [:div {:class "absolute top-[10px] left-[11px]"}
+      [:div {:class "flex items-center space-x-[theme(spacing.x1)] bg-[theme(colors.surface-0)]"}
+       slot-left]])
+   [:input (utils/merge-props {:class (cond-> base-class (:slot/left properties) (conj "pl-[35px]"))} properties)]
+   [:div {:class "absolute top-[6px] right-[11px]"}
+    [:div {:class "flex items-center pl-[11.5px] space-x-[theme(spacing.x1)] bg-[theme(colors.surface-0)]"}
+     (:slot/right properties)
+     (when (:data-invalid properties) hs-ui.svg.warning/svg)]]])
