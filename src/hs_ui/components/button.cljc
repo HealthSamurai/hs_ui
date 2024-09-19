@@ -92,8 +92,8 @@
    "bg-[theme(colors.surface-1)]"
    "txt-button-label-xs"
    "px-[theme(padding.x1)]"
-   "pt-[2.5px]"
-   "pb-[1.5px]"
+   "pt-[2.25px]"
+   "pb-[1.75px]"
    ;; Hovered
    "hover:bg-[theme(colors.surface-0)]"
    "hover:border-[theme(colors.border-XS-regular-hover)]"
@@ -112,8 +112,8 @@
    "txt-button-label-xs"
    "!text-[theme(colors.elements-readable-inv)]"
    "px-[theme(padding.x1)]"
-   "pt-[2.5px]"
-   "pb-[1.5px]"
+   "pt-[2.25px]"
+   "pb-[1.75px]"
    ;; Hovered
    "hover:bg-[theme(colors.critical-hover)]"
    "hover:border-[theme(colors.border-XS-critical-hover)]"
