@@ -1,4 +1,4 @@
-кname: Deploy demo UI to GitHub Pages
+name: Deploy demo UI to GitHub Pages
 
 on:
   push:
