@@ -127,9 +127,9 @@
                      (= variant "slim")      (utils/class-names slim-class))]
     (if (:href properties)
       [:a (utils/merge-props {:class [classes "text-link"]} properties) children]
-      [:button (utils/merge-props {:class classes} properties)
+      (into
+       [:button (utils/merge-props {:class classes} properties)]
        (if (and loading (contains? #{"primary" "critical"} variant))
-         [:<>
-          [:div.flex.items-center.justify-center.absolute.inset-0.animate-spin hs-ui.svg.loading/svg]
+         [[:div.flex.items-center.justify-center.absolute.inset-0.animate-spin hs-ui.svg.loading/svg]
           [:span.contents.invisible children]]
-         children)])))
+         children)))))
