@@ -39,7 +39,7 @@
             :args     {:disabled false
                        :data-hovered false}
             :render   (fn [args]
-                        (utils/reagent-as-element [hs-ui.core/button-secondary (js->clj args {:keywordize-keys true}) "Save"]))}))
+                        (utils/reagent-as-element [hs-ui.core/button-secondary (js->clj args {:keywordize-keys true}) "Discard"]))}))
 
 (def ^:export Tertiary
   (clj->js {:argTypes {:disabled     {:control "boolean"}
