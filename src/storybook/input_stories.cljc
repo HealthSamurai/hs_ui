@@ -33,7 +33,9 @@
                                             [hs-ui.core/button-xs {} "COPY"]])]))}))
 
 (def ^:export SlotLeft
-  (clj->js {:render (fn [args]
+  (clj->js {:args   {"c/root-class" "h-[32px] w-[407px]"
+                     :placeholder "Search"}
+            :render (fn [args]
                       (utils/reagent-as-element
                        [hs-ui.core/input
                         (assoc (js->clj args {:keywordize-keys true})
