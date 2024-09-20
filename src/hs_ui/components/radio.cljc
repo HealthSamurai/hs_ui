@@ -4,6 +4,8 @@
 (def default-class
   ["w-[16px]"
    "h-[16px]"
+   "min-w-[16px]"
+   "min-h-[16px]"
    "rounded-full"])
 
 (def unchecked-class
@@ -19,17 +21,20 @@
    "border-[theme(colors.elements-assistive)]"])
 
 (defn component
-  [props]
+  [props & children]
   [:<>
-   [:input (utils/merge-props {:type "radio" :class "hidden"} props)]
-   [:label {:for (:id props)}
-    [:div {:class (utils/class-names
-                   default-class
-                   (cond (and (:checked props)
-                              (:disabled props))
-                         disabled-class
+   [:input (utils/merge-props {:type "radio" :class "hidden"}
+                              (dissoc props :class))]
+   (into
+    [:label {:for (:id props) :class (:class props)}
+     [:div {:class (utils/class-names
+                    default-class
+                    (cond (and (:checked props)
+                               (:disabled props))
+                          disabled-class
 
-                         (:checked props)
-                         checked-class
+                          (:checked props)
+                          checked-class
 
-                         :else unchecked-class))}]]])
+                          :else unchecked-class))}]]
+    children)])

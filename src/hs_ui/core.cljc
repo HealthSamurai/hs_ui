@@ -13,6 +13,7 @@
    [hs-ui.components.list-items]
    [hs-ui.components.alert]
    [hs-ui.components.radio]
+   [hs-ui.components.radio-button]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]))
@@ -21,6 +22,7 @@
 (def dropdown hs-ui.components.dropdown/component)
 (def input    hs-ui.components.input/component)
 (def radio    hs-ui.components.radio/component)
+(def radio-button hs-ui.components.radio-button/component)
 (def checkbox hs-ui.components.checkbox/component)
 (def content-expand hs-ui.components.content-expand/component)
 (def breadcrumbs hs-ui.components.breadcrumbs/component)
