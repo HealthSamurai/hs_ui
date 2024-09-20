@@ -31,6 +31,10 @@
   [props]
   (utils/reagent-as-element [hs-ui.core/text-value {} "Value"]))
 
+(defn ^:export Body
+  [props]
+  (utils/reagent-as-element [hs-ui.core/text-body {} "Body"]))
+
 (defn ^:export Code
   [props]
   (utils/reagent-as-element [hs-ui.core/text-code {} "Code"]))

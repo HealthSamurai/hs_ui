@@ -29,7 +29,7 @@
                        [hs-ui.core/input
                         (assoc (js->clj args {:keywordize-keys true})
                                :slot/right [:<>
-                                            [hs-ui.text/value {:class "!text-[theme(colors.elements-assistive)]"} "milliseconds"]
+                                            [hs-ui.text/value {:class "text-[theme(colors.elements-assistive)]"} "milliseconds"]
                                             [hs-ui.core/button-xs {} "COPY"]])]))}))
 
 (def ^:export SlotLeft

@@ -11,6 +11,7 @@
    [hs-ui.components.breadcrumbs]
    [hs-ui.components.list-item]
    [hs-ui.components.list-items]
+   [hs-ui.components.alert]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]))
@@ -25,6 +26,8 @@
 (def list-item hs-ui.components.list-item/component)
 (def list-items hs-ui.components.list-items/component)
 
+(def alert hs-ui.components.alert/component)
+
 (def org-checkbox hs-ui.organisms.checkbox/component)
 (def org-input    hs-ui.organisms.input/component)
 
@@ -34,6 +37,7 @@
 (def text-label                hs-ui.text/label)
 (def text-link                 hs-ui.text/link)
 (def text-value                hs-ui.text/value)
+(def text-body                 hs-ui.text/body)
 (def text-code                 hs-ui.text/code)
 (def text-counter              hs-ui.text/counter)
 (def text-button-label-xs      hs-ui.text/button-label-xs)

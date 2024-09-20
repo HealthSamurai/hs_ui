@@ -7,7 +7,7 @@
    "h-[32px]"
    "rounded-[theme(borderRadius.corner-s)]"
    "txt-value"
-   "!text-[theme(colors.elements-assistive)]"
+   "text-[theme(colors.elements-assistive)]"
    "px-[theme(spacing.x1point5)]"
    "[&_svg]:mr-[7px]"
    ;; Hover
@@ -16,7 +16,7 @@
    "cursor-pointer"
    ;; Selected
    "data-[selected=true]:bg-[theme(colors.surface-selected)]"
-   "data-[selected=true]:!text-[theme(colors.elements-readable)]"
+   "data-[selected=true]:text-[theme(colors.elements-readable)]"
    ])
 
 (defn component

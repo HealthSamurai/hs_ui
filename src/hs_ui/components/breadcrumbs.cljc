@@ -4,7 +4,7 @@
 
 (def root-class
   ["txt-body"
-   "!text-[theme(colors.cta)]"
+   "text-[theme(colors.cta)]"
    "flex"
    "items-center"
    ;; Hovered
