@@ -91,7 +91,8 @@
    "rounded-[theme(borderRadius.corner-s)]"
    "bg-[theme(colors.surface-1)]"
    "txt-button-label-xs"
-   "px-[theme(padding.x1)]"
+   "pr-[7.5px]"
+   "pl-[7.2px]"
    "pt-[2.25px]"
    "pb-[1.75px]"
    ;; Hovered
@@ -111,7 +112,8 @@
    "bg-[theme(colors.critical-default)]"
    "txt-button-label-xs"
    "!text-[theme(colors.elements-readable-inv)]"
-   "px-[theme(padding.x1)]"
+   "pr-[7.5px]"
+   "pl-[7.2px]"
    "pt-[2.25px]"
    "pb-[1.75px]"
    ;; Hovered

@@ -11,9 +11,10 @@
     :args      {:placeholder    "example"
                 :data-invalid   false
                 :disabled       false
-                :class          "w-[407px]"}
+                "c/root-class"  "w-[407px]"}
     :argTypes  {:placeholder      {:control "text"}
                 :value            {:control "text"}
+                :class            {:control "text"}
                 :data-invalid     {:control "boolean"}
                 :disabled         {:control "boolean"}
                 :class            {:control "text"}}}))
