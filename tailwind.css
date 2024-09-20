@@ -27,7 +27,6 @@
   }
 
   .txt-page-header {
-    color: var(--color-elements-readable, #1D2331);
     font-family: Metropolis;
     font-size: 22px;
     font-style: normal;
@@ -37,7 +36,6 @@
   }
 
   .txt-section-header {
-    color: var(--color-elements-readable, #1D2331);
     font-family: Metropolis;
     font-size: 16px;
     font-style: normal;
@@ -46,7 +44,6 @@
   }
 
   .txt-button-label-regular {
-    color: var(--color-elements-readable, #1D2331);
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
@@ -55,7 +52,6 @@
   }
 
   .txt-label {
-    color: var(--color-elements-readable, #1D2331);
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
@@ -64,7 +60,6 @@
   }
 
   .txt-link {
-    color: var(--color-cta, #2278E1);
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
@@ -75,7 +70,6 @@
   }
 
   .txt-value {
-    color: var(--color-elements-readable, #1D2331);
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
@@ -84,7 +78,6 @@
   }
 
   .txt-body {
-    color: var(--color-elements-readable, #1D2331);
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
@@ -93,7 +86,6 @@
   }
 
   .txt-code {
-    color: var(--color-elements-readable, #1D2331);
     font-family: "JetBrains Mono";
     font-size: 14px;
     font-style: normal;
@@ -102,7 +94,6 @@
   }
 
   .txt-counter {
-    color: var(--color-critical-default, #D72710);
     font-family: Inter;
     font-size: 12px;
     font-style: normal;
@@ -111,7 +102,6 @@
   }
 
   .txt-button-label-xs {
-    color: var(--color-cta, #2278E1);
     font-family: Inter;
     font-size: 12px;
     font-style: normal;
@@ -122,7 +112,6 @@
   }
 
   .txt-assistive {
-    color: var(--color-elements-assistive, #727885);
     font-family: Inter;
     font-size: 12px;
     font-style: normal;
