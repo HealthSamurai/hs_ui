@@ -9,10 +9,11 @@
    "txt-value"
    "!text-[theme(colors.elements-assistive)]"
    "px-[theme(spacing.x1point5)]"
-   "[&_svg]:mr-[theme(spacing.x1)]"
+   "[&_svg]:mr-[7px]"
    ;; Hover
    "hover:bg-[theme(colors.surface-1)]"
    "data-[hovered=true]:bg-[theme(colors.surface-1)]"
+   "cursor-pointer"
    ;; Selected
    "data-[selected=true]:bg-[theme(colors.surface-selected)]"
    "data-[selected=true]:!text-[theme(colors.elements-readable)]"

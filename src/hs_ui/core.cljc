@@ -10,6 +10,7 @@
    [hs-ui.components.content-expand]
    [hs-ui.components.breadcrumbs]
    [hs-ui.components.list-item]
+   [hs-ui.components.list-items]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]))
@@ -22,6 +23,7 @@
 (def breadcrumbs hs-ui.components.breadcrumbs/component)
 
 (def list-item hs-ui.components.list-item/component)
+(def list-items hs-ui.components.list-items/component)
 
 (def org-checkbox hs-ui.organisms.checkbox/component)
 (def org-input    hs-ui.organisms.input/component)
