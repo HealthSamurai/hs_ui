@@ -12,11 +12,11 @@
         color: #1D2331;
     }
 
-    html {
+    body {
         {{lightThemeVars}}
     }
 
-    html.dark {
+    body.dark {
         {{darkThemeVars}}
     }
 }
