@@ -21,4 +21,4 @@
 (defn ratom
   [value]
   #?(:cljs (reagent.core/atom value)
-     :clj  component))
+     :clj  value))
