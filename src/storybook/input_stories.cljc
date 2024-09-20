@@ -16,8 +16,7 @@
                 :value            {:control "text"}
                 :class            {:control "text"}
                 :data-invalid     {:control "boolean"}
-                :disabled         {:control "boolean"}
-                :class            {:control "text"}}}))
+                :disabled         {:control "boolean"}}}))
 
 (def ^:export Default
   (clj->js {:render (fn [args]
