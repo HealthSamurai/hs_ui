@@ -24,6 +24,7 @@
              r)
      :clj  nil))
 
+
 (defn merge-props
   [properties-a properties-b]
   #?(:cljs (reagent.core/merge-props
