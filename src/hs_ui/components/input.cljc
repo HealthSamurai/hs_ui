@@ -8,10 +8,10 @@
   ["border"
    "border-[theme(colors.border-default)]"
    "rounded-[theme(borderRadius.corner-m)]"
-   "focus-visible:outline"
+   "focus-within:shadow-input"
+   "focus-within:border-[theme(colors.border-XS-regular-hover)]"
    "flex"
    "items-center"
-   "shadow-sm"
    "h-[36px]"
    ;; Invalid
    "data-[invalid=true]:border-[theme(colors.critical-default)]"
@@ -43,9 +43,8 @@
 (def slot-right-class
   ["flex"
    "items-center"
-   "space-x-[theme(spacing.x1)]"
-   "pr-[11px]"
-   ])
+   "space-x-[10px]"
+   "pr-[5px]"])
 
 
 (defn component
@@ -65,4 +64,5 @@
                (:data-invalid properties))
        [:div {:class slot-right-class}
         (:slot/right properties)
-        (when (:data-invalid properties) hs-ui.svg.warning/svg)])]))
+        (when (:data-invalid properties)
+          [:span {:class "pr-[2px]"} hs-ui.svg.warning/svg])])]))
