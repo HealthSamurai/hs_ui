@@ -7,7 +7,8 @@
   [props]
   (let [options (:c/options props) horizontal? (<= (count options) 2)]
     [:<>
-     [hs-ui.text/label {:class "pb-[15px]"} (:slot/label props)]
+     [hs-ui.text/label {:class "pb-[8px]"} (:slot/label props)]
+     [hs-ui.text/assistive {:class "block pb-[12px]"} (:slot/assistive props)]
      [:div {:class (when horizontal? "flex")}
       (for [option options]
         [hs-ui.components.radio/component
@@ -16,5 +17,4 @@
                    (when horizontal? "mr-[theme(spacing.x4)]")]
            :disabled (:disabled props)}
           option)
-         [hs-ui.text/value {} (:slot/label option)]])]
-     [hs-ui.text/assistive {} (:slot/assistive props)]]))
+         [hs-ui.text/value {} (:slot/label option)]])]]))

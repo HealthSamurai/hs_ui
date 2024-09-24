@@ -10,7 +10,7 @@
     :render    (fn [args]
                  (utils/reagent-as-element [hs-ui.core/org-radio (js->clj args {:keywordize-keys true})]))
     :args      {"slot/label"     "Lorem ipsum dolor sit amet"
-                "slot/assistive" "Lorem ipsum dolor sit amet"
+                "slot/assistive" "Better navigation and many other interface improvements"
                 "c/options"      [{"slot/label" "Lorem ipsum dolor sit amet" :checked true}
                                   {"slot/label" "Lorem ipsum dolor sit amet"}
                                   {"slot/label" "Lorem ipsum dolor sit amet"}
