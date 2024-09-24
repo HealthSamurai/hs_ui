@@ -6,6 +6,8 @@
 (defn component
   [props]
   [:<>
-   [hs-ui.text/label {:class "pb-[11px]"} (:label props)]
+   [hs-ui.text/label {:class "pb-[11px]"} (:slot/label props)]
    [hs-ui.components.input/component props]
-   [hs-ui.text/assistive {:class "block pt-[12px]"} (:assistive props)]])
+   [hs-ui.text/assistive {:class ["block pt-[12px]"
+                                  (when (:data-invalid props) "text-critical-default")]}
+    (:slot/assistive props)]])
