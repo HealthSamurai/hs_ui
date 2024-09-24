@@ -11,5 +11,6 @@
   [props]
   [radio/component (assoc props :class root-class)
    [:div {:class "-mt-[4px]"}
-    [hs-ui.text/value {:class "text-elements-readable"} "Latest" #_(:data-label props)]
-    [hs-ui.text/assistive {:class "block text-elements-assistive"} "Newest features, bug fixes, and optimizations, QA Passed." #_(:data-label props)]]])
+    [hs-ui.text/value {:class "text-elements-readable"} (:slot/label props)]
+    [hs-ui.text/assistive {:class [(if (:checked props) "text-elements-links" "text-elements-assistive") "block"]}
+     (:slot/desc props)]]])

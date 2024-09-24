@@ -9,9 +9,13 @@
     :component (utils/reagent-reactify-component hs-ui.core/radio-button)
     :args      {:id       "my-id"
                 :checked  false
-                :disabled false}
-    :argTypes  {:id       {:control "text"}
-                :checked  {:control "boolean"}
-                :disabled {:control "boolean"}}}))
+                :disabled false
+                "slot/label" "Latest"
+                "slot/desc"  "Newest features, bug fixes, and optimizations, QA Passed."}
+    :argTypes  {:id          {:control "text"}
+                "slot/label" {:control "text"}
+                "slot/desc"  {:control "text"}
+                :checked     {:control "boolean"}
+                :disabled    {:control "boolean"}}}))
 
 (def ^:export RadioButton {})

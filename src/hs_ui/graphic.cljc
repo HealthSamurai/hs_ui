@@ -3,4 +3,4 @@
 
 (defn separator
   [props]
-  [:hr (utils/merge-props {:class "flex-1 border-[theme(colors.color-separator)]"} props)])
+  [:hr (utils/merge-props {:class "flex-1 border-[theme(colors.separator)]"} props)])
