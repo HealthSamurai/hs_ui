@@ -9,7 +9,7 @@
 
 (defn component
   [props]
-  [radio/component (assoc props :class root-class)
+  [radio/component (assoc props :class (utils/class-names root-class (:class props)))
    [:div {:class "-mt-[4px]"}
     [hs-ui.text/value {:class "text-elements-readable"} (:slot/label props)]
     [hs-ui.text/assistive {:class [(if (:checked props) "text-elements-links" "text-elements-assistive") "block"]}

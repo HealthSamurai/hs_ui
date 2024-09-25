@@ -22,9 +22,8 @@
 
 (defn component
   [props & children]
-  [:<>
-   [:input (utils/merge-props {:type "radio" :class "hidden"}
-                              (dissoc props :class))]
+  [:div
+   [:input (utils/merge-props {:type "radio" :class "hidden"} (dissoc props :class))]
    (into
     [:label {:for (:id props) :class (:class props)}
      [:div {:class (utils/class-names
