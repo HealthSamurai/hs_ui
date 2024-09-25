@@ -103,7 +103,15 @@
    "data-[hovered=true]:border-[theme(colors.border-XS-regular-hover)]"
    ;; Loading
    "aria-busy:bg-[theme(colors.button-xs)]"
-   "aria-busy:text-[theme(colors.border-XS-regular)]"])
+   "aria-busy:text-[theme(colors.border-XS-regular)]"
+   ;; Active
+   "active:bg-[theme(colors.border-XS-regular-hover)]":w
+   "active:border-[theme(colors.border-XS-regular-hover)]"
+   "active:text-[theme(colors.elements-readable-inv)]"
+   "data-[active=true]:bg-[theme(colors.border-XS-regular-hover)]"
+   "data-[active=true]:border-[theme(colors.border-XS-regular-hover)]"
+   "data-[active=true]:text-[theme(colors.elements-readable-inv)]"]
+)
 
 (def xs-red-class
   ["h-[24px]"
