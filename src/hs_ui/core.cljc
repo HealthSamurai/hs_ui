@@ -13,6 +13,7 @@
    [hs-ui.components.alert]
    [hs-ui.components.radio]
    [hs-ui.components.radio-button]
+   [hs-ui.components.kvlist]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]
@@ -30,8 +31,9 @@
 (def content-expand hs-ui.components.content-expand/component)
 (def breadcrumbs hs-ui.components.breadcrumbs/component)
 
-(def list-item hs-ui.components.list-item/component)
+(def list-item  hs-ui.components.list-item/component)
 (def list-items hs-ui.components.list-items/component)
+(def kvlist     hs-ui.components.kvlist/component)
 
 (def alert hs-ui.components.alert/component)
 

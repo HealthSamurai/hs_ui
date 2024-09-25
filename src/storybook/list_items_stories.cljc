@@ -9,7 +9,8 @@
    {:title     "Molecules/List"
     :component (utils/reagent-reactify-component hs-ui.core/list-items)
     :args      {:class "w-[304px]"}
-    :argTypes  {:class {:control "text"}}}))
+    :argTypes  {:class {:control "text"}}
+    }))
 
 
 (def ^:export ListItems
@@ -28,3 +29,17 @@
                 [hs-ui.core/list-item {} hs-ui.svg.item/svg "QuestionnaireResponse"]
                 [hs-ui.core/list-item {} hs-ui.svg.item/svg "Request"]
                 [hs-ui.core/list-item {} hs-ui.svg.item/svg "RequestGroup"]]))}))
+
+(def ^:export KVList
+  (clj->js
+   {
+    :args      {:class "w-[304px]"
+                "c/items" [{:key 1 "slot/key" "Name:" "slot/value" [:span "web.max-body" [hs-ui.core/button-xs {:class "ml-x1"} "COPY"]]}
+                           {:key 2 "slot/key" "Default:" "slot/value" "20971520"}
+                           {:key 3 "slot/key" "ENV Alias:" "slot/value" "BOX_WEB_MAX_BODY"}
+                           {:key 4 "slot/key" "Value introspect config:" "slot/value" "https://skynet.aidbox.app (set-by-user)"}]}
+    :argTypes  {:class {:control "text"}
+                "c/items" {:control "object"}}
+    :render (fn [args]
+              (utils/reagent-as-element
+               [hs-ui.core/kvlist (js->clj args {:keywordize-keys true})]))}))
