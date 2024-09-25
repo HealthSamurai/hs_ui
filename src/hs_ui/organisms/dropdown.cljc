@@ -17,6 +17,7 @@
    "py-[5px]"
    "pl-x1point5"
    "pr-[11px]"
+   "bg-surface-0"
    ])
 
 (def selected-item-slot-left
@@ -26,7 +27,7 @@
 (def menu-class
   ["absolute"
    "w-full"
-   "bg-white"
+   "bg-surface-0"
    "border"
    "border-separator"
    "p-x1"

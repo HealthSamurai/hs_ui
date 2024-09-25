@@ -7,10 +7,14 @@
   (clj->js
    {:title     "Molecules/Switches"
     :component (utils/reagent-reactify-component hs-ui.core/content-expand)
-    :args      {:open?       false
+    :render    (fn [args]
+                 (utils/reagent-as-element
+                  [:div {:class "w-[100px]"}
+                   [hs-ui.core/content-expand (js->clj args {:keywordize-keys true})]]))
+    :args      {"c/open?"       false
                 "slot/open"  "More"
                 "slot/close" "Less"}
-    :argTypes  {:open?       {:control "boolean"}
+    :argTypes  {"c/open?"    {:control "boolean"}
                 "slot/open"  {:control "text"}
                 "slot/close" {:control "text"}}}))
 
