@@ -1,23 +1,176 @@
 (ns storybook.dropdown-stories
   (:require
    [hs-ui.core]
+   [hs-ui.svg.item]
    [storybook.utils :as utils]))
 
 (def ^:export default
   (clj->js
    {:title     "Organisms/Dropdowns"
-    :component (utils/reagent-reactify-component hs-ui.core/dropdown )
+    :component (utils/reagent-reactify-component hs-ui.core/org-dropdown)
     :render    (fn [args]
-                 (let [args  (js->clj args {:keywordize-keys true})
-                       props (dissoc args :_content)]
-                   (utils/reagent-as-element [:div {:style {:width 312}}
-                                              [hs-ui.core/dropdown  props (:_content args)]])))
-    :args      {:_content "Save"
-                :disabled false
-                :loading  false}
-    :argTypes  {:variant  {:control "select" :options ["primary" "critical" "tertiary"]}
-                :disabled {:control "boolean"}
-                :loading  {:control "boolean"}
-                :_content {:control "text"}}}))
+                 (utils/reagent-as-element [hs-ui.core/org-dropdown (js->clj args {:keywordize-keys true})]))
+    :args      {"class"          "w-[355px]"
+                "value"          "1"
+                "c/open?"        false
+                "slot/label"     "Search language"
+                "slot/assistive" "Which language to use for search. I.e. Which translation in a resource to use."
+                "c/options"      (map-indexed
+                                  (fn [index label]
+                                    {"slot/left"  hs-ui.svg.item/svg
+                                     "slot/label" label
+                                     :value       (str index)})
+                                  ["Account"
+                                   "ActivityDefinition"
+                                   "AdverseEvent"
+                                   "AllergyIntolerance"
+                                   "Appointment"
+                                   "AppointmentResponse"
+                                   "AuditEvent"
+                                   "Basic"
+                                   "Binary"
+                                   "BiologicallyDerivedProduct"
+                                   "BodyStructure"
+                                   "Bundle"
+                                   "CapabilityStatement"
+                                   "CarePlan"
+                                   "CareTeam"
+                                   "CatalogEntry"
+                                   "ChargeItem"
+                                   "ChargeItemDefinition"
+                                   "Claim"
+                                   "ClaimResponse"
+                                   "ClinicalImpression"
+                                   "CodeSystem"
+                                   "Communication"
+                                   "CommunicationRequest"
+                                   "CompartmentDefinition"
+                                   "Composition"
+                                   "ConceptMap"
+                                   "Condition"
+                                   "Consent"
+                                   "Contract"
+                                   "Coverage"
+                                   "CoverageEligibilityRequest"
+                                   "CoverageEligibilityResponse"
+                                   "DetectedIssue"
+                                   "Device"
+                                   "DeviceDefinition"
+                                   "DeviceMetric"
+                                   "DeviceRequest"
+                                   "DeviceUseStatement"
+                                   "DiagnosticReport"
+                                   "DocumentManifest"
+                                   "DocumentReference"
+                                   "Encounter"
+                                   "Endpoint"
+                                   "EnrollmentRequest"
+                                   "EnrollmentResponse"
+                                   "EpisodeOfCare"
+                                   "EventDefinition"
+                                   "Evidence"
+                                   "EvidenceVariable"
+                                   "ExampleScenario"
+                                   "ExplanationOfBenefit"
+                                   "FamilyMemberHistory"
+                                   "Flag"
+                                   "Goal"
+                                   "GraphDefinition"
+                                   "Group"
+                                   "GuidanceResponse"
+                                   "HealthcareService"
+                                   "ImagingStudy"
+                                   "Immunization"
+                                   "ImmunizationEvaluation"
+                                   "ImmunizationRecommendation"
+                                   "ImplementationGuide"
+                                   "InsurancePlan"
+                                   "Invoice"
+                                   "Library"
+                                   "Linkage"
+                                   "List"
+                                   "Location"
+                                   "Measure"
+                                   "MeasureReport"
+                                   "Media"
+                                   "Medication"
+                                   "MedicationAdministration"
+                                   "MedicationDispense"
+                                   "MedicationKnowledge"
+                                   "MedicationRequest"
+                                   "MedicationStatement"
+                                   "MedicinalProduct"
+                                   "MedicinalProductAuthorization"
+                                   "MedicinalProductContraindication"
+                                   "MedicinalProductIndication"
+                                   "MedicinalProductIngredient"
+                                   "MedicinalProductInteraction"
+                                   "MedicinalProductManufactured"
+                                   "MedicinalProductPackaged"
+                                   "MedicinalProductPharmaceutical"
+                                   "MedicinalProductUndesirableEffect"
+                                   "MessageDefinition"
+                                   "MessageHeader"
+                                   "MolecularSequence"
+                                   "NamingSystem"
+                                   "NutritionOrder"
+                                   "Observation"
+                                   "OperationDefinition"
+                                   "OperationOutcome"
+                                   "Organization"
+                                   "OrganizationAffiliation"
+                                   "Parameters"
+                                   "Patient"
+                                   "PaymentNotice"
+                                   "PaymentReconciliation"
+                                   "Person"
+                                   "PlanDefinition"
+                                   "Practitioner"
+                                   "PractitionerRole"
+                                   "Procedure"
+                                   "Provenance"
+                                   "Questionnaire"
+                                   "QuestionnaireResponse"
+                                   "RelatedPerson"
+                                   "RequestGroup"
+                                   "ResearchDefinition"
+                                   "ResearchElementDefinition"
+                                   "ResearchStudy"
+                                   "ResearchSubject"
+                                   "RiskAssessment"
+                                   "RiskEvidenceSynthesis"
+                                   "Schedule"
+                                   "SearchParameter"
+                                   "ServiceRequest"
+                                   "Slot"
+                                   "Specimen"
+                                   "SpecimenDefinition"
+                                   "StructureDefinition"
+                                   "StructureMap"
+                                   "Subscription"
+                                   "Substance"
+                                   "SubstanceNucleicAcid"
+                                   "SubstancePolymer"
+                                   "SubstanceProtein"
+                                   "SubstanceReferenceInformation"
+                                   "SubstanceSourceMaterial"
+                                   "SubstanceSpecification"
+                                   "SupplyDelivery"
+                                   "SupplyRequest"
+                                   "Task"
+                                   "TerminologyCapabilities"
+                                   "TestReport"
+                                   "TestScript"
+                                   "ValueSet"
+                                   "VerificationResult"
+                                   "VisionPrescription"]
+)}
+    :argTypes  {"class"       {:control "text"}
+                "value"       {:control "text"}
+                "slot/label"     {:control "text"}
+                "slot/assistive" {:control "text"}
+                "c/on-search" {:control "object"}
+                "c/open?"     {:control "boolean"}
+                "c/options"   {:control "object"}}}))
 
 (def ^:export Combobox (clj->js {}))

@@ -10,4 +10,4 @@
           :c/root-class (u/class-names ["h-[32px]" (when (= "rounded" (:c/variant props))
                                                      "rounded-corner-max")]
                                        (:c/root-class props))
-          :slot/left hs-ui.svg.search/svg)])
+          :slot/left [:span {:class "text-[#CCCED3]"} hs-ui.svg.search/svg])])

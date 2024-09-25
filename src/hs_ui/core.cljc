@@ -4,7 +4,6 @@
    [hs-ui.graphic]
 
    [hs-ui.components.button]
-   [hs-ui.components.dropdown]
    [hs-ui.components.input]
    [hs-ui.components.checkbox]
    [hs-ui.components.content-expand]
@@ -20,10 +19,10 @@
    [hs-ui.organisms.search-input]
    [hs-ui.organisms.radio]
    [hs-ui.organisms.radio-blocks]
+   [hs-ui.organisms.dropdown]
    ))
 
 (def button   hs-ui.components.button/component)
-(def dropdown hs-ui.components.dropdown/component)
 (def input    hs-ui.components.input/component)
 (def radio    hs-ui.components.radio/component)
 (def radio-button hs-ui.components.radio-button/component)
@@ -41,6 +40,7 @@
 (def org-search-input hs-ui.organisms.search-input/component)
 (def org-radio        hs-ui.organisms.radio/component)
 (def org-radio-blocks hs-ui.organisms.radio-blocks/component)
+(def org-dropdown     hs-ui.organisms.dropdown/component)
 
 (def text-page-header          hs-ui.text/page-header)
 (def text-section-header       hs-ui.text/section-header)
