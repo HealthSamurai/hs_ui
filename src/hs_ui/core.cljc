@@ -21,6 +21,8 @@
    [hs-ui.organisms.radio]
    [hs-ui.organisms.radio-blocks]
    [hs-ui.organisms.dropdown]
+
+   [hs-ui.layout]
    ))
 
 (def button   hs-ui.components.button/component)
@@ -57,6 +59,8 @@
 (def text-assistive            hs-ui.text/assistive)
 
 (def separator hs-ui.graphic/separator)
+
+(def layout-confirmation hs-ui.layout/confirmation)
 
 (defn button-primary  [props & children]
   (into
