@@ -33,7 +33,9 @@
 
 (defn ^:export Body
   [props]
-  (utils/reagent-as-element [hs-ui.core/text-body {} "Body"]))
+  (utils/reagent-as-element [hs-ui.core/text-body {} "Join our meet up to hear from experts in SQL on FHIR as they share insights on simplifying FHIR data processing and creating flat views for efficient analysis. Learn best practices for integrating with electronic medical record systems and overcoming implementation challenges.
+
+This event offers a unique opportunity to deepen your understanding and network with industry leaders in healthcare technology. Engage with professionals, ask questions, and explore real-world applications of this innovative technology."]))
 
 (defn ^:export Code
   [props]
@@ -49,4 +51,4 @@
 
 (defn ^:export Assistive
   [props]
-  (utils/reagent-as-element [hs-ui.core/text-assistive {} "Assistive"]))
+  (utils/reagent-as-element [hs-ui.core/text-assistive {} "Unknown polymorphic extensions will be automatically transformed to Aidbox format. Ex.: extension.*.valueString -> extension.0.value.string"]))
