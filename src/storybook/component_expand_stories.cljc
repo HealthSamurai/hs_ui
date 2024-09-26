@@ -9,8 +9,7 @@
     :component (utils/reagent-reactify-component hs-ui.core/content-expand)
     :render    (fn [args]
                  (utils/reagent-as-element
-                  [:div {:class "w-[100px]"}
-                   [hs-ui.core/content-expand (js->clj args {:keywordize-keys true})]]))
+                  [hs-ui.core/content-expand (js->clj args {:keywordize-keys true})]))
     :args      {"c/open?"       false
                 "slot/open"  "More"
                 "slot/close" "Less"}
