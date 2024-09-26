@@ -15,6 +15,8 @@
     :argTypes  {:placeholder     {:control "text"}
                 :data-invalid    {:control "boolean"}
                 :disabled        {:control "boolean"}
+                "c/expand?"      {:control "boolean"}
+                "c/on-expand"    {:control "object"}
                 "slot/label"     {:control "text"}
                 "slot/assistive" {:control "text"}}}))
 

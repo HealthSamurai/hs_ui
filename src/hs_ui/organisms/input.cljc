@@ -1,13 +1,17 @@
 (ns hs-ui.organisms.input
   (:require [hs-ui.text]
+            [hs-ui.layout]
+            [hs-ui.components.content-expand]
             [hs-ui.components.input]))
 
 
 (defn component
   [props]
-  [:<>
-   [hs-ui.text/label {:class "pb-[11px]"} (:slot/label props)]
-   [hs-ui.components.input/component props]
-   [hs-ui.text/assistive {:class ["block pt-[12px]"
-                                  (when (:data-invalid props) "text-critical-default")]}
-    (:slot/assistive props)]])
+  [hs-ui.layout/control
+   {:slot/control         [hs-ui.components.input/component props]
+    :slot/label           (:slot/label props)
+    :slot/assistive       (:slot/assistive props)
+    :slot/assistive-right (when (contains? props :c/expand?)
+                            [hs-ui.components.content-expand/component
+                             {:c/open?  (:c/expand? props)
+                              :on-click (:c/on-expand props)}])}])

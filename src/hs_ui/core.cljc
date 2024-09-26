@@ -22,7 +22,6 @@
    [hs-ui.organisms.radio-blocks]
    [hs-ui.organisms.dropdown]
    [hs-ui.organisms.header]
-   [hs-ui.organisms.page-header]
 
    [hs-ui.layout]
    ))
@@ -63,9 +62,10 @@
 
 (def separator hs-ui.graphic/separator)
 
-(def layout-confirmation hs-ui.layout/confirmation)
-(def layout-nest         hs-ui.layout/nest)
-(def layout-navbar hs-ui.layout/navbar)
+(def layout-confirmation        hs-ui.layout/confirmation)
+(def layout-nest                hs-ui.layout/nest)
+(def layout-navbar              hs-ui.layout/navbar)
+(def layout-expandeable-control hs-ui.layout/expandeable-control)
 
 (defn button-primary  [props & children]
   (into

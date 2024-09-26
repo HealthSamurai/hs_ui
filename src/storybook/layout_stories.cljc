@@ -44,3 +44,21 @@
     :render (fn [args]
               (utils/reagent-as-element
                [hs-ui.core/layout-navbar (js->clj args {:keywordize-keys true})]))}))
+
+(def ^:export ExpandeableControl
+  (clj->js
+   {:args      {"slot/control" [#'hs-ui.core/org-input {"slot/label"     "Pool connection timeout"
+                                                        "slot/assistive" "Maximum time the connection pool will wait for a database connection before timing out"
+                                                        "c/expand?"      true}]
+                "c/expand?"    false
+                "slot/content" [#'hs-ui.core/kvlist {"c/items"
+                                                     [{:key 1 "slot/key" "Name:" "slot/value" [:span "web.max-body" [hs-ui.core/button-xs {:class "ml-x1"} "COPY"]]}
+                                                      {:key 2 "slot/key" "Default:" "slot/value" "20971520"}
+                                                      {:key 3 "slot/key" "ENV Alias:" "slot/value" "BOX_WEB_MAX_BODY"}
+                                                      {:key 4 "slot/key" "Value introspect config:" "slot/value" "https://skynet.aidbox.app (set-by-user)"}]}]}
+    :argTypes  {"slot/control" {:control "object"}
+                "slot/content" {:control "object"}
+                "c/expand?"    {:control "boolean"}}
+    :render (fn [args]
+              (utils/reagent-as-element
+               [hs-ui.core/layout-expandeable-control (js->clj args {:keywordize-keys true})]))}))

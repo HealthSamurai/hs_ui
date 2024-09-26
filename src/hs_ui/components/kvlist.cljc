@@ -3,11 +3,11 @@
 
 (defn component
   [props]
-  [:table {:class "table-auto py-x1 px-x1point5"}
+  [:table {:class "table-auto border-separate border-spacing-y-[6px]"}
    [:tbody
     (for [item (:c/items props)] ^{:key (:key item)}
       [:tr
-       [:td {:class "pt-x1"}
+       [:td
         [hs-ui.text/value {:class "text-elements-assistive"} (:slot/key item)]]
-       [:td {:class "pt-x1 pl-[31px]"}
+       [:td {:class "pl-[31px]"}
         [hs-ui.text/value {} (:slot/value item)]]])]])
