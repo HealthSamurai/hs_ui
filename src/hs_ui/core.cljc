@@ -21,6 +21,7 @@
    [hs-ui.organisms.radio]
    [hs-ui.organisms.radio-blocks]
    [hs-ui.organisms.dropdown]
+   [hs-ui.organisms.header]
 
    [hs-ui.layout]
    ))
@@ -45,6 +46,7 @@
 (def org-radio        hs-ui.organisms.radio/component)
 (def org-radio-blocks hs-ui.organisms.radio-blocks/component)
 (def org-dropdown     hs-ui.organisms.dropdown/component)
+(def org-header       hs-ui.organisms.header/component)
 
 (def text-page-header          hs-ui.text/page-header)
 (def text-section-header       hs-ui.text/section-header)
