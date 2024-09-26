@@ -102,7 +102,7 @@
    "data-[hovered=true]:bg-[theme(colors.surface-0)]"
    "data-[hovered=true]:border-[theme(colors.border-XS-regular-hover)]"
    ;; Loading
-   "aria-busy:bg-[theme(colors.button-xs)]"
+   "aria-busy:bg-[theme(colors.surface-1)]"
    "aria-busy:text-[theme(colors.border-XS-regular)]"
    ;; Active
    "active:bg-[theme(colors.border-XS-regular-hover)]":w
