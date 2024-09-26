@@ -14,3 +14,10 @@
      [:div {:class "py-x3 px-x2"} (:slot/control props)]
      [confirmation {:slot/right (:slot/confirmation props) :class "px-[theme(spacing.x2)]"}]]
     [:div {:class "py-x3 px-x2"} (:slot/control props)]))
+
+(defn navbar
+  [props]
+  [:div {:class "flex border-b border-separator items-center h-[64px] justify-between w-full px-x3"}
+   [:div (:slot/left props)]
+   [:div (:slot/middle props)]
+   [:div (:slot/right props)]])
