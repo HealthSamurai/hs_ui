@@ -18,7 +18,7 @@
 
 (defn component
   [props]
-  [:div {:class root-class}
+  [:div (hs-ui.utils/merge-props {:class root-class} props)
    (if (:c/open? props)
      [:<>
       [:span {:class "group-hover:text-[theme(colors.elements-readable)]"} (:slot/close props "Less")]

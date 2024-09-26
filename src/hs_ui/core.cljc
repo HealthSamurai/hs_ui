@@ -66,6 +66,7 @@
 (def layout-nest                hs-ui.layout/nest)
 (def layout-navbar              hs-ui.layout/navbar)
 (def layout-expandeable-control hs-ui.layout/expandeable-control)
+(def layout-control             hs-ui.layout/control)
 
 (defn button-primary  [props & children]
   (into

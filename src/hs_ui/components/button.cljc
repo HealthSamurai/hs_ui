@@ -8,6 +8,7 @@
    "py-[theme(spacing.x1)]"
    "h-[36px]"
    "inline-flex"
+   "focus:outline-none"
    "justify-center"
    "font-semibold"
    "rounded-[theme(borderRadius.corner-m)]"
@@ -76,6 +77,8 @@
 
 (def slim-class
   ["txt-label"
+   "p-0"
+   "h-auto"
    "text-[theme(colors.elements-assistive)]"
    "[&_svg]:ml-x1"
    "[&_svg]:enabled:text-[theme('colors.elements-readable')]"

@@ -4,7 +4,7 @@
 (defn component
   [props]
   (let [options (:c/options props)]
-    [:<>
+    [:div {:class "pb-[12px]"}
      [hs-ui.text/label {:class "pb-[8px]"} (:slot/label props)]
      [hs-ui.text/assistive {:class "block pb-[12px]"} (:slot/assistive props)]
      [:div {:class "border border-border-default rounded-corner-m divide-y"}

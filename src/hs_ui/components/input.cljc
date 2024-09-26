@@ -22,6 +22,7 @@
 (def input-class
   ["outline-none"
    "txt-value"
+   "text-[theme(colors.elements-readable)]"
    "px-[11px]"
    "py-[6px]"
    "bg-transparent"

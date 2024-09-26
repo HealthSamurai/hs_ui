@@ -17,8 +17,13 @@
    "py-[5px]"
    "pl-x1point5"
    "pr-[11px]"
-   "bg-surface-0"
+   "bg-[theme(colors.surface-0)]"
    ])
+
+(def disabled-class
+  ["cursor-not-allowed"
+   "bg-[theme(colors.surface-1)]"
+   "text-elements-assistive"])
 
 (def selected-item-slot-left
   ["text-elements-assistive"
@@ -49,11 +54,15 @@
    "rounded-corner-s"])
 
 (defn selected-item-view
-  [selected-item]
-  [:div {:class selected-item-class}
+  [props selected-item]
+  [:div {:class (cond-> selected-item-class
+                  (:disabled props)
+                  (hs-ui.utils/class-names disabled-class))
+         :on-click (when-not (:disabled props) (:c/on-open props))}
    [:div.flex.items-center
     [:span {:class selected-item-slot-left} (:slot/left selected-item)]
-    [hs-ui.text/value {} (:slot/label selected-item)]]
+    [hs-ui.text/value {:class (when (:disabled props) "text-elements-assistive")}
+     (:slot/label selected-item)]]
    [:span {:class "text-[#727885]"} hs-ui.svg.chevron-down/svg]])
 
 (defn get-selected-option
@@ -68,13 +77,16 @@
      (when (:slot/label props)
        [hs-ui.text/label {:class "pb-[11px]"} (:slot/label props)])
      [:div {:class (hs-ui.utils/class-names "relative" (:class props))}
-      [selected-item-view selected-item]
+      [selected-item-view props selected-item]
       (when open?
         [:div {:class menu-class}
          [hs-ui.organisms.search-input/component
           {:c/root-class search-input-class
            :ref          #(when % (.focus %))
            :on-change    (:c/on-search props)
+           :on-blur      (fn [e]
+                           (when-let [on-close (:c/on-close props)]
+                             (on-close e)))
            :placeholder  "Search"}]
          [hs-ui.components.list-items/component {:class list-items-class}
           (for [option (:c/options props)]
@@ -83,4 +95,4 @@
              (:slot/left option)
              (:slot/label option)])]])]
      (when (:slot/assistive props)
-       [hs-ui.text/assistive {:class "block pt-[12px]"} (:slot/assistive props)])]))
+       [hs-ui.text/assistive {:class "block py-[12px]"} (:slot/assistive props)])]))

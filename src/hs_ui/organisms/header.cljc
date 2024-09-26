@@ -1,8 +1,9 @@
 (ns hs-ui.organisms.header
-  (:require [hs-ui.text]))
+  (:require [hs-ui.text]
+            [hs-ui.utils]))
 
 (defn component
   [props]
-  [:div
+  [:div (hs-ui.utils/merge-props {} props)
    (into [hs-ui.text/section-header {}] (:slot/label props))
    (into [hs-ui.text/assistive {:class "pt-[6px] block [&_*]:txt-assistive [&_*]:text-elements-assistive"}] (:slot/desc props))])
