@@ -8,6 +8,7 @@
    "py-[theme(spacing.x1)]"
    "h-[36px]"
    "inline-flex"
+   "justify-center"
    "font-semibold"
    "rounded-[theme(borderRadius.corner-m)]"
    "select-none"

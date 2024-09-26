@@ -63,6 +63,7 @@
 (def separator hs-ui.graphic/separator)
 
 (def layout-confirmation hs-ui.layout/confirmation)
+(def layout-nest         hs-ui.layout/nest)
 
 (defn button-primary  [props & children]
   (into
