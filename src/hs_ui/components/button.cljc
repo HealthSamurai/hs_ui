@@ -1,7 +1,6 @@
 (ns hs-ui.components.button
  (:require [hs-ui.utils :as utils]
-            [hs-ui.svg.loading]
-            #?(:cljs ["@ariakit/react" :as kit])))
+           [hs-ui.svg.loading]))
 
 (def base-class
   ["px-[theme(spacing.x3)]"
