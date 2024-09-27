@@ -9,7 +9,7 @@
   (let [options (:c/options props) horizontal? (<= (count options) 2)]
     [hs-ui.layout/control
      {:slot/control         [:div {:class (when horizontal? "flex")}
-                             (for [option options]
+                             (for [option options] ^{:key (hash option)}
                                [hs-ui.components.radio/component
                                 (hs-ui.utils/merge-props
                                  {:class ["flex items-center space-x-[12px] mb-[theme(spacing.x1point5)]"

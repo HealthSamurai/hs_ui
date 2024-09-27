@@ -6,7 +6,10 @@
   [properties]
   (reduce-kv
    (fn [acc k v]
-     (cond-> acc (contains? #{"c" "slot"} (namespace k)) (dissoc k)))
+     (cond-> acc
+       (or (contains? #{"c" "slot"} (namespace k))
+           (nil? v))
+       (dissoc k)))
    properties
    properties))
 

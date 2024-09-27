@@ -7,7 +7,7 @@
   (let [options (:c/options props)]
     [hs-ui.layout/control
      {:slot/control         [:div {:class "border border-border-default rounded-corner-m divide-y"}
-                             (for [option options]
+                             (for [option options] ^{:key (hash option)}
                                [hs-ui.components.radio-button/component
                                 (merge
                                  {:class "p-x2 pt-[19px]"
