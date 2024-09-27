@@ -24,13 +24,19 @@
 
 (defn control
   [props]
-  [:<>
+  [:div {:class "pb-[12px]"}
    [hs-ui.text/label {:class "pb-[11px]"} (:slot/label props)]
+   (when (:c/assistive-top? props)
+     [:div {:class "w-full flex justify-between pb-[12px]"}
+      [hs-ui.text/assistive {:class (when (:data-invalid props) "text-critical-default")}
+       (:slot/assistive props)]
+      [:div (:slot/assistive-right props)]])
    (:slot/control props)
-   [:div {:class "w-full flex justify-between py-[12px]"}
-    [hs-ui.text/assistive {:class (when (:data-invalid props) "text-critical-default")}
-     (:slot/assistive props)]
-    [:div (:slot/assistive-right props)]]])
+   (when-not (:c/assistive-top? props)
+     [:div {:class "w-full flex justify-between pt-[12px]"}
+      [hs-ui.text/assistive {:class (when (:data-invalid props) "text-critical-default")}
+       (:slot/assistive props)]
+      [:div (:slot/assistive-right props)]])])
 
 (defn expandeable-control
   [props]
