@@ -2,6 +2,18 @@
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
                      [reagent.core])))
 
+(defn get-component-properties
+  [arguments]
+  (let [properties (first arguments)]
+    (if (map? properties) properties {})))
+
+(defn get-component-children
+  [arguments]
+  (if (empty? (get-component-properties arguments))
+    (into [:<>] arguments)
+    (when-let [children (seq (next arguments))]
+      (into [:<>] children))))
+
 (defn remove-custom-properties
   [properties]
   (reduce-kv
@@ -27,6 +39,14 @@
              r)
      :clj  nil))
 
+(defn merge-properties
+  [properties-a properties-b]
+  #?(:cljs (reagent.core/merge-props
+            (assoc properties-a :class
+                   (class-names (:class properties-a)
+                                (:class properties-b)))
+            (dissoc properties-b :class))
+     :clj  nil))
 
 (defn merge-props
   [properties-a properties-b]

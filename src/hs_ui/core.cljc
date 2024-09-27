@@ -68,37 +68,10 @@
 (def layout-expandeable-control hs-ui.layout/expandeable-control)
 (def layout-control             hs-ui.layout/control)
 
-(defn button-primary  [props & children]
-  (into
-   [hs-ui.components.button/component (assoc props :variant "primary")]
-   children))
-
-(defn button-critical [props & children]
-  (into
-   [hs-ui.components.button/component (assoc props :variant "critical")]
-   children))
-
-(defn button-secondary [props & children]
-  (into
-   [hs-ui.components.button/component (assoc props :variant "secondary")]
-   children))
-
-(defn button-tertiary [props & children]
-  (into
-   [hs-ui.components.button/component (assoc props :variant "tertiary")]
-   children))
-
-(defn button-xs [props & children]
-  (into
-   [hs-ui.components.button/component (assoc props :variant "xs")]
-   children))
-
-(defn button-xs-red [props & children]
-  (into
-   [hs-ui.components.button/component (assoc props :variant "xs-red")]
-   children))
-
-(defn button-slim [props & children]
-  (into
-   [hs-ui.components.button/component (assoc props :variant "slim")]
-   children))
+(def button-primary   hs-ui.components.button/primary)
+(def button-critical  hs-ui.components.button/critical)
+(def button-secondary hs-ui.components.button/secondary)
+(def button-tertiary  hs-ui.components.button/tertiary)
+(def button-xs        hs-ui.components.button/xs)
+(def button-xs-red    hs-ui.components.button/xs-red)
+(def button-slim      hs-ui.components.button/slim)

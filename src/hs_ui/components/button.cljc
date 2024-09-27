@@ -7,15 +7,14 @@
    "py-[theme(spacing.x1)]"
    "h-[36px]"
    "inline-flex"
-   "focus:outline-none"
    "justify-center"
-   "font-semibold"
+   "items-center"
+   "focus:outline-none"
    "rounded-[theme(borderRadius.corner-m)]"
    "select-none"
-   "items-center"
    "disabled:cursor-not-allowed"
-   "aria-busy:relative"
-   "aria-busy:cursor-wait"])
+   "data-[loading=true]:relative"
+   "data-[loading=true]:cursor-wait"])
 
 (def primary-class
   ["shadow-button"
@@ -25,12 +24,14 @@
    ;; Disabled
    "disabled:bg-[theme(colors.elements-disabled)]"
    ;; Loading
-   "aria-busy:bg-[theme(colors.cta-hover)]"
+   "data-[loading=true]:bg-[theme(colors.cta-hover)]"
    ;; Hovered
    "hover:bg-[theme(colors.cta-hover)]"
    "data-[hovered=true]:bg-[theme(colors.cta-hover)]"
    ;; Click
-   "active:bg-[theme(colors.cta)]"])
+   "active:bg-[theme(colors.cta)]"
+   "data-[active=true]:bg-[theme(colors.cta)]"
+   ])
 
 (def critical-class
   ["shadow-button"
@@ -40,12 +41,13 @@
    ;; Disabled
    "disabled:bg-[theme(colors.elements-disabled)]"
    ;; Loading
-   "aria-busy:bg-[theme(colors.critical-hover)]"
+   "data-[loading=true]:bg-[theme(colors.critical-hover)]"
    ;; Hovered
    "hover:bg-[theme(colors.critical-hover)]"
    "data-[hovered=true]:bg-[theme(colors.critical-hover)]"
    ;; Click
-   "active:bg-[theme(colors.critical-default)]"])
+   "active:bg-[theme(colors.critical-default)]"
+   "data-[active=true]:bg-[theme(colors.critical-default)]"])
 
 (def secondary-class
   ["border"
@@ -61,7 +63,8 @@
    "data-[hovered=true]:text-[theme(colors.elements-readable)]"
    "data-[hovered=true]:bg-[theme(colors.surface-1)]"
    ;; Click
-   "active:bg-transparent"])
+   "active:bg-transparent"
+   "data-[active=true]:bg-transparent"])
 
 (def tertiary-class
   ["text-[theme(colors.elements-assistive)]"
@@ -72,7 +75,8 @@
    "hover:text-[theme(colors.elements-readable)]"
    "data-[hovered=true]:text-[theme(colors.elements-readable)]"
    ;; Click
-   "active:text-[theme(colors.elements-assistive)]"])
+   "active:text-[theme(colors.elements-assistive)]"
+   "data-[active=true]:text-[theme(colors.elements-assistive)]"])
 
 (def slim-class
   ["txt-label"
@@ -80,7 +84,7 @@
    "h-auto"
    "text-[theme(colors.elements-assistive)]"
    "[&_svg]:ml-x1"
-   "[&_svg]:enabled:text-[theme('colors.elements-readable')]"
+   "[&_svg]:enabled:text-[theme(colors.elements-readable)]"
    ;; Disabled
    "disabled:text-[theme(colors.elements-disabled)]"
    ;; Hovered
@@ -105,16 +109,15 @@
    "data-[hovered=true]:bg-[theme(colors.surface-0)]"
    "data-[hovered=true]:border-[theme(colors.border-XS-regular-hover)]"
    ;; Loading
-   "aria-busy:bg-[theme(colors.surface-1)]"
-   "aria-busy:text-[theme(colors.border-XS-regular)]"
+   "data-[loading=true]:bg-[theme(colors.surface-1)]"
+   "data-[loading=true]:text-[theme(colors.border-XS-regular)]"
    ;; Active
-   "active:bg-[theme(colors.border-XS-regular-hover)]":w
+   "active:bg-[theme(colors.border-XS-regular-hover)]"
    "active:border-[theme(colors.border-XS-regular-hover)]"
    "active:text-[theme(colors.elements-readable-inv)]"
-   "data-[active=true]:bg-[theme(colors.border-XS-regular-hover)]"
-   "data-[active=true]:border-[theme(colors.border-XS-regular-hover)]"
-   "data-[active=true]:text-[theme(colors.elements-readable-inv)]"]
-)
+   "data-[active=true]:!bg-[theme(colors.border-XS-regular-hover)]"
+   "data-[active=true]:!border-[theme(colors.border-XS-regular-hover)]"
+   "data-[active=true]:!text-[theme(colors.elements-readable-inv)]"])
 
 (def xs-red-class
   ["h-[24px]"
@@ -134,29 +137,81 @@
    "data-[hovered=true]:bg-[theme(colors.critical-hover)]"
    "data-[hovered=true]:border-[theme(colors.border-XS-critical-hover)]"
    ;; Loading
-   "aria-busy:bg-[theme(colors.critical-default)]"
-   "aria-busy:text-[theme(colors.border-XS-critical)]"
-   "aria-busy:border-[theme(colors.border-XS-critical)]"])
+   "data-[loading=true]:bg-[theme(colors.critical-default)]"
+   "data-[loading=true]:text-[theme(colors.border-XS-critical)]"
+   "data-[loading=true]:border-[theme(colors.border-XS-critical)]"])
+
+(defn get-element-name
+  [properties]
+  (if (:href properties) :a :button))
+
+(defn loading-icon
+  [children]
+  [:<>
+   [:div.flex.items-center.justify-center.absolute.animate-spin hs-ui.svg.loading/svg]
+   [:span.contents.invisible children]])
 
 (defn component
-  [user-properties & children]
-  (let [properties (dissoc user-properties :loading :variant)
-        variant    (:variant user-properties "primary")
-        loading    (:loading user-properties false)
-        properties (cond-> properties loading (assoc :disabled true :aria-busy true))
-        classes    (cond-> base-class
-                     (= variant "primary")   (utils/class-names primary-class)
-                     (= variant "critical")  (utils/class-names critical-class)
-                     (= variant "secondary") (utils/class-names secondary-class)
-                     (= variant "tertiary")  (utils/class-names tertiary-class)
-                     (= variant "xs")        (utils/class-names xs-class)
-                     (= variant "xs-red")    (utils/class-names xs-red-class)
-                     (= variant "slim")      (utils/class-names slim-class))]
-    (if (:href properties)
-      [:a (utils/merge-props {:class [classes "txt-link"]} properties) children]
-      (into
-       [:button (utils/merge-props {:class classes} properties)]
-       (if (and loading (contains? #{"primary" "critical"} variant))
-         [[:div.flex.items-center.justify-center.absolute.inset-0.animate-spin hs-ui.svg.loading/svg]
-          [:span.contents.invisible children]]
-         children)))))
+  [properties children]
+  (let [loading?   (:data-loading properties)
+        properties (cond-> properties
+                     loading? (assoc :disabled true))]
+    [(get-element-name properties)
+     (utils/merge-props {:class base-class} properties)
+     (if loading? (loading-icon children) children)]))
+
+(defn primary
+  [& arguments]
+  (component
+   (utils/merge-properties
+    {:class primary-class}
+    (utils/get-component-properties arguments))
+   (utils/get-component-children arguments)))
+
+(defn critical
+  [& arguments]
+  (component
+   (utils/merge-properties
+    {:class critical-class}
+    (utils/get-component-properties arguments))
+   (utils/get-component-children arguments)))
+
+(defn secondary
+  [& arguments]
+  (component
+   (utils/merge-properties
+    {:class secondary-class}
+    (utils/get-component-properties arguments))
+   (utils/get-component-children arguments)))
+
+(defn tertiary
+  [& arguments]
+  (component
+   (utils/merge-properties
+    {:class tertiary-class}
+    (utils/get-component-properties arguments))
+   (utils/get-component-children arguments)))
+
+(defn xs
+  [& arguments]
+  (component
+   (utils/merge-properties
+    {:class xs-class}
+    (utils/get-component-properties arguments))
+   (utils/get-component-children arguments)))
+
+(defn xs-red
+  [& arguments]
+  (component
+   (utils/merge-properties
+    {:class xs-red-class}
+    (utils/get-component-properties arguments))
+   (utils/get-component-children arguments)))
+
+(defn slim
+  [& arguments]
+  (component
+   (utils/merge-properties
+    {:class slim-class}
+    (utils/get-component-properties arguments))
+   (utils/get-component-children arguments)))
