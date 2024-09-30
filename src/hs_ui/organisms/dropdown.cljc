@@ -3,6 +3,7 @@
             [hs-ui.components.list-items]
             [hs-ui.components.list-item]
             [hs-ui.svg.chevron-down]
+            [hs-ui.components.content-expand]
             [hs-ui.text]
             [hs-ui.layout]
             [hs-ui.utils]))

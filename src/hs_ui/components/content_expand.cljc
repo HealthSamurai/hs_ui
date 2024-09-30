@@ -21,8 +21,8 @@
   [:div (hs-ui.utils/merge-props {:class root-class} props)
    (if (:c/open? props)
      [:<>
-      [:span {:class "group-hover:text-[theme(colors.elements-readable)]"} (:slot/close props "Less")]
-      [:span {:class "group-hover:hidden pl-[4px]"} hs-ui.svg.extra-hide/svg]
+      [:span {:class "visible text-[theme(colors.elements-readable)]"} (:slot/close props "Less")]
+      [:span {:class "visible group-hover:hidden pl-[4px]"} hs-ui.svg.extra-hide/svg]
       [:span {:class "hidden group-hover:inline-block pl-[4px]"} hs-ui.svg.extra-hide-filled/svg]]
      [:<>
       [:span {:class "group-hover:text-[theme(colors.elements-readable)]"} (:slot/open props "More")]
