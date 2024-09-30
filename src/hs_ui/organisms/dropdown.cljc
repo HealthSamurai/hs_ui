@@ -62,10 +62,12 @@
                   (hs-ui.utils/class-names disabled-class))
          :on-click (when-not (:disabled props) (:c/on-open props))}
    [:div.flex.items-center
-    [:span {:class selected-item-slot-left} (:slot/left selected-item)]
+    (when (:slot/left selected-item)
+      [:span {:class selected-item-slot-left} (:slot/left selected-item)])
     [hs-ui.text/value {:class (when (:disabled props) "text-elements-assistive")}
      (:slot/label selected-item)]]
-   [:span {:class "text-[#727885]"} hs-ui.svg.chevron-down/svg]])
+   (when-not (:disabled props)
+     [:span {:class "text-[#727885]"} hs-ui.svg.chevron-down/svg])])
 
 (defn get-selected-option
   [options value]
