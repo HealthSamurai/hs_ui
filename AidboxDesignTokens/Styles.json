@@ -50,21 +50,29 @@
     },
     "inter-2": {
       "$type": "fontWeights",
-      "$value": "Semi Bold"
+      "$value": "Medium"
     },
     "inter-3": {
       "$type": "fontWeights",
-      "$value": "Medium"
+      "$value": "Regular"
     },
     "inter-4": {
       "$type": "fontWeights",
-      "$value": "Regular"
+      "$value": "Bold"
     },
     "inter-5": {
       "$type": "fontWeights",
       "$value": "Bold"
     },
     "jetbrains-mono-6": {
+      "$type": "fontWeights",
+      "$value": "Regular"
+    },
+    "inter-1": {
+      "$type": "fontWeights",
+      "$value": "Semi Bold"
+    },
+    "jetbrains-mono-5": {
       "$type": "fontWeights",
       "$value": "Regular"
     }
@@ -128,8 +136,8 @@
   "Section header": {
     "$type": "typography",
     "$value": {
-      "fontFamily": "{fontFamilies.metropolis}",
-      "fontWeight": "{fontWeights.metropolis-1}",
+      "fontFamily": "{fontFamilies.inter}",
+      "fontWeight": "{fontWeights.inter-1}",
       "lineHeight": "{lineHeights.1}",
       "fontSize": "{fontSize.2}",
       "letterSpacing": "{letterSpacing.1}",
@@ -143,7 +151,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.inter}",
-      "fontWeight": "{fontWeights.inter-2}",
+      "fontWeight": "{fontWeights.inter-1}",
       "lineHeight": "{lineHeights.2}",
       "fontSize": "{fontSize.1}",
       "letterSpacing": "{letterSpacing.1}",
@@ -157,7 +165,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.inter}",
-      "fontWeight": "{fontWeights.inter-3}",
+      "fontWeight": "{fontWeights.inter-2}",
       "lineHeight": "{lineHeights.3}",
       "fontSize": "{fontSize.1}",
       "letterSpacing": "{letterSpacing.1}",
@@ -171,7 +179,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.inter}",
-      "fontWeight": "{fontWeights.inter-4}",
+      "fontWeight": "{fontWeights.inter-3}",
       "lineHeight": "{lineHeights.0}",
       "fontSize": "{fontSize.1}",
       "letterSpacing": "{letterSpacing.1}",
@@ -185,7 +193,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.inter}",
-      "fontWeight": "{fontWeights.inter-4}",
+      "fontWeight": "{fontWeights.inter-3}",
       "lineHeight": "{lineHeights.4}",
       "fontSize": "{fontSize.1}",
       "letterSpacing": "{letterSpacing.1}",
@@ -199,7 +207,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.inter}",
-      "fontWeight": "{fontWeights.inter-3}",
+      "fontWeight": "{fontWeights.inter-2}",
       "lineHeight": "{lineHeights.4}",
       "fontSize": "{fontSize.1}",
       "letterSpacing": "{letterSpacing.1}",
@@ -213,7 +221,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.inter}",
-      "fontWeight": "{fontWeights.inter-4}",
+      "fontWeight": "{fontWeights.inter-3}",
       "lineHeight": "{lineHeights.4}",
       "fontSize": "{fontSize.0}",
       "letterSpacing": "{letterSpacing.1}",
@@ -227,7 +235,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.inter}",
-      "fontWeight": "{fontWeights.inter-5}",
+      "fontWeight": "{fontWeights.inter-4}",
       "lineHeight": "{lineHeights.4}",
       "fontSize": "{fontSize.0}",
       "letterSpacing": "{letterSpacing.1}",
@@ -241,7 +249,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.inter}",
-      "fontWeight": "{fontWeights.inter-3}",
+      "fontWeight": "{fontWeights.inter-2}",
       "lineHeight": "{lineHeights.5}",
       "fontSize": "{fontSize.0}",
       "letterSpacing": "{letterSpacing.2}",
@@ -255,7 +263,7 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{fontFamilies.jetbrains-mono}",
-      "fontWeight": "{fontWeights.jetbrains-mono-6}",
+      "fontWeight": "{fontWeights.jetbrains-mono-5}",
       "lineHeight": "{lineHeights.4}",
       "fontSize": "{fontSize.1}",
       "letterSpacing": "{letterSpacing.1}",
