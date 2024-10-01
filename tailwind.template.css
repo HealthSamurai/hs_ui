@@ -111,8 +111,8 @@
     line-height: 150%;
   }
 
-  .txt-code, code {
-    font-family: "JetBrains Mono" !important;
+  .txt-code {
+    font-family: "JetBrains Mono";
     font-size: 14px !important;
     font-style: normal;
     font-weight: 400 !important;
@@ -144,6 +144,16 @@
     font-weight: 400;
     line-height: 150%;
   }
+
+  .txt-assistive-code, code {
+    font-family: "JetBrains Mono" !important;
+    color: var(--color-elements-readable);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+  }
+
   input[type=checkbox] {
     display: none;
   }
