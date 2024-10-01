@@ -111,11 +111,11 @@
     line-height: 150%;
   }
 
-  .txt-code {
-    font-family: "JetBrains Mono";
-    font-size: 14px;
+  .txt-code, code {
+    font-family: "JetBrains Mono" !important;
+    font-size: 14px !important;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 400 !important;
     line-height: 150%;
   }
 
