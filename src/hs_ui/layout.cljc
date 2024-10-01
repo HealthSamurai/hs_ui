@@ -33,7 +33,7 @@
       [:div (:slot/assistive-right props)]])
    (:slot/control props)
    (when-not (:c/assistive-top? props)
-     [:div {:class "w-full flex justify-between pt-[12px]"}
+     [:div {:class "w-full flex gap-x1point5 justify-between pt-[12px]"}
       [hs-ui.text/assistive {:class (when (:data-invalid props) "text-critical-default")}
        (:slot/assistive props)]
       [:div (:slot/assistive-right props)]])])

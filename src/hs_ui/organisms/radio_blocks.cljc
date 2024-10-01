@@ -1,5 +1,6 @@
 (ns hs-ui.organisms.radio-blocks
   (:require [hs-ui.components.radio-button]
+            [hs-ui.components.content-expand]
             [hs-ui.layout]))
 
 (defn component
