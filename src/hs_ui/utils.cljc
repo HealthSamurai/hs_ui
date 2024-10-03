@@ -2,6 +2,24 @@
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
                      [reagent.core])))
 
+(defn unsecured-copy-to-clipboard
+  [text]
+  #?(:cljs (let [textarea (js/document.createElement "textarea")]
+             (set! (.-value textarea) text)
+             (js/document.body.appendChild textarea)
+             (.focus textarea)
+             (.select textarea)
+             (js/document.execCommand "copy")
+             (js/document.body.removeChild textarea))
+     :clj  (println "unsecured-copy-to-clipboard")))
+
+(defn copy-to-clipboard
+  [text]
+  #?(:cljs (if js/window.isSecureContext
+             (js/navigator.clipboard.writeText text)
+             (unsecured-copy-to-clipboard text))
+     :clj  (println "clipboard-write-text")))
+
 (defn get-component-properties
   [arguments]
   (let [properties (first arguments)]
@@ -19,7 +37,7 @@
   (reduce-kv
    (fn [acc k v]
      (cond-> acc
-       (or (contains? #{"c" "slot"} (namespace k))
+       (or (contains? #{"c" "slot" "class"} (namespace k))
            (nil? v))
        (dissoc k)))
    properties
