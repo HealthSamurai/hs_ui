@@ -32,13 +32,28 @@
     (when-let [children (seq (next arguments))]
       (into [:<>] children))))
 
+(defn keep-slot-properties
+  [slot-name properties]
+  (let [slot-ns (name slot-name)]
+    (reduce-kv
+     (fn [acc k v]
+       (cond-> acc
+         (or (contains? #{slot-ns} (namespace k))
+             (nil? v))
+         (-> (assoc (keyword (name k)) v)
+             (dissoc k))))
+     properties
+     properties)))
+
 (defn remove-custom-properties
   [properties]
   (reduce-kv
    (fn [acc k v]
      (cond-> acc
-       (or (contains? #{"c" "slot" "class"} (namespace k))
-           (nil? v))
+       (or #_(contains? #{"c" "slot" "class"} (namespace k))
+           (namespace k)
+           (nil? v)
+           )
        (dissoc k)))
    properties
    properties))
@@ -74,3 +89,53 @@
                                        (:class properties-b)))
             (dissoc (remove-custom-properties properties-b) :class))
      :clj  nil))
+
+(defn merge-slot
+  [slot-name properties-a properties-b]
+  #?(:cljs
+     (let [res (reagent.core/merge-props
+                (assoc (remove-custom-properties properties-a)
+                       :class (class-names (:class properties-a)
+                                           (:class (-> (keep-slot-properties slot-name properties-b)
+                                                       (remove-custom-properties)))))
+                (dissoc (-> (keep-slot-properties slot-name properties-b)
+                            (remove-custom-properties))
+                        :class))]
+       (prn "res " res)
+       res)
+     :clj  nil))
+
+
+(defn slot [slot-name props & content]
+  [:<>
+   (reduce
+    (fn [acc element]
+      (if (coll? element)
+        (cond
+          (= (count element) 1) ; Element without props and value
+          (if-let [custom-value (:value (keep-slot-properties slot-name props))]
+            (conj acc
+                  [(first element) props custom-value])
+            (conj acc
+                  [(first element) props]))
+
+          (= (count element) 2) ; Element with props
+          (if-let [custom-value (:value (keep-slot-properties slot-name props))]
+            (conj acc
+                  [(first element)
+                   (merge-slot slot-name (second element) props)
+                   custom-value])
+            (conj acc
+                  [(first element)
+                   (merge-slot slot-name (second element) props)]))
+
+          (= (count element) 3) ; Element with props and value
+          (conj acc
+                [(first element)
+                 (merge-slot slot-name (second element) props)
+                 (last element)])
+
+          :else (conj acc element))
+        (conj acc element)))
+    [:<>]
+    content)])

@@ -3,27 +3,43 @@
             [hs-ui.utils]
             [hs-ui.components.button]))
 
+; NOTE: Here is exprimental kvlist the original one is commented below
+
 (defn component
   [props]
   [:div {:class "flex"}
-   [:div {:class "flex flex-col"}
+   [:div {:class "flex flex-col  gap-y-[12px]"}
+    (for [item (:c/items props)] ^{:key (or (:key item)
+                                            (random-uuid))}
+      (when (:value/value item)
+        [hs-ui.utils/slot :key item
+         [hs-ui.text/value {:class "block text-nowrap text-elements-assistive"}]]))]
+   [:div {:class "flex flex-col pl-[31px]  gap-y-[12px]"}
     (for [item (:c/items props)] ^{:key (:key item)}
-      (when (:slot/value item)
-        [hs-ui.text/value {:class "block text-nowrap text-elements-assistive"} (:slot/key item)]))]
-   [:div {:class "flex flex-col pl-[31px]"}
-    (for [item (:c/items props)] ^{:key (:key item)}
-      (when (:slot/value item)
+      (when (:value/value item)
         [:div {:class "flex group"}
-         [hs-ui.text/value (hs-ui.utils/merge-props
-                            (:class/value item)
-                            {:class "block truncate overflow-hidden"
-                             :title (:slot/value item)})
-          (:slot/value item)]
-         (when (:slot/copy? item)
-           [hs-ui.components.button/xs {:class "ml-x1 invisible group-hover:visible overflow-visible"
-                                        :on-click (fn [_] (hs-ui.utils/copy-to-clipboard (:slot/value item)))}
-            "COPY"])]
+         [hs-ui.utils/slot :value item
+          [hs-ui.text/value {:class "block truncate overflow-hidden"
+                             :title (:value/value item)}]]
+         (when (or (:copy/copy item) (:copy/copy props))
+           [hs-ui.utils/slot :copy item
+            [hs-ui.components.button/xs {:class "ml-x1 invisible group-hover:visible overflow-visible"
+                                         :on-click (fn [_] (hs-ui.utils/copy-to-clipboard (:slot/value item)))}
+             "COPY"]])]
         ))]])
+
+(defn wrapper
+  [props hashmap]
+  [:<>
+   (if (map? hashmap)
+     (let [hashmap (reduce-kv
+                    (fn [acc k v]
+                      (conj acc {:key/value k
+                                 :value/value v}))
+                    []
+                    hashmap)]
+       [component (assoc props :c/items hashmap)])
+     [component props hashmap])])
 
 #_(defn component
   [props]
