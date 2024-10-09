@@ -24,7 +24,7 @@
          (when (or (:copy/copy item) (:copy/copy props))
            [hs-ui.utils/slot :copy item
             [hs-ui.components.button/xs {:class "ml-x1 invisible group-hover:visible overflow-visible"
-                                         :on-click (fn [_] (hs-ui.utils/copy-to-clipboard (:slot/value item)))}
+                                         :on-click (fn [_] (hs-ui.utils/copy-to-clipboard (:value/value item)))}
              "COPY"]])]
         ))]])
 
