@@ -43,3 +43,7 @@
 (defn assistive
   [props & children]
   (into [:span (utils/merge-props {:class "inline-block txt-assistive text-[theme(colors.elements-assistive)]"} props)] children))
+
+(defn home
+  [props & children]
+  (into [:span (utils/merge-props {:class "inline-block txt-home text-[theme(colors.elements-readable)]"} props)] children))

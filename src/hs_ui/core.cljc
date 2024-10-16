@@ -59,6 +59,7 @@
 (def text-counter              hs-ui.text/counter)
 (def text-button-label-xs      hs-ui.text/button-label-xs)
 (def text-assistive            hs-ui.text/assistive)
+(def text-home                 hs-ui.text/home)
 
 (def separator hs-ui.graphic/separator)
 

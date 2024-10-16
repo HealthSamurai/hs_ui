@@ -15,4 +15,5 @@
                             [hs-ui.components.content-expand/component
                              {:c/open?  (:c/expand? props)
                               :class    (:c/expand-class props)
-                              :on-click (:c/on-expand props)}])}])
+                              :on-click (:c/on-expand props)}])
+    :class (:c/control-class props)}])

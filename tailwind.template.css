@@ -69,6 +69,14 @@
     line-height: 28px;
   }
 
+  .txt-home {
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
   .txt-button-label-regular {
     font-family: Inter;
     font-size: 14px;

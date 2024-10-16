@@ -24,7 +24,7 @@
 
 (defn control
   [props]
-  [:div {:class "pb-[12px]"}
+  [:div (hs-ui.utils/merge-props {:class "pb-[12px]"} props)
    [hs-ui.text/label {:class "pb-[11px]"} (:slot/label props)]
    (when (:c/assistive-top? props)
      [:div {:class "w-full flex justify-between pb-[12px]"}
