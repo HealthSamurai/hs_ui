@@ -14,6 +14,7 @@
    [hs-ui.components.radio]
    [hs-ui.components.radio-button]
    [hs-ui.components.kvlist]
+   [hs-ui.components.dialog]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]
@@ -76,3 +77,5 @@
 (def button-xs        hs-ui.components.button/xs)
 (def button-xs-red    hs-ui.components.button/xs-red)
 (def button-slim      hs-ui.components.button/slim)
+
+(def dialog hs-ui.components.dialog/component)

@@ -231,4 +231,12 @@
     top: 6px;
     color: var(--color-elements-readable-inv);
   }
+  dialog::backdrop {
+    background-color: rgb(107 114 128);
+    opacity:   0.75;
+    animation: modal-opacity 0.25s ease-out;
+  }
+  dialog:open {
+    animation: modal-open-scale 0.25s ease-out;
+  }
 }

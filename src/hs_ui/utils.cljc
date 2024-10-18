@@ -20,6 +20,31 @@
              (unsecured-copy-to-clipboard text))
      :clj  (println "clipboard-write-text")))
 
+(defn stop-propagation
+  [event]
+  #?(:cljs (.stopPropagation event)
+     :clj  nil))
+
+(defn get-element-by-id
+  [id]
+  #?(:cljs (js/document.getElementById id)
+     :clj  nil))
+
+(defn show-modal
+  [id]
+  #?(:cljs (.showModal (get-element-by-id id))
+     :clj  nil))
+
+(defn close-modal
+  [id]
+  #?(:cljs (.close (get-element-by-id id))
+     :clj  nil))
+
+(defn get-event-target
+  [event]
+  #?(:cljs (.. event -target)
+     :clj  (-> @event :target)))
+
 (defn get-component-properties
   [arguments]
   (let [properties (first arguments)]
