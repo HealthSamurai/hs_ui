@@ -146,9 +146,10 @@
   (if (:href properties) :a :button))
 
 (defn loading-icon
-  [children]
+  [properties children]
   [:<>
-   [:div.flex.items-center.justify-center.absolute.animate-spin hs-ui.svg.loading/svg]
+   [:div.flex.items-center.justify-center.absolute.animate-spin
+    (if (:loading-icon properties) (:loading-icon properties) hs-ui.svg.loading/svg)]
    [:span.contents.invisible children]])
 
 (defn component
@@ -158,7 +159,7 @@
                      loading? (assoc :disabled true))]
     [(get-element-name properties)
      (utils/merge-props {:class base-class} properties)
-     (if loading? (loading-icon children) children)]))
+     (if loading? (loading-icon properties children) children)]))
 
 (defn primary
   [& arguments]
