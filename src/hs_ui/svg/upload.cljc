@@ -4,20 +4,25 @@
   [:svg
    {:xmlns "http://www.w3.org/2000/svg",
     :width "17",
-    :height "16",
-    :viewBox "0 0 17 16",
+    :height "17",
+    :viewBox "0 0 17 17",
     :fill "none"}
    [:path
     {:d
-     "M14.9004 10V12.6667C14.9004 13.0203 14.7599 13.3594 14.5099 13.6095C14.2598 13.8595 13.9207 14 13.5671 14H4.23372C3.8801 14 3.54096 13.8595 3.29091 13.6095C3.04087 13.3594 2.90039 13.0203 2.90039 12.6667V10",
-     :stroke "#727885",
+     "M14.9004 10.8281V13.4948C14.9004 13.8484 14.7599 14.1876 14.5099 14.4376C14.2598 14.6876 13.9207 14.8281 13.5671 14.8281H4.23372C3.8801 14.8281 3.54096 14.6876 3.29091 14.4376C3.04087 14.1876 2.90039 13.8484 2.90039 13.4948V10.8281",
+     :stroke "currentColor",
      :stroke-width "1.25",
      :stroke-linecap "round",
      :stroke-linejoin "round"}]
    [:path
-    {:d
-     "M12.2344 5.33333L8.90104 2M8.90104 2L5.56771 5.33333M8.90104 2L8.90104 10",
-     :stroke "#727885",
+    {:d "M5.56641 7.49414L8.89974 10.8275L12.2331 7.49414",
+     :stroke "currentColor",
+     :stroke-width "1.25",
+     :stroke-linecap "round",
+     :stroke-linejoin "round"}]
+   [:path
+    {:d "M8.90039 10.8281V2.82812",
+     :stroke "currentColor",
      :stroke-width "1.25",
      :stroke-linecap "round",
      :stroke-linejoin "round"}]])
