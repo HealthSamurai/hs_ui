@@ -14,6 +14,7 @@
    "has-[:checked]:border-b"
    "has-[:checked]:border-[#EA4A35]"
    "has-[:checked]:text-[theme(colors.elements-readable)]"
+   "has-[:checked]:pb-[3.5px]"
    ])
 
 (defn component
