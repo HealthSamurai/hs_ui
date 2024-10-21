@@ -15,6 +15,7 @@
    [hs-ui.components.radio-button]
    [hs-ui.components.kvlist]
    [hs-ui.components.dialog]
+   [hs-ui.components.tab]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]
@@ -23,6 +24,7 @@
    [hs-ui.organisms.radio-blocks]
    [hs-ui.organisms.dropdown]
    [hs-ui.organisms.header]
+   [hs-ui.organisms.tabs]
 
    [hs-ui.layout]
    ))
@@ -34,6 +36,7 @@
 (def checkbox hs-ui.components.checkbox/component)
 (def content-expand hs-ui.components.content-expand/component)
 (def breadcrumbs hs-ui.components.breadcrumbs/component)
+(def tab         hs-ui.components.tab/component)
 
 (def list-item  hs-ui.components.list-item/component)
 (def list-items hs-ui.components.list-items/component)
@@ -48,6 +51,7 @@
 (def org-radio-blocks hs-ui.organisms.radio-blocks/component)
 (def org-dropdown     hs-ui.organisms.dropdown/component)
 (def org-header       hs-ui.organisms.header/component)
+(def org-tabs         hs-ui.organisms.tabs/component)
 
 (def text-page-header          hs-ui.text/page-header)
 (def text-section-header       hs-ui.text/section-header)
