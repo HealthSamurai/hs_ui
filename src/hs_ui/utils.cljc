@@ -76,9 +76,7 @@
    (fn [acc k v]
      (cond-> acc
        (or #_(contains? #{"c" "slot" "class"} (namespace k))
-           (namespace k)
-           (nil? v)
-           )
+           (namespace k))
        (dissoc k)))
    properties
    properties))

@@ -50,20 +50,17 @@
 
 (defn component
   [properties]
-  (let [input-ref (utils/ratom nil)]
-    [:fieldset {:class        (utils/class-names root-class (:c/root-class properties))
-                :data-invalid (:data-invalid properties)
-                :disabled     (:disabled properties)
-                :on-click    #(.focus @input-ref)}
-     (when-let [slot-left (:slot/left properties)]
-       [:div {:class slot-left-class} slot-left])
-     [:input (utils/merge-props {:class input-class
-                                 :spellCheck false
-                                 :ref   #(when % (reset! input-ref %))}
-                                properties)]
-     (when (or (:slot/right properties)
-               (:data-invalid properties))
-       [:div {:class slot-right-class}
-        (:slot/right properties)
-        (when (:data-invalid properties)
-          [:span {:class "pr-[2px]"} hs-ui.svg.warning/svg])])]))
+  [:fieldset {:class        (utils/class-names root-class (:c/root-class properties))
+              :data-invalid (:data-invalid properties)
+              :disabled     (:disabled properties)}
+   (when-let [slot-left (:slot/left properties)]
+     [:div {:class slot-left-class} slot-left])
+   [:input (utils/merge-props {:class input-class
+                               :spellCheck false}
+                              properties)]
+   (when (or (:slot/right properties)
+             (:data-invalid properties))
+     [:div {:class slot-right-class}
+      (:slot/right properties)
+      (when (:data-invalid properties)
+        [:span {:class "pr-[2px]"} hs-ui.svg.warning/svg])])])
