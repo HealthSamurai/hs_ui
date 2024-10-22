@@ -3,18 +3,17 @@
 
 (def root-class
   ["txt-label"
-   "w-fit"
    "text-[theme(colors.elements-assistive)]"
    "pb-[4.5px]"
    ;; Hovered
    "hover:text-[theme(colors.elements-readable)]"
    "data-[hovered=true]:text-[theme(colors.elements-readable)]"
+   "border-b"
+   "border-transparent"
 
    ;; Selected
-   "has-[:checked]:border-b"
    "has-[:checked]:border-[#EA4A35]"
    "has-[:checked]:text-[theme(colors.elements-readable)]"
-   "has-[:checked]:pb-[3.5px]"
    ])
 
 (defn component
