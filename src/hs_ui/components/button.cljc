@@ -14,7 +14,9 @@
    "select-none"
    "disabled:cursor-not-allowed"
    "data-[loading=true]:relative"
-   "data-[loading=true]:cursor-wait"])
+   "data-[loading=true]:cursor-wait"
+   "whitespace-nowrap"
+   "truncate"])
 
 (def primary-class
   ["shadow-button"

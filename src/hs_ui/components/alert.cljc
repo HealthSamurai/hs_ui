@@ -47,6 +47,6 @@
       (= "warning" (:severity props)) hs-ui.svg.warning-light/svg
       (= "info" (:severity props)) hs-ui.svg.info/svg)]
    (into [:div] children)
-   [:div {:class "ml-[theme(spacing.x4)] pl-[16px]"}
+   #_[:div {:class "ml-[theme(spacing.x4)] pl-[16px]"}
     ;; Close icon?
     ]])
