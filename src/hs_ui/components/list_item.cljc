@@ -22,5 +22,5 @@
 (defn component
   [props & children]
   (into
-   [:div (utils/merge-props {:class root-class} props)]
+   [(if (:href props) :a :div) (utils/merge-props {:class root-class} props)]
    children))

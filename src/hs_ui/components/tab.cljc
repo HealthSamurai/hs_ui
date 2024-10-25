@@ -5,6 +5,7 @@
   ["txt-label"
    "text-[theme(colors.elements-assistive)]"
    "pb-[4.5px]"
+   "cursor-pointer"
    ;; Hovered
    "hover:text-[theme(colors.elements-readable)]"
    "data-[hovered=true]:text-[theme(colors.elements-readable)]"
@@ -18,8 +19,8 @@
 
 (defn component
   [props]
-  [:label.cursor-pointer (dissoc (u/merge-props  {:class root-class} props)
-                                 :on-change :id :name)
+  [(if (:href props) :a :label) (dissoc (u/merge-props  {:class root-class} props)
+                                        :on-change :id :name)
    [:input.hidden {:type           "radio"
                    :value          (:id props)
                    :name           (:name props)

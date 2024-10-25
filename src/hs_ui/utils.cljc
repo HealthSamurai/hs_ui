@@ -45,6 +45,11 @@
   #?(:cljs (.. event -target)
      :clj  (-> @event :target)))
 
+(defn target-value
+  [event]
+  #?(:cljs (.. event -target -value)
+     :clj  (-> @event :target :value)))
+
 (defn get-component-properties
   [arguments]
   (let [properties (first arguments)]
