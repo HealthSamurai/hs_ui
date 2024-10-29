@@ -1,4 +1,4 @@
-(ns hs-ui.svg.databse-2)
+(ns hs-ui.svg.database-2)
 
 (def svg
   [:svg
