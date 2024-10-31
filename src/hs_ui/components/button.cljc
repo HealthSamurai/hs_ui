@@ -151,7 +151,7 @@
   [properties children]
   [:<>
    [:div.flex.items-center.justify-center.absolute.animate-spin
-    (if (:loading-icon properties) (:loading-icon properties) hs-ui.svg.loading/svg)]
+    (if (:c/loading-icon properties) (:c/loading-icon properties) hs-ui.svg.loading/svg)]
    [:span.contents.invisible children]])
 
 (defn component
