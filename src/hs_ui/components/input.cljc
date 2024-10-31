@@ -38,7 +38,7 @@
   ["flex"
    "items-center"
    "space-x-[theme(spacing.x1)]"
-   "pl-[11px]"
+   "pl-[12px]"
    ])
 
 (def slot-right-class
