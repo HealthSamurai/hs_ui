@@ -25,7 +25,8 @@
 (defn control
   [props]
   [:div (hs-ui.utils/merge-props {:class "pb-[12px]"} props)
-   [hs-ui.text/label {:class "pb-[11px]"} (:slot/label props)]
+   (when (:slot/label props)
+     [hs-ui.text/label {:class "pb-[11px]"} (:slot/label props)])
    (when (:c/assistive-top? props)
      [:div {:class "w-full flex justify-between pb-[12px]"}
       [hs-ui.text/assistive {:class (when (:data-invalid props) "text-critical-default")}
@@ -33,10 +34,12 @@
       [:div (:slot/assistive-right props)]])
    (:slot/control props)
    (when-not (:c/assistive-top? props)
-     [:div {:class "w-full flex gap-x1point5 justify-between pt-[12px]"}
-      [hs-ui.text/assistive {:class (when (:data-invalid props) "text-critical-default")}
-       (:slot/assistive props)]
-      [:div (:slot/assistive-right props)]])])
+     (when (or (:slot/assistive props)
+               (:slot/assistive-right props))
+       [:div {:class "w-full flex gap-x1point5 justify-between pt-[12px]"}
+        [hs-ui.text/assistive {:class (when (:data-invalid props) "text-critical-default")}
+         (:slot/assistive props)]
+        [:div (:slot/assistive-right props)]]))])
 
 (defn expandeable-control
   [props]

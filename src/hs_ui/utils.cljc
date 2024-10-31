@@ -89,7 +89,7 @@
 (defn ratom
   [value]
   #?(:cljs (reagent.core/atom value)
-     :clj  nil))
+     :clj  (atom value)))
 
 (defn class-names
   "Merges tailwind classes. To merge variable it should be wrapped like this 'pt-[--var]'"
@@ -107,7 +107,7 @@
                    (class-names (:class properties-a)
                                 (:class properties-b)))
             (dissoc properties-b :class))
-     :clj  nil))
+     :clj  (merge properties-a properties-b)))
 
 (defn merge-props
   [properties-a properties-b]
@@ -116,7 +116,7 @@
                    :class (class-names (:class properties-a)
                                        (:class properties-b)))
             (dissoc (remove-custom-properties properties-b) :class))
-     :clj  nil))
+     :clj  (merge properties-a properties-b)))
 
 (defn merge-slot
   [slot-name properties-a properties-b]

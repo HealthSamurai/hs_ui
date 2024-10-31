@@ -145,7 +145,10 @@
 
 (defn get-element-name
   [properties]
-  (if (:href properties) :a :button))
+  (cond
+    (:href properties) :a
+    (:c/label? properties) :label
+    :else :button))
 
 (defn loading-icon
   [properties children]

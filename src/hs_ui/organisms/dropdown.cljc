@@ -16,6 +16,7 @@
    "border"
    "border-border-default"
    "rounded-corner-m"
+   "min-h-[36px]"
    "py-[5px]"
    "pl-x1point5"
    "pr-[11px]"
@@ -90,9 +91,12 @@
                             (on-close e)))
           :placeholder  "Search"}]
         [hs-ui.components.list-items/component {:class list-items-class}
-         (for [option (:c/options props)]
+         (for [option (:c/options props)] ^{:key (:id option)}
            [hs-ui.components.list-item/component
-            (merge option {:data-selected (= (:value selected-item) (:value option))})
+            (merge {:on-mouse-down
+                    (when-let [on-select (:c/on-select-option props)]
+                      (fn [e] (on-select e option)))}
+                   option)
             (:slot/left option)
             (:slot/label option)])]])]))
 
