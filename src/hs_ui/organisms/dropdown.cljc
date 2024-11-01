@@ -76,29 +76,37 @@
 
 (defn element
   [props]
-  (let [open?         (:c/open? props)
-        selected-item (get-selected-option (:c/options props) (:value props))]
+  (let [open? (:c/open? props)]
     [:div {:class (hs-ui.utils/class-names "relative" (:class props))}
-     [selected-item-view props selected-item]
+     [selected-item-view props (:slot/selected-option props)]
      (when open?
        [:div {:class menu-class}
         [hs-ui.organisms.search-input/component
          {:c/root-class search-input-class
           :ref          #(when % (.focus %))
           :on-change    (:c/on-search props)
+          :value        (:c/search-value props)
           :on-blur      (fn [e]
                           (when-let [on-close (:c/on-close props)]
                             (on-close e)))
           :placeholder  "Search"}]
         [hs-ui.components.list-items/component {:class list-items-class}
-         (for [option (:c/options props)] ^{:key (:id option)}
-           [hs-ui.components.list-item/component
-            (merge {:on-mouse-down
-                    (when-let [on-select (:c/on-select-option props)]
-                      (fn [e] (on-select e option)))}
-                   option)
-            (:slot/left option)
-            (:slot/label option)])]])]))
+         (let [options (if (seq (:c/options props))
+                         (:c/options props)
+                         (if (seq (:c/search-value props))
+                           [{:id "not-found" :slot/label "Not found"}]
+                           (mapv
+                            (fn [index]
+                              {:id (str "dropdown-skeleton-" index) :slot/label [:span.skeleton.w-full "#"]})
+                            (range 10))))]
+           (for [option options] ^{:key (:id option)}
+             [hs-ui.components.list-item/component
+              (merge {:on-mouse-down
+                      (when-let [on-select (:c/on-select-option props)]
+                        (fn [e] (on-select e option)))}
+                     option)
+              (:slot/left option)
+              (:slot/label option)]))]])]))
 
 
 (defn component

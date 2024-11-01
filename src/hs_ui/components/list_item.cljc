@@ -8,7 +8,8 @@
    "rounded-[theme(borderRadius.corner-s)]"
    "txt-value"
    "text-[theme(colors.elements-assistive)]"
-   "px-[theme(spacing.x1point5)]"
+   "pr-[theme(spacing.x1point5)]"
+   "pl-[theme(spacing.x1point5)]"
    "[&_svg]:mr-[7px]"
    ;; Hover
    "hover:bg-[theme(colors.surface-1)]"
