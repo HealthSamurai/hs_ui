@@ -50,6 +50,7 @@ module.exports = {
     "elements-warning" : "var(--color-elements-warning)",
     "border-XS-critical" : "var(--color-border-XS-critical)",
     "cta-hover" : "var(--color-cta-hover)",
+    "illustrations-solid" : "var(--color-illustrations-solid)",
     "yellow" : {
       "50" : "var(--color-yellow-50)",
       "30" : "var(--color-yellow-30)",
