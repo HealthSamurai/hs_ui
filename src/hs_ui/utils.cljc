@@ -2,6 +2,11 @@
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
                      [reagent.core])))
 
+(defn edn->json-pretty
+  [edn]
+  #?(:cljs (js/JSON.stringify (clj->js edn) nil 2)
+     :clj  nil))
+
 (defn unsecured-copy-to-clipboard
   [text]
   #?(:cljs (let [textarea (js/document.createElement "textarea")]

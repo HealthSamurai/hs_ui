@@ -32,27 +32,27 @@
        :defaultValue (:defaultValue properties)
        :language "json"
        :automaticLayout true
-       :options  (merge {:minimap              {:enabled false}
+       :options  (merge {:minimap                          {:enabled false}
                          "bracketPairColorization.enabled" false
-                         :fontSize             "14px"
-                         :automaticLayout true
-                         :fontStyle            "normal"
-                         :scrollbar {:verticalScrollbarSize 6
-                                     :horizontalScrollbarSize 6}
-                         :padding {:top 16}
-                         :lineHeight           "1.5"
-                         :letterSpacing        "0.2em"
-                         :fontWeight           "300"
-                         :fontFamily           "JetBrains Mono"
-                         :overviewRulerLanes   0
+                         :fontSize                         "14px"
+                         :automaticLayout                  true
+                         :fontStyle                        "normal"
+                         :scrollbar                        {:verticalScrollbarSize   6
+                                                            :horizontalScrollbarSize 6}
+                         :padding                          {:top 16}
+                         :lineHeight                       "1.5"
+                         :letterSpacing                    "0.2em"
+                         :fontWeight                       "300"
+                         :fontFamily                       "JetBrains Mono"
+                         :overviewRulerLanes               0
+                         :glyphMargin                      false
+                         :renderLineHighlight              "none"
+                         :folding                          true
+                         :renderIndentGuides               false
+                         :lineDecorationsWidth             0
+                         :tabSize                          2
                          ;; :lineNumbers          "off"
-                         :glyphMargin          false
-                         :renderLineHighlight  "none"
-                         :folding              true
-                         :renderIndentGuides   false
-                         :lineDecorationsWidth 0
-                         :tabSize              2
-                         ;; :lineNumbersMinChars  0
+                         :lineNumbersMinChars 4
                          }
                         (:options properties))
        :onMount

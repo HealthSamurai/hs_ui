@@ -39,16 +39,28 @@
   (into [:span (utils/merge-props {:class "txt-code text-[theme(colors.elements-readable)]"} props)] children))
 
 (defn counter
-  [props & children]
-  (into [:span (utils/merge-props {:class "txt-counter text-[theme(colors.critical-default)]"} props)] children))
+  [& attrs]
+  (let [props (utils/get-component-properties attrs)
+        child (utils/get-component-children attrs)]
+    [:span
+     (utils/merge-props
+      {:class "txt-counter text-[theme(colors.critical-default)]"}
+      props)
+     child]))
 
 (defn button-label-xs
   [props & children]
   (into [:span (utils/merge-props {:class "txt-button-label-xs text-[theme(colors.cta)]"} props)] children))
 
 (defn assistive
-  [props & children]
-  (into [:span (utils/merge-props {:class "inline-block txt-assistive text-[theme(colors.elements-assistive)]"} props)] children))
+  [& attrs]
+  (let [props (utils/get-component-properties attrs)
+        child (utils/get-component-children attrs)]
+    [:span
+     (utils/merge-props
+      {:class "inline-block txt-assistive text-[theme(colors.elements-assistive)]"}
+      props)
+     child]))
 
 (defn home
   [props & children]
