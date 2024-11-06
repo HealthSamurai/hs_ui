@@ -25,6 +25,7 @@
    [hs-ui.organisms.dropdown]
    [hs-ui.organisms.header]
    [hs-ui.organisms.tabs]
+   [hs-ui.organisms.resource-editor]
 
    [hs-ui.layout]
    ))
@@ -44,14 +45,15 @@
 
 (def alert hs-ui.components.alert/component)
 
-(def org-checkbox     hs-ui.organisms.checkbox/component)
-(def org-input        hs-ui.organisms.input/component)
-(def org-search-input hs-ui.organisms.search-input/component)
-(def org-radio        hs-ui.organisms.radio/component)
-(def org-radio-blocks hs-ui.organisms.radio-blocks/component)
-(def org-dropdown     hs-ui.organisms.dropdown/component)
-(def org-header       hs-ui.organisms.header/component)
-(def org-tabs         hs-ui.organisms.tabs/component)
+(def org-checkbox        hs-ui.organisms.checkbox/component)
+(def org-input           hs-ui.organisms.input/component)
+(def org-search-input    hs-ui.organisms.search-input/component)
+(def org-radio           hs-ui.organisms.radio/component)
+(def org-radio-blocks    hs-ui.organisms.radio-blocks/component)
+(def org-dropdown        hs-ui.organisms.dropdown/component)
+(def org-header          hs-ui.organisms.header/component)
+(def org-tabs            hs-ui.organisms.tabs/component)
+(def org-resource-editor hs-ui.organisms.resource-editor/component)
 
 (def text-page-header          hs-ui.text/page-header)
 (def text-section-header       hs-ui.text/section-header)

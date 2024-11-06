@@ -13,8 +13,14 @@
   (into [:span (utils/merge-props {:class "txt-button-label-regular text-[theme(colors.elements-readable)]"} props)] children))
 
 (defn label
-  [props & children]
-  (into [:label (utils/merge-props {:class "inline-block txt-label text-[theme(colors.elements-readable)]"} props)] children))
+  [& attrs]
+  (let [props (utils/get-component-properties attrs)
+        child (utils/get-component-children attrs)]
+    [:label
+     (utils/merge-props
+      {:class "inline-block txt-label text-[theme(colors.elements-readable)]"}
+      props)
+     child]))
 
 (defn link
   [props & children]
