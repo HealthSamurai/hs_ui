@@ -5,8 +5,60 @@
    [hs-ui.components.monaco]
    [hs-ui.components.button]
    [hs-ui.components.content-expand]
+   [hs-ui.svg.loading]
    [hs-ui.svg.check-2]
-   [hs-ui.svg.chevron-double]))
+   [hs-ui.svg.chevron-double]
+   [re-frame.core :as rf]
+   [clojure.string :as str]
+   #?(:cljs ["@mischnic/json-sourcemap" :as jsonMap])
+   #?(:cljs [goog.object])
+   ))
+
+(defn validator-path->json-map-path
+  [path]
+  (if (and (string? path) (seq path))
+    (str "/" (str/replace (str/replace path #"\.|\[|\]\." "/") #"\]" ""))
+    ""))
+
+(rf/reg-fx
+ ::monaco-goto-line
+ (fn [{:keys [monaco-editor path] :as _options}]
+   #?(:cljs
+      (let [json-string (.getValue monaco-editor)]
+        (when (seq json-string)
+          (let [json-map (jsonMap/parse json-string nil (clj->js {:dialect "JSON5"}))
+                json-map-pointers (.-pointers json-map)
+                position (or (goog.object/get json-map-pointers (validator-path->json-map-path path))
+                             (clj->js {:key {:line 0 :column 0}}))
+                line-number (inc (.-line (or (.-key position)
+                                             (.-value position))))
+                column-number (inc (.-column (or (.-key position)
+                                                 (.-value position))))
+                decoration (clj->js [{:range         {:startLineNumber line-number
+                                                      :endLineNumber   line-number
+                                                      :startColumn     1
+                                                      :endColumn       1}
+                                      :options       {:isWholeLine true
+                                                      :className "fade-out bg-red-300"}}])]
+
+
+            ;; Reveal and position cursor at the line
+            (.revealLineNearTop ^js/Object monaco-editor line-number)
+            (.setPosition ^js/Object monaco-editor (clj->js {:column     column-number
+                                                             :lineNumber line-number}))
+            (.focus ^js/Object monaco-editor)
+
+            ;; Apply decoration and remove after 1 second
+            (let [decoration-ids (.deltaDecorations ^js/Object monaco-editor #js [] decoration)]
+              (js/setTimeout
+               (fn []
+                 (.deltaDecorations ^js/Object monaco-editor decoration-ids #js []))
+               1000))))))))
+
+(rf/reg-event-fx
+ ::monaco-goto-line
+ (fn [_ [_ options]]
+   {::monaco-goto-line options}))
 
 (defn recalc-monaco-layout
   [editor]
@@ -17,35 +69,52 @@
   (let [open? (hs-ui.utils/ratom false)]
     (fn [monaco-editor error]
       [:<>
-       [:tr {:class ["group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]}
+       [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]}
         ;; TODO: add on click props for error (jump to code)
-        [:td {:class "group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-critical-default)]"} (:type error)]
-        [:td {:class "group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-elements-readable)]"} (:path error)]
-        [:td.group.py-1.px-2
+        [:td {:class "max-w-[20vw] group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-critical-default)]"
+              :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
+                                                           :monaco-editor @monaco-editor}])}
+         (:type error)]
+        [:td {:class "max-w-[20vw] w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-elements-readable)]"
+              :style {:direction "rtl"}
+              :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
+                                                           :monaco-editor @monaco-editor}])}
+         (:path error)]
+        [:td.group.py-1.px-2 {:class "min-w-[80px] user-select-none"}
          [hs-ui.components.content-expand/component
           {:on-click #(do (swap! open? not)
                           (recalc-monaco-layout @monaco-editor))}]]]
        (when @open?
-         [:tr {:colSpan 3}
-          [:td
-           [:pre {:class "pl-2 bg-white txt-code pb-2"}
+         [:tr
+          [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
+           [:pre {:class "pl-2 bg-white txt-code pb-2 text-wrap"}
             (hs-ui.utils/edn->json-pretty error)]]])])))
 
 (defn valid-result
   [props]
-  [:div {:class "py-2 px-4 flex space-x-2 bg-[var(--color-surface-1)]"}
+  [:div {:class "py-2 px-4 flex space-x-2 bg-[var(--color-surface-1)] rounded-b-[var(--corner-corner-m)]"}
    [:span {:class "text-[var(--color-elements-green)]"} hs-ui.svg.check-2/svg]
    [hs-ui.text/assistive (:valid-result-text props)]])
 
 (defn result-loading
   [props]
-  ;; TODO: add loading state
-  )
+  (let [has-errors? (not-empty (:errors props))]
+    [:div {:class ["py-2 px-4 flex space-x-2 rounded-b-[var(--corner-corner-m)] items-center"
+                   (if has-errors?
+                     "bg-[var(--color-critical-default)]"
+                     "bg-[var(--color-surface-1)]")]}
+     [:span.animate-spin
+      {:style {:filter (if has-errors?
+                         "brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(340deg) brightness(100%) contrast(101%)"
+                         "invert(47%) sepia(7%) saturate(673%) hue-rotate(183deg) brightness(96%) contrast(87%)")}}
+      hs-ui.svg.loading/svg-16]
+     [hs-ui.text/assistive {:class (when has-errors? "text-[var(--color-elements-readable-inv)]")}
+      "validating..."]]))
 
 (defn error-result
   [props monaco-editor]
-  [:details {:class "group/item" :open true}
-   [:summary {:class "py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer rounded-b-[var(--corner-corner-m)] group-open/item:rounded-b-none"
+  [:details {:class "group/item"}
+   [:summary {:class "h-[32px] py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer rounded-b-[var(--corner-corner-m)] group-open/item:rounded-b-none"
               :on-click (fn [] (recalc-monaco-layout @monaco-editor))}
     [:span {:class "flex items-center"}
      [hs-ui.text/assistive {:class "text-[var(--color-elements-readable-inv)]"} "Validation errors:"]
@@ -55,12 +124,14 @@
     [:span {:class "text-[var(--color-elements-readable-inv)] group-open/item:rotate-180"}
      hs-ui.svg.chevron-double/svg]
 
-    [hs-ui.components.button/xs-red {:on-click (fn [e]
+    [hs-ui.components.button/xs-red {:class "px-2"
+                                     :on-click (fn [e]
                                                  (hs-ui.utils/stop-propagation e)
-                                                 )}
+                                                 (when-let [validate-fn (:validate-fn props)]
+                                                   (validate-fn)))}
      "VALIDATE"]]
    [:div {:class "p-2 border border-t-0 border-[var(--color-critical-default)] rounded-b-[var(--corner-corner-m)]"}
-    [:table.table-fixed.w-full
+    [:table.table-auto.w-full
      [:tbody
       (for [error (:errors props)] ^{:key (hash error)}
         [error-item monaco-editor error])]]]])
