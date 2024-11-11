@@ -9,7 +9,7 @@
         "react-dom": "^18.2.0",
         "tailwind-merge": "^2.5.2",
         "@monaco-editor/react": "^4.5.0",
-        "json-source-map": "^0.6.1",
+        "json-source-map": "^0.6.1"
     },
     "devDependencies": {
         "@storybook/addon-a11y": "^7.6.7",
