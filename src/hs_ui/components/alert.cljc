@@ -20,6 +20,11 @@
    "text-[theme(colors.elements-warning)]"
    ])
 
+(def warning-message-class
+  ["text-[#8F4E00]"
+   "flex"
+   "items-center"])
+
 (def info-class
   ["p-[theme(spacing.x2)]"
    "bg-[theme(colors.surface-info)]"
@@ -37,6 +42,8 @@
                                      (utils/class-names error-message-class)
                                      (= "warning" (:severity props))
                                      (utils/class-names warning-class)
+                                     (= "warning-message" (:severity props))
+                                     (utils/class-names warning-message-class)
                                      (= "info" (:severity props))
                                      (utils/class-names info-class))}
                            props)
@@ -45,6 +52,7 @@
       (= "error" (:severity props)) hs-ui.svg.error/svg
       (= "error-message" (:severity props)) hs-ui.svg.error/svg
       (= "warning" (:severity props)) hs-ui.svg.warning-light/svg
+      (= "warning-message" (:severity props)) hs-ui.svg.warning-light/svg-16
       (= "info" (:severity props)) hs-ui.svg.info/svg)]
    (into [:div] children)
    #_[:div {:class "ml-[theme(spacing.x4)] pl-[16px]"}
