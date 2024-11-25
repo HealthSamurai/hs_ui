@@ -9,11 +9,11 @@
 
 (defn nest
   [props]
-  (if (:c/show? props)
-    [:div {:class "outline outline-1 outline-separator rounded-corner-l"}
-     [:div {:class "py-x3 px-x2"} (:slot/control props)]
-     [confirmation {:slot/right (:slot/confirmation props) :class "px-[theme(spacing.x2)]"}]]
-    [:div {:class "py-x3 px-x2"} (:slot/control props)]))
+  (let [show? (:c/show? props)]
+    [:div (when show? {:class "outline outline-1 outline-separator rounded-corner-l"})
+     [:div {:class ["px-x2" (if show? "py-x3" "pt-x3")]} (:slot/control props)]
+     (when show?
+       [confirmation {:slot/right (:slot/confirmation props) :class "px-[theme(spacing.x2)]"}])]))
 
 (defn navbar
   [props]
