@@ -46,5 +46,5 @@
   [:div
    (:slot/control props)
    (when (:c/expand? props)
-     [:div {:class "w-full px-x1point5 pb-x2"}
+     [:div {:class "w-full pb-x2"}
       (:slot/content props)])])
