@@ -8,15 +8,16 @@
 (defn component
   [props]
   [:div {:class "flex"}
-   [:div {:class "flex flex-col  gap-y-[12px]"}
-    (for [item (:c/items props)] ^{:key (or (:key item)
-                                            (random-uuid))}
+   [:div {:class "flex flex-col gap-y-[12px]"}
+    (for [item (:c/items props)]
       (when (:value/value item)
+        ^{:key (:key/value item)}
         [hs-ui.utils/slot :key item
          [hs-ui.text/value {:class "block text-nowrap text-elements-assistive"}]]))]
    [:div {:class "flex flex-col pl-[31px]  gap-y-[12px]"}
-    (for [item (:c/items props)] ^{:key (:key item)}
+    (for [item (:c/items props)]
       (when (:value/value item)
+        ^{:key (:value/value item)}
         [:div {:class "flex group"}
          [hs-ui.utils/slot :value item
           [hs-ui.text/value {:class "block truncate overflow-hidden"
