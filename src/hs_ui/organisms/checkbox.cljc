@@ -9,8 +9,8 @@
    {:slot/control         [:div.flex.items-center
                            [hs-ui.components.checkbox/component props]
                            (if (:checked props)
-                             [:span {:class "ml-[12px]"} "Enabled"]
-                             [:span {:class "ml-[12px]"} "Disabled"])]
+                             [:span {:class "ml-[12px]"} (:c/checked-text props "Enabled")]
+                             [:span {:class "ml-[12px]"} (:c/unchecked-text props "Disabled")])]
     :slot/label           (:label props)
     :slot/assistive       (:assistive props)
     :slot/assistive-right (when (contains? props :c/expand?)

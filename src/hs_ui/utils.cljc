@@ -134,7 +134,6 @@
                 (dissoc (-> (keep-slot-properties slot-name properties-b)
                             (remove-custom-properties))
                         :class))]
-       (prn "res " res)
        res)
      :clj  nil))
 
