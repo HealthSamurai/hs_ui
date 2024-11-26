@@ -26,7 +26,7 @@
   [props]
   [:div (hs-ui.utils/merge-props {:class "pb-[12px]"} props)
    (when (:slot/label props)
-     [hs-ui.text/label {:class "pb-[11px]"} (:slot/label props)])
+     [hs-ui.text/label {:class "w-full pb-[11px]"} (:slot/label props)])
    (when (:c/assistive-top? props)
      [:div {:class "w-full flex justify-between pb-[12px]"}
       [hs-ui.text/assistive {:class (when (:data-invalid props) "text-critical-default")}
@@ -45,6 +45,5 @@
   [props]
   [:div
    (:slot/control props)
-   (when (:c/expand? props)
-     [:div {:class "w-full pb-x2"}
-      (:slot/content props)])])
+   [:div {:class ["w-full pb-x2" (if (:c/expand? props) "block" "hidden")]}
+    (:slot/content props)]])

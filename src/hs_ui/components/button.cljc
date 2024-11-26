@@ -101,8 +101,10 @@
    "bg-[theme(colors.surface-1)]"
    "txt-button-label-xs"
    "text-[theme(colors.cta)]"
-   "pr-[7.5px]"
-   "pl-[7.2px]"
+   "px-0"
+   "py-0"
+   "pr-[3.5px]"
+   "pl-[3.2px]"
    "pt-[2.25px]"
    "pb-[1.75px]"
    ;; Hovered
@@ -113,13 +115,7 @@
    ;; Loading
    "data-[loading=true]:bg-[theme(colors.surface-1)]"
    "data-[loading=true]:text-[theme(colors.border-XS-regular)]"
-   ;; Active
-   "active:bg-[theme(colors.border-XS-regular-hover)]"
-   "active:border-[theme(colors.border-XS-regular-hover)]"
-   "active:text-[theme(colors.elements-readable-inv)]"
-   "data-[active=true]:!bg-[theme(colors.border-XS-regular-hover)]"
-   "data-[active=true]:!border-[theme(colors.border-XS-regular-hover)]"
-   "data-[active=true]:!text-[theme(colors.elements-readable-inv)]"])
+   "group"])
 
 (def xs-red-class
   ["h-[24px]"
@@ -129,6 +125,8 @@
    "bg-[theme(colors.critical-default)]"
    "txt-button-label-xs"
    "text-[theme(colors.elements-readable-inv)]"
+   "px-0"
+   "py-0"
    "pr-[7.5px]"
    "pl-[7.2px]"
    "pt-[2.25px]"

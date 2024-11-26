@@ -27,8 +27,14 @@
   (into [:a (utils/merge-props {:class "txt-link text-[theme(colors.cta)]"} props)] children))
 
 (defn value
-  [props & children]
-  (into [:span (utils/merge-props {:class "txt-value text-[theme(colors.elements-readable)]"} props)] children))
+  [& attrs]
+  (let [props (utils/get-component-properties attrs)
+        child (utils/get-component-children attrs)]
+    [:span
+     (utils/merge-props
+      {:class "txt-value text-[theme(colors.elements-readable)]"}
+      props)
+     child]))
 
 (defn body
   [props & children]

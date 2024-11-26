@@ -9,7 +9,7 @@
     :fill "none"}
    [:path
     {:d "M11.3337 1L4.00033 8.33333L0.666992 5",
-     :stroke "#727885",
+     :stroke "currentColor",
      :stroke-width "1.25",
      :stroke-linecap "round",
      :stroke-linejoin "round"}]])

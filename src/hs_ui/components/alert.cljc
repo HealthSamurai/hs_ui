@@ -47,14 +47,15 @@
                                      (= "info" (:severity props))
                                      (utils/class-names info-class))}
                            props)
-   [:div {:class "mr-[theme(spacing.x1)]"}
+   (some->>
     (cond
       (= "error" (:severity props)) hs-ui.svg.error/svg
       (= "error-message" (:severity props)) hs-ui.svg.error/svg
       (= "warning" (:severity props)) hs-ui.svg.warning-light/svg
-      (= "warning-message" (:severity props)) hs-ui.svg.warning-light/svg-16
-      (= "info" (:severity props)) hs-ui.svg.info/svg)]
+      (= "info" (:severity props)) hs-ui.svg.info/svg)
+    (conj [:div {:class "mr-[theme(spacing.x1)]"}]))
    (into [:div] children)
-   #_[:div {:class "ml-[theme(spacing.x4)] pl-[16px]"}
-    ;; Close icon?
-    ]])
+   (some->>
+    (cond
+      (= "warning-message" (:severity props)) hs-ui.svg.warning-light/svg-16)
+    (conj [:div {:class "ml-[theme(spacing.x1)]"}]))])

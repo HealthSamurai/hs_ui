@@ -1,33 +1,25 @@
 (ns hs-ui.components.kvlist
   (:require [hs-ui.text]
             [hs-ui.utils]
+            [hs-ui.svg.copy]
+            [hs-ui.svg.check-3]
             [hs-ui.components.button]))
-
-; NOTE: Here is exprimental kvlist the original one is commented below
 
 (defn component
   [props]
-  [:div {:class "flex"}
-   [:div {:class "flex flex-col gap-y-[12px]"}
-    (for [item (:c/items props)]
-      (when (:value/value item)
-        ^{:key (:key/value item)}
-        [hs-ui.utils/slot :key item
-         [hs-ui.text/value {:class "block text-nowrap text-elements-assistive"}]]))]
-   [:div {:class "flex flex-col pl-[31px]  gap-y-[12px]"}
-    (for [item (:c/items props)]
-      (when (:value/value item)
-        ^{:key (:value/value item)}
-        [:div {:class "flex group"}
-         [hs-ui.utils/slot :value item
-          [hs-ui.text/value {:class "block truncate overflow-hidden"
-                             :title (:value/value item)}]]
-         (when (or (:copy/copy item) (:copy/copy props))
-           [hs-ui.utils/slot :copy item
-            [hs-ui.components.button/xs {:class "ml-x1 invisible group-hover:visible overflow-visible"
-                                         :on-click (fn [_] (hs-ui.utils/copy-to-clipboard (:value/value item)))}
-             "COPY"]])]
-        ))]])
+  [:table.table-fixed
+   [:tbody
+    (for [item (:c/items props) :when (:value/value item)] ^{:key (:key/value item)}
+      [:tr
+       [:td
+        [hs-ui.text/value {:class "text-elements-assistive text-nowrap"} (str (:key/value item))]]
+       [:td.pl-2.group.flex
+        [hs-ui.text/value {:class "truncate"} (str (:value/value item))]
+        (when (or (:copy/copy item) (:copy/copy props))
+          [hs-ui.components.button/xs {:class "ml-x1 invisible group-hover:visible overflow-visible"
+                                       :on-click (fn [_] (hs-ui.utils/copy-to-clipboard (:value/value item)))}
+           [:span {:class "group-focus:hidden"} hs-ui.svg.copy/svg]
+           [:span {:class "hidden group-focus:block px-[2.7px]"} hs-ui.svg.check-3/svg]])]])]])
 
 (defn wrapper
   [props hashmap]
@@ -41,19 +33,3 @@
                     hashmap)]
        [component (assoc props :c/items hashmap)])
      [component props hashmap])])
-
-#_(defn component
-  [props]
-  [:table {:class "table-auto border-separate border-spacing-y-[6px]"}
-   [:tbody
-    (for [item (:c/items props)] ^{:key (:key item)}
-      (when (:slot/value item)
-        [:tr
-         [:td
-          [hs-ui.text/value {:class "text-nowrap text-elements-assistive "} (:slot/key item)]]
-         [:td {:class "pl-[31px] group text-nowrap truncate max-w-0 w-full"}
-          [hs-ui.text/value {} (:slot/value item)]
-          (when (:slot/copy? item)
-           [hs-ui.components.button/xs {:class "ml-x1  group-hover:visible overflow-visible"} "COPY"])]
-         
-         ]))]])
