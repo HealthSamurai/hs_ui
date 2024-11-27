@@ -5,11 +5,12 @@
     "author": "Health Samurai",
     "license": "MIT",
     "dependencies": {
+        "@monaco-editor/react": "^4.5.0",
+        "json-source-map": "^0.6.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "tailwind-merge": "^2.5.2",
-        "@monaco-editor/react": "^4.5.0",
-        "json-source-map": "^0.6.1"
+        "react-tooltip": "^5.28.0",
+        "tailwind-merge": "^2.5.2"
     },
     "devDependencies": {
         "@storybook/addon-a11y": "^7.6.7",

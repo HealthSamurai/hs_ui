@@ -16,6 +16,7 @@
    [hs-ui.components.kvlist]
    [hs-ui.components.dialog]
    [hs-ui.components.tab]
+   [hs-ui.components.tooltip]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]
@@ -85,3 +86,5 @@
 (def button-slim      hs-ui.components.button/slim)
 
 (def dialog hs-ui.components.dialog/component)
+
+(def tooltip hs-ui.components.tooltip/component)
