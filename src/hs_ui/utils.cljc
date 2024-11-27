@@ -1,5 +1,6 @@
 (ns hs-ui.utils
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
+                     ["fuse.js" :as fuse]
                      [reagent.core])))
 
 (defn edn->json-pretty
@@ -171,3 +172,22 @@
         (conj acc element)))
     [:<>]
     content)])
+
+(defn fuse-search
+  [fuse-options items search-string]
+  #?(:cljs
+     (->>
+      (js->clj
+       (.search (fuse. (clj->js items)
+                       (clj->js
+                        (merge
+                         {:shouldSort         true
+                          :threshold          0.3
+                          :minMatchCharLength 2
+                          :includeScore       true
+                          :includeMatches     true
+                          :ignoreLocation     true}
+                         fuse-options)))
+                search-string)
+       :keywordize-keys true)
+      (mapv :item))))
