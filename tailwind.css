@@ -280,4 +280,8 @@
   .fade-out {
     animation: fadeOut 1s ease forwards; /* Adjust duration and timing function as needed */
   }
+  textarea::-webkit-resizer,
+  textarea::-webkit-scrollbar-corner {
+    background: transparent !important;
+  }
 }
