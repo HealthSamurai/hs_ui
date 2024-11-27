@@ -41,7 +41,7 @@
 
 (def list-item  hs-ui.components.list-item/component)
 (def list-items hs-ui.components.list-items/component)
-(def kvlist     hs-ui.components.kvlist/wrapper)
+(def kvlist     hs-ui.components.kvlist/component)
 
 (def alert hs-ui.components.alert/component)
 
