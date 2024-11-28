@@ -17,7 +17,9 @@
        [:td
         [hs-ui.text/value {:class "text-elements-assistive text-nowrap"} (str (:key/value item))]]
        [:td {:class "pl-2 group grid grid-cols-[auto_1fr] flex items-center"}
-        [hs-ui.text/value {:class "truncate"} (str (:value/value item))]
+        [hs-ui.text/value {:class "truncate"}
+         [:span {:class "text-[theme(colors.elements-assistive)] pr-1"} (str (:value/hint item))]
+         (str (:value/value item))]
         [:div.pl-2
          (when (or (:copy/copy item) (:copy/copy props))
            [hs-ui.components.button/xs {:class "w-[22px] h-[22px] flex justify-center items-center invisible group-hover:visible overflow-visible"
