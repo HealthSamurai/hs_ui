@@ -13,13 +13,13 @@
 
 
 # Storybook
-``` zsh
-bb story 
+```sh
+make story 
 ```
 
 # Development
-``` zsh
-bb init
-bb dev
+```sh
+make init
+make dev
 ```
 
