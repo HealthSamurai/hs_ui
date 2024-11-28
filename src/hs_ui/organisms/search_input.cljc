@@ -1,13 +1,19 @@
 (ns hs-ui.organisms.search-input
   (:require [hs-ui.components.input]
             [hs-ui.svg.search]
+            [hs-ui.svg.close]
             [hs-ui.utils :as u]))
 
 (defn component
   [props]
   [hs-ui.components.input/component
-   (assoc props
-          :c/root-class (u/class-names ["h-[32px]" (when (= "rounded" (:c/variant props))
-                                                     "rounded-corner-max")]
-                                       (:c/root-class props))
-          :slot/left [:span {:class "text-[#CCCED3]"} hs-ui.svg.search/svg])])
+   (cond-> (assoc props
+                  :c/root-class (u/class-names ["h-[32px]" (when (= "rounded" (:c/variant props))
+                                                             "rounded-corner-max")]
+                                               (:c/root-class props))
+                  :slot/left [:span {:class "text-[#CCCED3]"} hs-ui.svg.search/svg])
+
+     (some? (:on-clean props))
+     (assoc :slot/right [:span {:class "text-[#CCCED3] cursor-pointer"
+                                :on-click (:on-clean props)}
+                         hs-ui.svg.close/svg]))])

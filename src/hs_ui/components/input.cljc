@@ -44,8 +44,8 @@
 (def slot-right-class
   ["flex"
    "items-center"
-   "space-x-[10px]"
-   "pr-[5px]"])
+   "space-x-[theme(spacing.x1)]"
+   "pr-[12px]"])
 
 
 (defn component
