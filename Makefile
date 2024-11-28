@@ -29,11 +29,11 @@ tailwind-release:
 
 .PHONY: shadow-watch
 shadow-watch:
-	clj -M:shadow watch components storybook
+	clojure -M:shadow watch components storybook
 
 .PHONY: shadow-release
 shadow-release:
-	clj -M:shadow release components storybook
+	clojure -M:shadow release components storybook
 
 .PHONY: story
 story:
