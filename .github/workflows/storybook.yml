@@ -66,9 +66,9 @@ jobs:
       - name: Setup GH Pages
         uses: actions/configure-pages@v3
       - name: Initialize project
-        run: bb init
+        run: make init
       - name: Build with Shadow CLJS
-        run: bb pages
+        run: make pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
 

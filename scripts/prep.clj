@@ -4,4 +4,7 @@
 (defn pre-run-time-preparations!
   [& _]
   (prn "[HS-UI] preparation")
-  (clojure.java.shell/sh "bb" "tailwind-release"))
+  (let [^ProcessBuilder builder (java.lang.ProcessBuilder. ["make" "tailwind-release"])]
+    (.redirectOutput builder java.lang.ProcessBuilder$Redirect/INHERIT)
+    (.redirectError builder java.lang.ProcessBuilder$Redirect/INHERIT)
+    (.waitFor (.start builder))))
