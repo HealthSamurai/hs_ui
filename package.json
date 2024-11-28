@@ -5,12 +5,12 @@
     "author": "Health Samurai",
     "license": "MIT",
     "dependencies": {
+        "@mischnic/json-sourcemap": "^0.1.1",
         "@monaco-editor/react": "^4.5.0",
-        "json-source-map": "^0.6.1",
+        "fuse.js": "^7.0.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-tooltip": "^5.28.0",
-        "fuse.js": "^7.0.0",
         "tailwind-merge": "^2.5.2"
     },
     "devDependencies": {
