@@ -24,7 +24,7 @@
  ::monaco-goto-line
  (fn [{:keys [monaco-editor path] :as _options}]
    #?(:cljs
-      (let [json-string (.getValue monaco-editor)]
+      (let [json-string (.getValue ^js/Object monaco-editor)]
         (when (seq json-string)
           (let [json-map (jsonMap/parse json-string nil (clj->js {:dialect "JSON5"}))
                 json-map-pointers (.-pointers json-map)
@@ -32,8 +32,8 @@
                              (clj->js {:key {:line 0 :column 0}}))
                 line-number (inc (.-line (or (.-key position)
                                              (.-value position))))
-                column-number (inc (.-column (or (.-key position)
-                                                 (.-value position))))
+                column-number (inc ^js/Object (.-column (or (.-key position)
+                                                            (.-value position))))
                 decoration (clj->js [{:range         {:startLineNumber line-number
                                                       :endLineNumber   line-number
                                                       :startColumn     1
