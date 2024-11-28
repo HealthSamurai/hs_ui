@@ -1,8 +1,13 @@
 (ns hs-ui.components.textarea
-  (:require [hs-ui.utils]
-            [hs-ui.svg.area-scale]))
+  (:require
+   [hs-ui.svg.area-scale]
+   [hs-ui.utils]))
 
 (def root-class
+  ["group/textarea"
+   "relative"])
+
+(def fieldset-class
   ["border"
    "border-[theme(colors.border-default)]"
    "rounded-[theme(borderRadius.corner-m)]"
@@ -28,6 +33,7 @@
    "bg-transparent"
    "w-full"
    "placeholder:text-[theme(colors.elements-disabled)]"
+   "resize-none"
    ;; Invalid
    "data-[invalid=true]:text-[theme(colors.critical-default)]"
    ;; Disabled
@@ -46,20 +52,18 @@
    "right-[6px]"
    "top-[5px]"])
 
-
 (defn component
   [properties]
-  [:fieldset {:class        (hs-ui.utils/class-names root-class (:c/root-class properties))
-              :data-invalid (:data-invalid properties)
-              :disabled     (:disabled properties)}
+  [:div {:class (hs-ui.utils/class-names root-class (:c/root-class properties))}
    (when-let [slot-left (:slot/left properties)]
      [:div {:class slot-left-class} slot-left])
-   [:textarea (hs-ui.utils/merge-props {:class input-class
-                                        :rows  4
-                                        :spellCheck false}
-                                       properties)]
-   [:div {:class "absolute bottom-[6px] right-[6px] pointer-events-none"}
-    hs-ui.svg.area-scale/svg]
+   [:fieldset {:class        fieldset-class
+               :data-invalid (:data-invalid properties)
+               :disabled     (:disabled properties)}
+    [:textarea (hs-ui.utils/merge-props {:class input-class
+                                         :rows  4
+                                         :spellCheck false}
+                                        properties)]]
    (when (or (:slot/right properties)
              (:data-invalid properties))
      [:div {:class slot-right-class}

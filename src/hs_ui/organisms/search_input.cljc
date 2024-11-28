@@ -13,7 +13,7 @@
                                                (:c/root-class props))
                   :slot/left [:span {:class "text-[#CCCED3]"} hs-ui.svg.search/svg])
 
-     (some? (:on-clean props))
+     (some? (:c/on-clean props))
      (assoc :slot/right [:span {:class "text-[#CCCED3] cursor-pointer"
-                                :on-click (:on-clean props)}
+                                :on-click (:c/on-clean props)}
                          hs-ui.svg.close/svg]))])
