@@ -181,12 +181,8 @@
        (.search (fuse. (clj->js items)
                        (clj->js
                         (merge
-                         {:shouldSort         true
-                          :threshold          0.3
-                          :minMatchCharLength 2
-                          :includeScore       true
-                          :includeMatches     true
-                          :ignoreLocation     true}
+                         {:threshold          0.5
+                          :minMatchCharLength 2}
                          fuse-options)))
                 search-string)
        :keywordize-keys true)
