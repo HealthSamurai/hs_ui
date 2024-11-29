@@ -4,7 +4,8 @@
 ;; TODO: Merge props, migrate styles to tailwind
 (defn component
   [props]
-  [:label.toggle.block  {:class (when (:c/small props) "-scale-[0.7]")}
+  [:label.toggle.block  {:style (when (:c/small props)
+                                  {:scale "0.7"})}
    [:input {:type      "checkbox"
             :checked   (:checked props)
             :disabled  (:disabled props)
