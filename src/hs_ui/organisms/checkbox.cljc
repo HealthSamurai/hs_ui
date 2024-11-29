@@ -8,7 +8,7 @@
   [:div {:class "flex w-full"}
    [hs-ui.components.checkbox/component props]
    [hs-ui.text/label {:class "pl-[12px] pb-[12px] w-full"} (:label props)
-    [:div {:class "w-full flex justify-between pt-[2px]"}
+    [:div {:class "w-full flex justify-between space-x-2 pt-[2px]"}
      [hs-ui.text/assistive {:class "block w-full"} (:assistive props)]
      (when (contains? props :c/expand?)
        [:div 
