@@ -22,3 +22,9 @@
   [value]
   #?(:cljs (reagent.core/atom value)
      :clj  value))
+
+(defn storybook-render-default
+  [component]
+  (fn [args]
+    (-> [component (js->clj args {:keywordize-keys true})]
+        (reagent-as-element))))

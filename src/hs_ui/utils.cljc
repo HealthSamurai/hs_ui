@@ -3,6 +3,11 @@
                      ["fuse.js" :as fuse]
                      [reagent.core])))
 
+(defn build-key
+  [prefix x]
+  (str prefix "_" (:key x (hash x))))
+
+
 (defn edn->json-pretty
   [edn]
   #?(:cljs (js/JSON.stringify (clj->js edn) nil 2)
@@ -100,10 +105,12 @@
 (defn class-names
   "Merges tailwind classes. To merge variable it should be wrapped like this 'pt-[--var]'"
   [a b]
-  #?(:cljs (let [a (reagent.core/class-names a)
-                 b (reagent.core/class-names b)
-                 r (tw-merge/twMerge a b)]
-             r)
+  #?(:cljs (if b
+             (let [a (reagent.core/class-names a)
+                   b (reagent.core/class-names b)
+                   r (tw-merge/twMerge a b)]
+               r)
+             a)
      :clj  nil))
 
 (defn merge-properties

@@ -3,6 +3,8 @@
    [hs-ui.text]
    [hs-ui.graphic]
 
+   [hs-ui.elements.table]
+
    [hs-ui.components.button]
    [hs-ui.components.input]
    [hs-ui.components.checkbox]
@@ -29,8 +31,11 @@
    [hs-ui.organisms.tabs]
    [hs-ui.organisms.resource-editor]
 
-   [hs-ui.layout]
-   ))
+   [hs-ui.layout]))
+
+;; Elements
+(def table hs-ui.elements.table/view)
+
 
 (def button   hs-ui.components.button/component)
 (def input    hs-ui.components.input/component)
