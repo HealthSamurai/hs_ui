@@ -1,9 +1,10 @@
 (ns hs-ui.utils
+  (:refer-clojure :exclude [key])
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
                      ["fuse.js" :as fuse]
                      [reagent.core])))
 
-(defn build-key
+(defn key
   [prefix x]
   (str prefix "_" (:key x (hash x))))
 

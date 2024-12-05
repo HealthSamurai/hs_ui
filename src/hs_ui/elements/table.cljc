@@ -1,6 +1,5 @@
 (ns hs-ui.elements.table
-  (:require [hs-ui.utils :as utils]
-            [hs-ui.text  :as text]))
+  (:require [hs-ui.utils :as u]))
 
 (def root-class
   ["border-collapse"
@@ -23,44 +22,43 @@
    "py-2"
    "whitespace-nowrap"
    "truncate"
-   "break-all"
-   ;;"max-w-[100px]"
-   ;;"min-w-[100px]"
-   ])
+   "break-all"])
 
 (def body-tr-class
-  ["even:bg-[var(--color-surface-1)]"])
+  ["even:bg-[var(--color-surface-1)]"
+   "aria-selected:bg-[var(--color-surface-selected)]"
+   "data-[role=link]:cursor-pointer"
+   "data-[role=link]:hover:opacity-80"])
 
 (defn colgroup [props]
   [:colgroup
    (for [column (:columns props)]
-     [:col {:span  "1"
-            :key   (utils/build-key ::colgroup column)
+     [:col {:key   (u/key ::colgroup column)
             :style {:width (:width column "auto")}}])])
 
 (defn thead [props]
-  [:thead {:class (utils/class-names thead-class (:c/thead-class props))}
+  [:thead {:class thead-class}
    [:tr
     (for [column (:columns props)]
-      [:th {:key   (utils/build-key ::head-col column)
-            :class column-name-class
-            :scope "col"}
+      [:th {:class column-name-class :key (u/key ::head-col column)}
        (:name column)])]])
 
 (defn tbody [props]
   [:tbody
-   (for [row (:items props)]
-     [:tr {:key (utils/build-key ::row row) :class body-tr-class}
-      (for [column (:columns props)]
-        (let [column-name (:name column)]
-          [:td {:key   (utils/build-key ::col column)
-                :class column-value-class}
-           [:span.truncate
-            (or (get row column-name)
-                (get row (keyword column-name)))]]))])])
+   (for [row (:rows props)]
+     (let [on-row-click (:on-row-click props)]
+       [:tr {:key           (u/key ::row row)
+             :class         body-tr-class
+             :aria-selected (:selected? row)
+             :data-role     (when on-row-click "link")
+             :on-click      (when on-row-click (on-row-click row))}
+        (for [col (:columns props)]
+          [:td {:class column-value-class :key (u/key ::col col)}
+           (or (get row (:name col))
+               (get row (keyword (:name col))))])]))])
 
 (defn view [props]
-  [:table {:class (utils/class-names root-class (:class props))}
+  [:table {:class (u/class-names root-class (:class props))}
    [colgroup props]
    [thead props]
    [tbody props]])
