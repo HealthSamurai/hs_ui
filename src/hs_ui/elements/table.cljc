@@ -1,28 +1,41 @@
 (ns hs-ui.elements.table
-  (:require [hs-ui.utils :as u]))
+  (:require
+   [hs-ui.utils :as u]))
 
 (def root-class
-  ["border-collapse"
-   "table-fixed"
-   "w-full"])
+  ["table-fixed"
+   "h-full"
+   "w-full"
+   "border-spacing-0"
+   "border-separate"
+   ])
 
 (def thead-class
-  ["border-b"
-   "border-[var(--color-separator)]"
-   "text-[var(--color-elements-assistive)]"])
+  ["text-[var(--color-elements-assistive)]"])
+
+(def tbody-class
+  ["overflow-auto"])
 
 (def column-name-class
   ["p-4"
    "font-medium"
    "text-nowrap"
-   "text-left"])
+   "text-left"
+   "bg-[var(--color-surface-0)]"
+   "border-b"
+   "border-[var(--color-separator)]"
+
+   "sticky"
+   "top-0"
+   "z-10"])
 
 (def column-value-class
   ["px-4"
    "py-2"
    "whitespace-nowrap"
    "truncate"
-   "break-all"])
+   "break-all"
+   ])
 
 (def body-tr-class
   ["even:bg-[var(--color-surface-1)]"
@@ -44,18 +57,21 @@
        (:name column)])]])
 
 (defn tbody [props]
-  [:tbody
+  [:tbody {:class tbody-class}
    (for [row (:rows props)]
      (let [on-row-click (:on-row-click props)]
        [:tr {:key           (u/key ::row row)
              :class         body-tr-class
              :aria-selected (:selected? row)
              :data-role     (when on-row-click "link")
-             :on-click      (when on-row-click (on-row-click row))}
+             :on-click      (when on-row-click #(on-row-click row))}
         (for [col (:columns props)]
-          [:td {:class column-value-class :key (u/key ::col col)}
-           (or (get row (:name col))
-               (get row (keyword (:name col))))])]))])
+          (let [value (or (get row (:name col))
+                          (get row (keyword (:name col))))]
+            [:td {:class column-value-class
+                  :title (u/edn->json-pretty value)
+                  :key (u/key ::col col)}
+             (str value)]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
