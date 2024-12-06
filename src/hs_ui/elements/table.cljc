@@ -4,17 +4,12 @@
 
 (def root-class
   ["table-fixed"
-   "h-full"
    "w-full"
    "border-spacing-0"
-   "border-separate"
-   ])
+   "border-separate"])
 
 (def thead-class
   ["text-[var(--color-elements-assistive)]"])
-
-(def tbody-class
-  ["overflow-auto"])
 
 (def column-name-class
   ["p-4"
@@ -57,7 +52,7 @@
        (:name column)])]])
 
 (defn tbody [props]
-  [:tbody {:class tbody-class}
+  [:tbody
    (for [row (:rows props)]
      (let [on-row-click (:on-row-click props)]
        [:tr {:key           (u/key ::row row)
