@@ -64,7 +64,7 @@
           (let [value (or (get row (:name col))
                           (get row (keyword (:name col))))]
             [:td {:class column-value-class
-                  :title (u/edn->json-pretty value)
+                  :title value
                   :key (u/key ::col col)}
              (str value)]))]))])
 
