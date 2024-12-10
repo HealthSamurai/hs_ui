@@ -6,7 +6,7 @@
             [hs-ui.components.content-expand]
             [hs-ui.text]
             [hs-ui.layout]
-            [hs-ui.utils]))
+            [hs-ui.utils :as u]))
 
 (def selected-item-class
   ["flex"
@@ -99,7 +99,7 @@
                             (fn [index]
                               {:id (str "dropdown-skeleton-" index) :slot/label [:span.skeleton.w-full "#"]})
                             (range 10))))]
-           (for [option options] ^{:key (:id option)}
+           (for [option options] ^{:key (u/key ::list-item option)}
              [hs-ui.components.list-item/component
               (merge {:on-mouse-down
                       (when-let [on-select (:c/on-select-option props)]

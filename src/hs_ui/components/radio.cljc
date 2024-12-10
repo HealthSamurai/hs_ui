@@ -22,18 +22,19 @@
 
 (defn component
   [props & children]
-  [:div
-   [:input (utils/merge-props {:type "radio" :class "hidden"} (dissoc props :class))]
-   (into
-    [:label {:for (:id props) :class (:class props)}
-     [:div {:class (utils/class-names
-                    default-class
-                    (cond (and (:checked props)
-                               (:disabled props))
-                          disabled-class
+  (let [input-id (str (:name props) "_" (:value props))]
+    [:div
+     [:input (utils/merge-props {:id input-id :type "radio" :class "hidden"} (dissoc props :class))]
+     (into
+      [:label {:for input-id :class (:class props)}
+       [:div {:class (utils/class-names
+                      default-class
+                      (cond (and (:checked props)
+                                 (:disabled props))
+                            disabled-class
 
-                          (:checked props)
-                          checked-class
+                            (:checked props)
+                            checked-class
 
-                          :else unchecked-class))}]]
-    children)])
+                            :else unchecked-class))}]]
+      children)]))
