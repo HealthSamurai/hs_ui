@@ -64,9 +64,9 @@
           (let [value (or (get row (:name col))
                           (get row (keyword (:name col))))]
             [:td {:class column-value-class
-                  :title value
+                  :title (str value)
                   :key (u/key ::col col)}
-             (str value)]))]))])
+             value]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
