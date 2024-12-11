@@ -56,7 +56,10 @@
    (when-let [slot-left (:slot/left properties)]
      [:div {:class slot-left-class} slot-left])
    [:input (utils/merge-props {:class input-class
-                               :spellCheck false}
+                               :spellCheck false
+                               :onWheel   (when (= "number" (:type properties))
+                                            (fn [e]
+                                              (.blur (.-target e))))}
                               properties)]
    (when (or (:slot/right properties)
              (:data-invalid properties))
