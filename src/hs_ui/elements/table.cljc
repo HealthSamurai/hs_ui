@@ -36,7 +36,7 @@
   ["even:bg-[var(--color-surface-1)]"
    "aria-selected:bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
-   "data-[role=link]:hover:opacity-80"])
+   "data-[role=link]:hover:opacity-40"])
 
 (defn colgroup [props]
   [:colgroup
@@ -64,9 +64,9 @@
           (let [value (or (get row (:name col))
                           (get row (keyword (:name col))))]
             [:td {:class column-value-class
-                  :title (str value)
+                  :title (or (:title value) (str (:value value)))
                   :key (u/key ::col col)}
-             value]))]))])
+             (:value value)]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
