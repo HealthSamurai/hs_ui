@@ -14,6 +14,7 @@
    "justify-between"
    "cursor-pointer"
    "border"
+   "group"
    "border-border-default"
    "rounded-corner-m"
    "min-h-[36px]"
@@ -67,8 +68,16 @@
       [:span {:class selected-item-slot-left} (:slot/left selected-item)])
     [hs-ui.text/value {:class (when (:disabled props) "text-elements-assistive")}
      (:slot/label selected-item)]]
-   (when-not (:disabled props)
-     [:span {:class "text-[#727885]"} hs-ui.svg.chevron-down/svg])])
+   [:div.flex.items-center.space-x-2
+    (when selected-item
+      [:span {:class "group-hover:block hidden text-[#CCCED3] cursor-pointer"
+              :on-click (fn [e]
+                          (when-let [on-clean (:c/on-clean props)]
+                            (u/stop-propagation e)
+                            (on-clean e)))}
+       hs-ui.svg.close/svg])
+    (when-not (:disabled props)
+      [:span {:class "text-[#727885]"} hs-ui.svg.chevron-down/svg])]])
 
 (defn get-selected-option
   [options value]
