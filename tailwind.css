@@ -281,6 +281,7 @@
     animation: fadeOut 1s ease forwards; /* Adjust duration and timing function as needed */
   }
 
+
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
