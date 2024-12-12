@@ -1,4 +1,4 @@
-{:paths ["src" "resources/public"]
+{:paths ["src" "resources"]
  :deps  {re-frame/re-frame {:mvn/version "1.4.3"}
          reagent/reagent   {:mvn/version "1.2.0"}}
 
