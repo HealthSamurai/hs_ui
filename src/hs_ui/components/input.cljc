@@ -2,7 +2,8 @@
   (:require [hs-ui.utils :as utils]
             [hs-ui.text]
             [hs-ui.components.button]
-            [hs-ui.svg.warning]))
+            [hs-ui.svg.warning]
+            [hs-ui.components.tooltip]))
 
 (def root-class
   ["border"
@@ -66,4 +67,11 @@
      [:div {:class slot-right-class}
       (:slot/right properties)
       (when (:data-invalid properties)
-        [:span {:class "pr-[2px]"} hs-ui.svg.warning/svg])])])
+        (if (:c/error-message properties)
+          [:span {:class "pr-[2px]"}
+           (if-let [message (:c/error-message properties)]
+             [hs-ui.components.tooltip/component {:place "top-start"
+                                                  :error?  true
+                                                  :tooltip message}
+              hs-ui.svg.warning/svg]
+             hs-ui.svg.warning/svg)]))])])
