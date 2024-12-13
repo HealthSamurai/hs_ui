@@ -2,8 +2,14 @@
   (:require [hs-ui.utils :as utils]))
 
 (defn page-header
-  [props & children]
-  (into [:span (utils/merge-props {:class "txt-page-header text-[theme(colors.elements-readable)]"} props)] children))
+  [& attrs]
+  (let [props (utils/get-component-properties attrs)
+        child (utils/get-component-children attrs)]
+    [:label
+     (utils/merge-props
+      {:class "txt-page-header text-[theme(colors.elements-readable)]"}
+      props)
+     child]))
 
 (defn section-header [props & children]
   (into [:span (utils/merge-props {:class "txt-section-header text-[theme(colors.elements-readable)]"} props)] children))
