@@ -3,7 +3,8 @@
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
                      ["fuse.js" :as fuse]
                      [reagent.core])
-     :clj (:require [clojure.string])))
+     :clj (:require [clojure.string]
+                    [cheshire.core])))
 
 (defn encode-uri
   [value]
@@ -26,7 +27,7 @@
 (defn edn->json-pretty
   [edn]
   #?(:cljs (js/JSON.stringify (clj->js edn) nil 2)
-     :clj  nil))
+     :clj  (cheshire.core/generate-string edn {:pretty true})))
 
 (defn unsecured-copy-to-clipboard
   [text]
