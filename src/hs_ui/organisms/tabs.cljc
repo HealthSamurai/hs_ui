@@ -9,6 +9,6 @@
 
 (defn component
   [props]
-  [:div {:class (u/class-names root-class (:class props))}
+  [:div (u/merge-props {:class root-class} props)
    (for [item (:c/items props)] ^{:key (:id item)}
      [hs-ui.components.tab/component (assoc item :name (:name props))])])
