@@ -20,7 +20,7 @@
 (defn component
   [props]
   [(if (:href props) :a :label) (dissoc (u/merge-props  {:class root-class} props)
-                                        :on-change :id :name)
+                                        :on-change :name)
    [:input.hidden {:type           "radio"
                    :value          (:id props)
                    :name           (:name props)
