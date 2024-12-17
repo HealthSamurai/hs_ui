@@ -3,7 +3,8 @@
    [hs-ui.utils :as u]))
 
 (def root-class
-  ["table-fixed"
+  ["table"
+   "table-fixed"
    "w-full"
    "border-spacing-0"
    "border-separate"])
@@ -25,15 +26,16 @@
    "z-10"])
 
 (def column-value-class
-  ["px-4"
+  ["table-cell"
+   "px-4"
    "py-2"
    "whitespace-nowrap"
-   "truncate"
-   "break-all"
-   ])
+   "relative"
+   "break-all"])
 
 (def body-tr-class
-  ["even:bg-[var(--color-surface-1)]"
+  ["table-row"
+   "even:bg-[var(--color-surface-1)]"
    "aria-selected:bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
    "data-[role=link]:hover:opacity-40"])
@@ -66,7 +68,25 @@
             [:td {:class column-value-class
                   :title (or (:title value) (str (:value value)))
                   :key (u/key ::col col)}
-             (:value value)]))]))])
+             [:span {:class ["truncate"]}
+              (:value value)]
+             [:div {:style {:height "10px"
+                            :width "10px"
+                            :position "absolute"
+                            :top "-10px"
+                            :left "0px"
+                            :gap "2px"
+                            :inline-size "fit-content"
+                            :padding-inline "2px"
+                            :margin-block-end "-1px"
+                            :background-color "rgb(0, 119, 204)"
+                            :color "rgb(255, 255, 255)"
+                            :border "1px solid rgb(0, 119, 204)"
+                            :border-radius "3px"
+                            :border-end-start-radius "0px"
+                            :display "flex"
+                            :z-index "1000"
+                            :overflow "visible"}}]]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
