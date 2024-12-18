@@ -405,6 +405,9 @@
    "flex"
    "hs-ui-class"])
 
+(def vertical-separator-class
+  ["h-full"])
+
 (defn vertical-split-view
   "Allowed keys in PROPS:
   :c/separator-class
@@ -431,7 +434,7 @@
 
        (when (:slot/right props)
          [:<>
-          [v-separator {:class             (:c/separator-class props)
+          [v-separator {:class             (u/class-names vertical-separator-class (:c/separator-class props))
                         :left-el-ref       left-el-ref
                         :right-el-ref      right-el-ref
                         :default-right-percent default-right-percent
@@ -445,6 +448,9 @@
    "h-full"
    "flex"
    "flex-col"])
+
+(def horizontal-separator-class
+  ["w-full"])
 
 (defn horizontal-split-view
   "Allowed keys in PROPS:
@@ -472,7 +478,7 @@
 
        (when (:c/lower props)
          [:<>
-          [h-separator {:class        (:c/separator-class props)
+          [h-separator {:class        (u/class-names horizontal-separator-class (:c/separator-class props))
                         :upper-el-ref upper-el-ref
                         :lower-el-ref lower-el-ref
                         :default-lower-percent default-lower-percent
