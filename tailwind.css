@@ -2,7 +2,9 @@
 @tailwind utilities;
 @tailwind components;
 
+
 @layer base {
+
     html {
         @apply antialiased;
         font-family: Inter;
