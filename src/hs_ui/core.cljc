@@ -19,6 +19,7 @@
    [hs-ui.components.dialog]
    [hs-ui.components.tab]
    [hs-ui.components.tooltip]
+   [hs-ui.components.monaco]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]
@@ -96,3 +97,5 @@
 (def dialog hs-ui.components.dialog/component)
 
 (def tooltip hs-ui.components.tooltip/component)
+
+(def monaco hs-ui.components.monaco/component)

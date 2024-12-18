@@ -1,5 +1,7 @@
 (ns hs-ui.organisms.tabs
-  (:require [hs-ui.components.tab]))
+  (:require
+   [hs-ui.utils :as u]
+   [hs-ui.components.tab]))
 
 (def root-class
   ["flex"
@@ -7,6 +9,6 @@
 
 (defn component
   [props]
-  [:div {:class root-class}
+  [:div (u/merge-props {:class root-class} props)
    (for [item (:c/items props)] ^{:key (:id item)}
      [hs-ui.components.tab/component (assoc item :name (:name props))])])

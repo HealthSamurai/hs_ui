@@ -2,7 +2,22 @@
   (:refer-clojure :exclude [key])
   #?(:cljs (:require ["tailwind-merge" :as tw-merge]
                      ["fuse.js" :as fuse]
-                     [reagent.core])))
+                     [reagent.core])
+     :clj (:require [clojure.string]
+                    [cheshire.core])))
+
+(defn encode-uri
+  [value]
+  (when (string? value)
+    #?(:cljs (js/encodeURI value)
+       :clj  (clojure.string/replace (java.net.URLEncoder/encode value "UTF-8")
+                                     "+" "%20"))))
+
+(defn decode-uri
+  [value]
+  (when value
+    #?(:cljs (js/decodeURI value)
+       :clj  (java.net.URLDecoder/decode value))))
 
 (defn key
   [prefix x]
@@ -12,7 +27,7 @@
 (defn edn->json-pretty
   [edn]
   #?(:cljs (js/JSON.stringify (clj->js edn) nil 2)
-     :clj  nil))
+     :clj  (cheshire.core/generate-string edn {:pretty true})))
 
 (defn unsecured-copy-to-clipboard
   [text]
