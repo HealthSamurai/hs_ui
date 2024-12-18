@@ -45,7 +45,7 @@
 
 (def action-bar-class
   ["absolute"
-   "h-6"
+   "h-[24px]"
    "w-[50px]"
    "-top-6"
    "left-0"
@@ -58,12 +58,16 @@
    "py-1"
    "px-1.5"
    "hidden"
-   "group-hover:flex"])
+   "group-hover:flex"
+   "group-hover:justify-between"])
 
 (def action-bar-button-class
-  ["opacity-50"
+  ["w-[16px]"
+   "h-[16px]"
+   "opacity-50"
    "text-[theme(colors.elements-readable-inv)]"
    "[&_svg]:enabled:text-[theme(elements-readable-inv)]"
+   "[&_svg]:ml-0"
    "hover:text-[theme(colors.elements-readable-inv)]"
    "hover:opacity-100"])
 
