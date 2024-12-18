@@ -3,8 +3,7 @@
    [hs-ui.utils :as u]))
 
 (def root-class
-  ["table"
-   "table-fixed"
+  ["table-fixed"
    "w-full"
    "border-spacing-0"
    "border-separate"])
@@ -26,12 +25,13 @@
    "z-10"])
 
 (def column-value-class
-  ["table-cell"
-   "px-4"
+  ["px-4"
    "py-2"
    "whitespace-nowrap"
    "relative"
-   "break-all"])
+   "break-all"
+   "hover:shadow-[inset_0_0_0_1px_#2278e1]"
+   "group"])
 
 (def body-tr-class
   ["table-row"
@@ -39,6 +39,23 @@
    "aria-selected:bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
    "data-[role=link]:hover:opacity-40"])
+
+(def action-bar-class
+  ["absolute"
+   "h-6"
+   "w-[50px]"
+   "-top-6"
+   "left-0"
+   "border"
+   "border-solid"
+   "border-[#2278E1]"
+   "bg-[#2278E1]"
+   "rounded-t"
+   "z-10"
+   "py-1"
+   "px-1.5"
+   "hidden"
+   "group-hover:flex"])
 
 (defn colgroup [props]
   [:colgroup
@@ -70,23 +87,7 @@
                   :key (u/key ::col col)}
              [:span {:class ["truncate"]}
               (:value value)]
-             [:div {:style {:height "10px"
-                            :width "10px"
-                            :position "absolute"
-                            :top "-10px"
-                            :left "0px"
-                            :gap "2px"
-                            :inline-size "fit-content"
-                            :padding-inline "2px"
-                            :margin-block-end "-1px"
-                            :background-color "rgb(0, 119, 204)"
-                            :color "rgb(255, 255, 255)"
-                            :border "1px solid rgb(0, 119, 204)"
-                            :border-radius "3px"
-                            :border-end-start-radius "0px"
-                            :display "flex"
-                            :z-index "1000"
-                            :overflow "visible"}}]]))]))])
+             [:div {:class action-bar-class}]]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
