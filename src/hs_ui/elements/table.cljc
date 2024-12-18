@@ -1,6 +1,9 @@
 (ns hs-ui.elements.table
   (:require
-   [hs-ui.utils :as u]))
+   [hs-ui.utils :as u]
+   [hs-ui.components.button :as button]
+   [hs-ui.svg.plus :as plus-icon]
+   [hs-ui.svg.minus :as minus-icon]))
 
 (def root-class
   ["table-fixed"
@@ -57,6 +60,13 @@
    "hidden"
    "group-hover:flex"])
 
+(def action-bar-button-class
+  ["opacity-50"
+   "text-[theme(colors.elements-readable-inv)]"
+   "[&_svg]:enabled:text-[theme(elements-readable-inv)]"
+   "hover:text-[theme(colors.elements-readable-inv)]"
+   "hover:opacity-100"])
+
 (defn colgroup [props]
   [:colgroup
    (for [column (:columns props)]
@@ -69,6 +79,15 @@
     (for [column (:columns props)]
       [:th {:class column-name-class :key (u/key ::head-col column)}
        (:name column)])]])
+
+(defn action-bar []
+  [:div {:class action-bar-class}
+   [button/slim
+    {:class action-bar-button-class}
+    plus-icon/svg]
+   [button/slim
+    {:class action-bar-button-class}
+    minus-icon/svg]])
 
 (defn tbody [props]
   [:tbody
@@ -87,7 +106,7 @@
                   :key (u/key ::col col)}
              [:span {:class ["truncate"]}
               (:value value)]
-             [:div {:class action-bar-class}]]))]))])
+             [action-bar]]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
