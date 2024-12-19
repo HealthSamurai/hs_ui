@@ -415,23 +415,21 @@
   :c/min-left-percent
   :c/min-right-percent
   :c/visible-on-hover
-  :slot/left
-  :slot/right
 
   :class and the other regular properties/attributes are allowed too."
-  [props]
+  [props left & [right]]
   (let [left-el-ref           (atom nil)
         right-el-ref          (atom nil)
         default-right-percent (if (:c/default-left-percent props)
                                 (- 100 (:c/default-left-percent props))
                                 (:c/default-right-percent props))]
-    (fn []
+    (fn [_ left & [right]]
       [:div (u/merge-props {:class vertical-root-class} props)
-       (cond-> (:slot/left props)
+       (cond-> left
          :always                    (assoc-prop-to-hiccup :ref #(reset! left-el-ref %))
-         (nil? (:slot/right props)) (assoc-in-prop-to-hiccup [:style :width] "100%"))
+         (nil? right) (assoc-in-prop-to-hiccup [:style :width] "100%"))
 
-       (when (:slot/right props)
+       (when right
          [:<>
           [v-separator {:class             (u/class-names vertical-separator-class (:c/separator-class props))
                         :left-el-ref       left-el-ref
@@ -440,7 +438,7 @@
                         :min-left-percent  (or (:c/min-left-percent props) 10)
                         :min-right-percent (or (:c/min-right-percent props) 10)
                         :visible-on-hover  (:c/visible-on-hover props)}]
-          (assoc-prop-to-hiccup (:slot/right props) :ref #(reset! right-el-ref %))])])))
+          (assoc-prop-to-hiccup right :ref #(reset! right-el-ref %))])])))
 
 (def horizontal-root-class
   ["relative"
@@ -459,23 +457,21 @@
   :c/min-upper-percent
   :c/min-lower-percent
   :c/visible-on-hover
-  :slot/upper
-  :slot/lower
 
   :class and the other regular properties/attributes are allowed too."
-  [props]
+  [props upper & [lower]]
   (let [upper-el-ref          (atom nil)
         lower-el-ref          (atom nil)
         default-lower-percent (if (:c/default-upper-percent props)
                                 (- 100 (:c/default-upper-percent props))
                                 (:c/default-lower-percent props))]
-    (fn []
+    (fn [_ upper & [lower]]
       [:div (u/merge-props {:class horizontal-root-class} props)
-       (cond-> (:c/upper props)
+       (cond-> upper
          :always                 (assoc-prop-to-hiccup :ref #(reset! upper-el-ref %))
-         (nil? (:c/lower props)) (assoc-in-prop-to-hiccup [:style :height] "100%"))
+         (nil? lower) (assoc-in-prop-to-hiccup [:style :height] "100%"))
 
-       (when (:c/lower props)
+       (when lower
          [:<>
           [h-separator {:class        (u/class-names horizontal-separator-class (:c/separator-class props))
                         :upper-el-ref upper-el-ref
@@ -483,4 +479,4 @@
                         :default-lower-percent default-lower-percent
                         :min-upper-percent (or (:c/min-upper-percent props) 10)
                         :min-lower-percent (or (:c/min-lower-percent props) 10)}]
-          (assoc-prop-to-hiccup (:c/lower props) :ref #(reset! lower-el-ref %))])])))
+          (assoc-prop-to-hiccup lower :ref #(reset! lower-el-ref %))])])))
