@@ -62,3 +62,42 @@
     :render (fn [args]
               (utils/reagent-as-element
                [hs-ui.core/layout-expandeable-control (js->clj args {:keywordize-keys true})]))}))
+
+(def ^:export VerticalSplitView
+  (clj->js
+   {:args      {"c/default-left-percent" 40
+                "c/min-left-percent" 10
+                "c/visible-on-hover" true}
+    :argTypes  {"c/default-left-percent" {:control "number"}
+                "c/min-left-percent" {:control "number"}
+                "c/default-right-percent" {:control "number"}
+                "c/min-right-percent" {:control "number"}
+                "c/visible-on-hover" {:control "boolean"}
+                "c/separator-class" {:control "text"}}
+    :render (fn [args]
+              (utils/reagent-as-element
+               [hs-ui.core/layout-vertical-split-view
+                (js->clj args {:keywordize-keys true})
+                [:div {:class "h-full w-full"} "HELLO"]
+                [:div {:class "h-full w-full shadow-[0px_8px_8px_0px_rgba(29,35,49,0.20)]"} "THERE"]]))}))
+
+;; FIXME: Broken in storybook. Might be that the storybook setup is broken.
+(def ^:export HorizontalSplitView
+  (clj->js
+   {:args      {"c/default-upper-percent" 40
+                "c/min-upper-percent" 10
+                "c/visible-on-hover" true}
+    :argTypes  {"c/default-upper-percent" {:control "number"}
+                "c/min-upper-percent" {:control "number"}
+                "c/default-lower-percent" {:control "number"}
+                "c/min-lower-percent" {:control "number"}
+                "c/visible-on-hover" {:control "boolean"}
+                "c/separator-class" {:control "text"}}
+    :render (fn [args]
+              (utils/reagent-as-element
+               [:div {:class "h-full"}
+                [hs-ui.core/layout-horizontal-split-view
+                 (js->clj args {:keywordize-keys true})
+                 [:div {:class "h-full w-full shadow-[0px_8px_8px_0px_rgba(29,35,49,0.20)]"} "HELLO"]
+                 [:div {:class "h-full w-full bg-red"}
+                  "THERE"]]]))}))
