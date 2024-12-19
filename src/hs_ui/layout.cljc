@@ -473,9 +473,9 @@
 
        (when lower
          [:<>
-          [h-separator {:class        (u/class-names horizontal-separator-class (:c/separator-class props))
-                        :upper-el-ref upper-el-ref
-                        :lower-el-ref lower-el-ref
+          [h-separator {:class             (u/class-names horizontal-separator-class (:c/separator-class props))
+                        :upper-el-ref      upper-el-ref
+                        :lower-el-ref      lower-el-ref
                         :default-lower-percent default-lower-percent
                         :min-upper-percent (or (:c/min-upper-percent props) 10)
                         :min-lower-percent (or (:c/min-lower-percent props) 10)}]
