@@ -156,6 +156,16 @@
    [:span.contents.invisible children]])
 
 (defn component
+  "Component properties:
+  :href
+  :disabled
+  :c/label?
+  :data-hovered
+  :data-active
+  :data-loading
+  :c/loading-icon
+
+  And other <button>, <label>, or <a> properties."
   [properties children]
   (let [loading?   (:data-loading properties)
         properties (cond-> properties
