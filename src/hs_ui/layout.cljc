@@ -402,8 +402,7 @@
 (def vertical-root-class
   ["relative"
    "w-full"
-   "flex"
-   "hs-ui-class"])
+   "flex"])
 
 (def vertical-separator-class
   ["h-full"])
