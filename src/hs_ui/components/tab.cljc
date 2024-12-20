@@ -18,6 +18,13 @@
    ])
 
 (defn component
+  "Possible component-specific props:
+  :id
+  :name
+  :c/selected?
+  :checked
+  :on-change
+  :slot/content"
   [props]
   [(if (:href props) :a :label) (dissoc (u/merge-props  {:class root-class} props)
                                         :on-change :name)

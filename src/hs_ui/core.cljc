@@ -85,6 +85,8 @@
 (def layout-navbar              hs-ui.layout/navbar)
 (def layout-expandeable-control hs-ui.layout/expandeable-control)
 (def layout-control             hs-ui.layout/control)
+(def layout-vertical-split-view hs-ui.layout/vertical-split-view)
+(def layout-horizontal-split-view hs-ui.layout/horizontal-split-view)
 
 (def button-primary   hs-ui.components.button/primary)
 (def button-critical  hs-ui.components.button/critical)

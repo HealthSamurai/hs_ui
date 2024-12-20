@@ -17,36 +17,36 @@
                              {:name "Last Name"}
                              {:name "Gender"}
                              {:name "Address"}]
-                   :rows   [{"First Name" "Christy"
-                             "Last Name"  "Butterfield"
-                             "Gender"     "Male"
-                             "Address"    "3319 Nelm Street Centerville, VA 22020"}
-                            {"First Name" "Carl"
-                             "Last Name"  "Cortez"
-                             "Gender"     "Male"
-                             "Address"    "4353 Mill Street Avon Park, FL 33825"}
-                            {"First Name" "Christy"
-                             "Last Name"  "Wise"
-                             "Gender"     "Female"
-                             "Address"    "4532 Eva Pearl Street Baton Rouge, LA 70802"}]}}))
+                   :rows   [{"First Name" {:value "Christy"}
+                             "Last Name"  {:value "Butterfield"}
+                             "Gender"     {:value "Male"}
+                             "Address"    {:value "3319 Nelm Street Centerville, VA 22020"}}
+                            {"First Name" {:value "Carl"}
+                             "Last Name"  {:value "Cortez"}
+                             "Gender"     {:value "Male"}
+                             "Address"    {:value "4353b Mill Street Avon Park, FL 33825"}}
+                            {"First Name" {:value "Christy"}
+                             "Last Name"  {:value "Wise"}
+                             "Gender"     {:value "Female"}
+                             "Address"    {:value "4532 Eva Pearl Street Baton Rouge, LA 70802"}}]}}))
 
 (def ^:export CustomWidth
   (clj->js {:args {:columns [{:name "First Name"}
                              {:name "Last Name"}
                              {:name "Gender" :width "100px"}
                              {:name "Address"}]
-                   :rows    [{"First Name" "Christy"
-                              "Last Name"  "Butterfield"
-                              "Gender"     "Male"
-                              "Address"    "3319 Nelm Street Centerville, VA 22020"}
-                             {"First Name" "Carl"
-                              "Last Name"  "Cortez"
-                              "Gender"     "Male"
-                              "Address"    "4353 Mill Street Avon Park, FL 33825"}
-                             {"First Name" "Christy"
-                              "Last Name"  "Wise"
-                              "Gender"     "Female"
-                              "Address"    "4532 Eva Pearl Street Baton Rouge, LA 70802"}]}}))
+                   :rows    [{"First Name" {:value "Christy"}
+                              "Last Name"  {:value "Butterfield"}
+                              "Gender"     {:value "Male"}
+                              "Address"    {:value "3319 Nelm Street Centerville, VA 22020"}}
+                             {"First Name" {:value "Carl"}
+                              "Last Name"  {:value "Cortez"}
+                              "Gender"     {:value "Male"}
+                              "Address"    {:value "4353 Mill Street Avon Park, FL 33825"}}
+                             {"First Name" {:value "Christy"}
+                              "Last Name"  {:value "Wise"}
+                              "Gender"     {:value "Female"}
+                              "Address"    {:value "4532 Eva Pearl Street Baton Rouge, LA 70802"}}]}}))
 
 
 (def ^:export WithReferences
@@ -55,16 +55,16 @@
                              {:name "Last Name"}
                              {:name "Gender" :width "100px"}
                              {:name "Address"}]
-                   :rows    [{"First Name" "Christy"
-                              "Last Name"  "Butterfield"
-                              "Gender"     "Male"
-                              "Address"    "3319 Nelm Street Centerville, VA 22020"}
-                             {"First Name" "Carl"
-                              "Last Name"  "Cortez"
-                              "Gender"     "Male"
-                              "Address"    "4353 Mill Street Avon Park, FL 33825"}
-                             {"First Name" "Christy"
-                              "Last Name"  "Wise"
-                              "Gender"     "Female"
-                              "Address"    "4532 Eva Pearl Street Baton Rouge, LA 70802"
+                   :rows    [{"First Name" {:value "Christy"}
+                              "Last Name"  {:value "Butterfield"}
+                              "Gender"     {:value "Male"}
+                              "Address"    {:value "3319 Nelm Street Centerville, VA 22020"}}
+                             {"First Name" {:value "Carl"}
+                              "Last Name"  {:value "Cortez"}
+                              "Gender"     {:value "Male"}
+                              "Address"    {:value "4353 Mill Street Avon Park, FL 33825"}}
+                             {"First Name" {:value "Christy"}
+                              "Last Name"  {:value "Wise"}
+                              "Gender"     {:value "Female"}
+                              "Address"    {:value "4532 Eva Pearl Street Baton Rouge, LA 70802"}
                               :selected? true}]}}))
