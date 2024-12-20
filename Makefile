@@ -1,5 +1,5 @@
-TAILWIND_INPUT=tailwind.css
-TAILWIND_OUTPUT=resources/public/css/tailwind.css
+CSS_INPUT=tailwind.css
+CSS_OUTPUT=resources/public/css/hs_ui.css
 
 .PHONY: npm-install
 npm-install:
@@ -17,15 +17,15 @@ deinit:
 	rm -rf .shadow-cljs
 	rm -rf resources/public/js/storybook
 	rm -rf resources/public/js/components
-	rm -rf "$(TAILWIND_OUTPUT)"
+	rm -rf "$(CSS_OUTPUT)"
 
 .PHONY: tailwind-watch
 tailwind-watch:
-	npx tailwindcss -i "$(TAILWIND_INPUT)" -o "$(TAILWIND_OUTPUT)" --watch
+	npx tailwindcss -i "$(CSS_INPUT)" -o "$(CSS_OUTPUT)" --watch
 
 .PHONY: tailwind-release
 tailwind-release:
-	npx tailwindcss -i "$(TAILWIND_INPUT)" -o "$(TAILWIND_OUTPUT)"
+	npx tailwindcss -i "$(CSS_INPUT)" -o "$(CSS_OUTPUT)"
 
 .PHONY: shadow-watch
 shadow-watch:

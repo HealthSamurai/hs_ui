@@ -1,7 +1,7 @@
 import { themes } from '@storybook/theming';
 
 // Uncomment the line below to enable hot-reloading
-// import '../resources/public/css/tailwind.css'
+// import '../resources/public/css/hs_ui.css'
 
 export const parameters = {
   darkMode: {

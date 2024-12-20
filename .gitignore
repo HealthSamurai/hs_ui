@@ -4,4 +4,4 @@ _site
 node_modules
 resources/public/js/storybook
 resources/public/js/components
-resources/public/css/tailwind.css
+resources/public/css/hs_ui.css
