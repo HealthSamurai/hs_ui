@@ -1,7 +1,6 @@
 (ns hs-ui.elements.table
   (:require
    [hs-ui.utils :as u]
-   [hs-ui.components.button :as button]
    [hs-ui.svg.plus :as plus-icon]
    [hs-ui.svg.minus :as minus-icon]))
 
@@ -27,48 +26,43 @@
    "top-0"
    "z-10"])
 
-(def column-value-class
+(def table-row-class
+  ["even:bg-[var(--color-surface-1)]"
+   "aria-selected:bg-[var(--color-surface-selected)]"
+   "data-[role=link]:cursor-pointer"
+   "hover:data-[role=link]:bg-[var(--color-surface-1)]"
+   "group/row"])
+
+(def text-class
+  ["truncate"
+   "group-hover/row:opacity-40"
+   "group-hover/cell:opacity-100"])
+
+(def table-cell-class
   ["px-4"
    "py-2"
    "whitespace-nowrap"
    "relative"
    "break-all"
-   "hover:shadow-[inset_0_0_0_1px_#2278e1]"
-   "group"])
+   "hover:shadow-[inset_0_0_0_1px_var(--color-cta)]"
+   "group/cell"])
 
-(def body-tr-class
-  ["table-row"
-   "even:bg-[var(--color-surface-1)]"
-   "aria-selected:bg-[var(--color-surface-selected)]"
-   "data-[role=link]:cursor-pointer"
-   "data-[role=link]:hover:opacity-40"])
-
-(def action-bar-class
+(def cell-toolbar-class
   ["absolute"
-   "h-[24px]"
-   "w-[50px]"
    "-top-6"
    "left-0"
-   "border"
-   "border-solid"
-   "border-[#2278E1]"
-   "bg-[#2278E1]"
+   "px-1.5"
+   "py-1"
+   "gap-1.5"
+   "bg-[var(--color-cta)]"
    "rounded-t"
    "z-10"
-   "py-1"
-   "px-1.5"
    "hidden"
-   "group-hover:flex"
-   "group-hover:justify-between"])
+   "group-hover/cell:flex"])
 
-(def action-bar-button-class
-  ["w-[16px]"
-   "h-[16px]"
-   "opacity-50"
+(def cell-toolbar-icon-class
+  ["opacity-50"
    "text-[theme(colors.elements-readable-inv)]"
-   "[&_svg]:enabled:text-[theme(elements-readable-inv)]"
-   "[&_svg]:ml-0"
-   "hover:text-[theme(colors.elements-readable-inv)]"
    "hover:opacity-100"])
 
 (defn colgroup [props]
@@ -84,33 +78,29 @@
       [:th {:class column-name-class :key (u/key ::head-col column)}
        (:name column)])]])
 
-(defn action-bar []
-  [:div {:class action-bar-class}
-   [button/slim
-    {:class action-bar-button-class}
-    plus-icon/svg]
-   [button/slim
-    {:class action-bar-button-class}
-    minus-icon/svg]])
+(defn cell-toolbar []
+  [:div {:class cell-toolbar-class}
+   [:span {:class cell-toolbar-icon-class} plus-icon/svg]
+   [:span {:class cell-toolbar-icon-class} minus-icon/svg]])
 
 (defn tbody [props]
   [:tbody
    (for [row (:rows props)]
      (let [on-row-click (:on-row-click props)]
        [:tr {:key           (u/key ::row row)
-             :class         body-tr-class
+             :class         table-row-class
              :aria-selected (:selected? row)
              :data-role     (when on-row-click "link")
              :on-click      (when on-row-click #(on-row-click row))}
         (for [col (:columns props)]
           (let [value (or (get row (:name col))
                           (get row (keyword (:name col))))]
-            [:td {:class column-value-class
+            [:td {:class table-cell-class
                   :title (or (:title value) (str (:value value)))
                   :key (u/key ::col col)}
-             [:span {:class ["truncate"]}
+             [:span {:class text-class}
               (:value value)]
-             [action-bar]]))]))])
+             [cell-toolbar]]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
