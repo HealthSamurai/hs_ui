@@ -3,6 +3,11 @@
 
 ;; TODO: Merge props, migrate styles to tailwind
 (defn component
+  "Properties:
+  :c/small
+  :checked
+  :disabled
+  :on-change"
   [props]
   [:label.toggle.block  {:style (when (:c/small props)
                                   {:scale "0.7"})}

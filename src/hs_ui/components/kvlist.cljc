@@ -7,6 +7,14 @@
    [hs-ui.utils]))
 
 (defn component
+  "Props:
+  :c/items
+
+  Item props:
+  :value/value
+  :value/hint
+  :key/value
+  :copy/copy"
   [props]
   [:table.table-fixed
    [:tbody
