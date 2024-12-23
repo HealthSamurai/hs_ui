@@ -17,6 +17,10 @@
    "select-none"])
 
 (defn component
+  "Props:
+  :c/open?
+  :slot/close
+  :slot/open"
   [props]
   [:div (hs-ui.utils/merge-props {:class root-class} props)
    (if (:c/open? props)

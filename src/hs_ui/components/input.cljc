@@ -50,6 +50,13 @@
 
 
 (defn component
+  "Properties:
+  :c/root-class
+  :data-invalid
+  :disabled
+  :type
+  :slot/right
+  :c/error-message"
   [properties]
   [:fieldset {:class        (utils/class-names root-class (:c/root-class properties))
               :data-invalid (:data-invalid properties)
