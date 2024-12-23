@@ -1,7 +1,3 @@
-@import url("resources/public/css/jet_brains_mono_font.css");
-@import url("resources/public/css/inter_font.css");
-@import url("resources/public/css/metropolis_font.css");
-
 @tailwind base;
 @tailwind utilities;
 @tailwind components;
