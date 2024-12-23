@@ -11,6 +11,26 @@
   </p>
 </p>
 
+# Usage
+Add the library to deps.edn
+```
+{:extra-deps {...
+              healthsamurai/hs-ui {:local/root "libs/hs_ui"}
+              ...}}
+```
+
+And then add the following line to your HTML template:
+```html
+<head>
+...
+  <link rel="stylesheet" href="css/hs_ui.css">
+...
+</head>
+```
+
+The value of href may differ, it depends on how your HTTP server is
+configured. The actual file path in hs_ui is
+resources/public/hs_ui.css
 
 # Storybook
 ```sh
@@ -22,4 +42,3 @@ make story
 make init
 make dev
 ```
-
