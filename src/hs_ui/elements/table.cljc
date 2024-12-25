@@ -36,7 +36,8 @@
   ["even:bg-[var(--color-surface-1)]"
    "aria-selected:bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
-   "data-[role=link]:hover:opacity-40"])
+   "data-[role=link]:hover:text-gray-400"
+   "data-[role=link]:hover:bg-[var(--color-surface-1)]"])
 
 (defn colgroup [props]
   [:colgroup
