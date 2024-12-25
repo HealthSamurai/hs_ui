@@ -22,8 +22,7 @@
    "border-[var(--color-separator)]"
 
    "sticky"
-   "top-0"
-   "z-10"])
+   "top-0"])
 
 (def column-value-class
   ["px-4"
