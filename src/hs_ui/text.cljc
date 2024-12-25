@@ -5,7 +5,7 @@
   [& attrs]
   (let [props (utils/get-component-properties attrs)
         child (utils/get-component-children attrs)]
-    [:label
+    [:h1
      (utils/merge-props
       {:class "txt-page-header text-[theme(colors.elements-readable)]"}
       props)
