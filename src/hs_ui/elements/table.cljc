@@ -1,6 +1,7 @@
 (ns hs-ui.elements.table
   (:require
-   [hs-ui.utils :as u]))
+   [hs-ui.utils :as u]
+   [hs-ui.components.tooltip]))
 
 (def root-class
   ["table-fixed"
@@ -65,9 +66,12 @@
           (let [value (or (get row (:name col))
                           (get row (keyword (:name col))))]
             [:td {:class column-value-class
-                  :title (or (:title value) (str (:value value)))
                   :key (u/key ::col col)}
-             (:value value)]))]))])
+             [hs-ui.components.tooltip/component
+              {:place "top"
+               :tooltip [:pre (or (:title value) (str (:value value)))]
+               :class "opacity-[1!important]"}
+              (:value value)]]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
