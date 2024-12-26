@@ -8,7 +8,7 @@
    "space-x-[theme(spacing.x3)]"])
 
 (defn component
-  "Accepts a vector of maps, each map might have
+  "Accepts a vector of maps (:c/items), each map might have
   :id
   :name
   :c/selected?
