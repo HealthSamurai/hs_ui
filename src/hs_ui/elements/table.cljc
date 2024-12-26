@@ -1,6 +1,7 @@
 (ns hs-ui.elements.table
   (:require
    [hs-ui.utils :as u]
+   [hs-ui.components.tooltip]
    [hs-ui.svg.plus :as plus-icon]
    [hs-ui.svg.minus :as minus-icon]))
 
@@ -23,14 +24,13 @@
    "border-[var(--color-separator)]"
 
    "sticky"
-   "top-0"
-   "z-10"])
+   "top-0"])
 
 (def table-row-class
   ["even:bg-[var(--color-surface-1)]"
    "aria-selected:bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
-   "hover:data-[role=link]:bg-[var(--color-surface-1)]"
+   "data-[role=link]:hover:bg-[var(--color-surface-1)]"
    "group/row"])
 
 (def text-class
@@ -49,11 +49,11 @@
 
 (def cell-toolbar-class
   ["absolute"
-   "-top-6"
+   "-top-[var(--spacing-x3)]"
    "left-0"
-   "px-1.5"
-   "py-1"
-   "gap-1.5"
+   "px-[6px]"
+   "py-[var(--spacing-half)]"
+   "gap-[6px]"
    "bg-[var(--color-cta)]"
    "rounded-t"
    "z-10"
@@ -96,11 +96,14 @@
           (let [value (or (get row (:name col))
                           (get row (keyword (:name col))))]
             [:td {:class table-cell-class
-                  :title (or (:title value) (str (:value value)))
                   :key (u/key ::col col)}
-             [:span {:class text-class}
-              (:value value)]
-             [cell-toolbar]]))]))])
+             [hs-ui.components.tooltip/component
+              {:place "top"
+               :class (:c/tooltip-style props)
+               :tooltip [:pre (or (:title value) (str (:value value)))]}
+              [:span {:class text-class}
+                     (:value value)]]
+              [cell-toolbar]]))]))])
 
 (defn view [props]
   [:table {:class (u/class-names root-class (:class props))}
