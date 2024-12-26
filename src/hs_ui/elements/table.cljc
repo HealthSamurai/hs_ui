@@ -68,8 +68,8 @@
                   :key (u/key ::col col)}
              [hs-ui.components.tooltip/component
               {:place "top"
-               :tooltip [:pre (or (:title value) (str (:value value)))]
-               :class "opacity-[1!important]"}
+               :class (:c/tooltip-style props)
+               :tooltip [:pre (or (:title value) (str (:value value)))]}
               (:value value)]]))]))])
 
 (defn view [props]
