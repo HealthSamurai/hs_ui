@@ -11,7 +11,8 @@
         [:> Tooltip {:anchorSelect (str "#" reference-id)
                      :offset 3
                      :place place
-                     :disableStyleInjection true}
+                     :disableStyleInjection true
+                     :opacity 1}
          [:div {:class ["text-sm px-3 py-1 rounded shadow-xl"
                         (if error?
                           "text-white bg-[var(--color-critical-default)]"
