@@ -1,4 +1,4 @@
-(ns hs-ui.svg.changes-require-restart)
+(ns hs-ui.svg.alert)
 
 (def svg
   [:svg
