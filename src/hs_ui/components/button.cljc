@@ -177,7 +177,8 @@
        (loading-icon properties children)
        [:<>
         (when (:c/icon properties)
-          [:span (:c/icon properties)])
+          [:span {:class "mr-1"}
+           (:c/icon properties)])
         children])]))
 
 (defn primary
