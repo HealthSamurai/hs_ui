@@ -17,6 +17,7 @@
    [hs-ui.components.radio-button]
    [hs-ui.components.kvlist]
    [hs-ui.components.dialog]
+   [hs-ui.components.search-filter]
    [hs-ui.components.tab]
    [hs-ui.components.tooltip]
    [hs-ui.components.monaco]
@@ -46,6 +47,7 @@
 (def checkbox hs-ui.components.checkbox/component)
 (def content-expand hs-ui.components.content-expand/component)
 (def breadcrumbs hs-ui.components.breadcrumbs/component)
+(def search-filter hs-ui.components.search-filter/component)
 (def tab         hs-ui.components.tab/component)
 
 (def list-item  hs-ui.components.list-item/component)
