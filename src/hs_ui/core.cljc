@@ -21,6 +21,7 @@
    [hs-ui.components.tab]
    [hs-ui.components.tooltip]
    [hs-ui.components.monaco]
+   [hs-ui.components.pagination]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]
@@ -53,6 +54,7 @@
 (def list-item  hs-ui.components.list-item/component)
 (def list-items hs-ui.components.list-items/component)
 (def kvlist     hs-ui.components.kvlist/component)
+(def pagination hs-ui.components.pagination/component)
 
 (def alert hs-ui.components.alert/component)
 
