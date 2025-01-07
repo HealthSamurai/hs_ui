@@ -65,11 +65,11 @@
   [:label {:class page-item-class
            :on-click (if (and (:on-click props) (not (:disabled? props)))
                        (fn [_] ((:on-click props) (:id props)))
-                       (fn [e] (#?(:cljs (.preventDefault e) :clj nil))))}
+                       (fn [e] (.preventDefault e)))}
    [:input.hidden {:type     "radio"
-                   :checked  (:selected? props)
-                   :disabled (:disabled? props)
-                   :on-change (fn [e] (#?(:cljs (.preventDefault e) :clj nil)))}]
+                   :checked  (boolean (:selected? props))
+                   :disabled (boolean (:disabled? props))
+                   :on-change (fn [e] (.preventDefault e))}]
    (:slot/content props)])
 
 (defn results-per-page-select
@@ -83,8 +83,7 @@
       [:select {:class     select-class
                 :value     selected-value
                 :on-change (when on-change
-                             #?(:cljs #(on-change (.. % -target -value))
-                                :clj nil))}
+                             #(on-change (.. % -target -value)))}
        (for [opt options]
          ^{:key {:value opt}}
          [:option {:value opt} (str opt)])]]]))
