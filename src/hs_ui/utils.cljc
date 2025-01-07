@@ -219,3 +219,18 @@
                 search-string)
        :keywordize-keys true)
       (mapv :item))))
+
+(defn set-storage-item
+  [keyname value]
+  #?(:cljs (js/localStorage.setItem keyname value)
+     :clj  nil))
+
+(defn get-storage-item
+  [keyname]
+  #?(:cljs (js/localStorage.getItem keyname)
+     :clj  nil))
+
+(defn remove-storage-item
+  [keyname]
+  #?(:cljs (js/localStorage.removeItem keyname)
+     :clj  nil))

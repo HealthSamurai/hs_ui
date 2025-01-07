@@ -22,6 +22,7 @@
    [hs-ui.components.tooltip]
    [hs-ui.components.monaco]
    [hs-ui.components.pagination]
+   [hs-ui.components.sidebar]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]
@@ -105,3 +106,5 @@
 (def tooltip hs-ui.components.tooltip/component)
 
 (def monaco hs-ui.components.monaco/component)
+
+(def sidebar hs-ui.components.sidebar/component)
