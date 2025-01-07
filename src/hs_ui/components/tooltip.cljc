@@ -12,7 +12,8 @@
                      :offset 3
                      :place place
                      :disableStyleInjection true
-                     :opacity 1}
+                     :opacity 1
+                     :style {:zIndex 99}}
          [:div {:class (hs-ui.utils/class-names
                         ["text-sm px-3 py-1 rounded shadow-xl"
                          (if error?
