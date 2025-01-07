@@ -103,7 +103,7 @@
                  (if (= "open" (.-newState event))
                    (on-open-menu item)
                    (on-close-menu item))))
-         (when (or (:open? item) (open-before? item))
+         (when (or (:open item) (open-before? item))
            (set! (.-open element) true))))))
 
 (defn menu-item
@@ -136,13 +136,13 @@
         (:slot/items item)
         [:details {:ref #(details-constructor % item)}
          [:summary
-          (when (or (:open? item) (open-before? item))
-            [:data {:hidden true :data-key :open} (:open? item)])
+          (when (or (:open item) (open-before? item))
+            [:data {:hidden true :data-key :open} (:open item)])
           [menu-item item]]
          [:div.content [menu-items item]]]
-        (:divider? item)
+        (:divider item)
         [:hr {:class divider-class}]
-        (:space? item)
+        (:space item)
         [:hr {:class "pb-4px"}]
         :else [menu-item item])])])
 
@@ -154,9 +154,9 @@
   - :id
   - :slot/items
   - :slot/img
-  - :open?
-  - :divider? (to add a dividing ruler)
-  - :space? (to add a ruler with some space around it)"
+  - :open
+  - :divider (to add a dividing ruler)
+  - :space (to add a ruler with some space around it)"
   [properties]
   [:aside (utils/merge-props {:data-object ::component :class root-class}
                              properties)
