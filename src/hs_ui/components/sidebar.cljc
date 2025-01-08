@@ -31,17 +31,11 @@
 (def content-items-class
   ["w-full"
    "[&_details]:w-full"
-   "[&_ul.root_>_li:last-child]:mb-[100px]"
-   "[&_a.item-active]:bg-[--basic-gray-1]"
+   "[&.root>li:last-child]:mb-[100px]"
    "[&_a]:hover:text-inherit"
-   "[&_a:not(.item-active)]:hover:bg-[--basic-gray-0]"
-   "[&_a:not(.item-active)]:hover:text-inherit"
    "[&_li_a]:pl-[16px]"
    "[&_li_li_a]:pl-[40px]"
-   "[&_li_li_li_a]:pl-[64px]"
-   "[&_a]:w-full"
-   "[&_a]:rounded"
-   "[&_a]:cursor-pointer"])
+   "[&_li_li_li_a]:pl-[64px]"])
 
 (def menu-item-class
   ["flex"
@@ -51,12 +45,16 @@
    "space-x-2"
    "[padding:_6px_16px_6px_0px]"
    "rounded"
-   "hover:[text-decoration:none]"])
+   "cursor-pointer"
+   "hover:[text-decoration:none]"
+   "[&.item-active]:bg-[var(--basic-gray-1)]"
+   "[&:not(.item-active)]:hover:text-inherit"
+   "[&:not(.item-active)]:hover:bg-[var(--basic-gray-0)]"])
 
 (def divider-class
   ["my-2"
    "mx-1.5"
-   "text-[--basic-gray-2]"
+   "text-[var(--basic-gray-2)]"
    "w-full"])
 
 (def content-item-class
@@ -69,8 +67,7 @@
    "[&_details:not[open]_.chevron_svg]:[transform:rotate(0deg)]"])
 
 (def content-class
-  ["flex"
-   "ml-1"
+  ["ml-1"
    "mr-1"
    "mt-1"
    "overflow-y-auto"
@@ -116,7 +113,7 @@
                      menu-item-class
                      [(when (:active item) "item-active")
                       (when-not (:title item)
-                        "justify-center")]))}
+                        "flex justify-center")]))}
            props)
        (:slot/img item)
        (when (:active item)
@@ -129,7 +126,7 @@
 
 (defn menu-items
   [node]
-  [:ul {:class content-class :data-array :items}
+  [:ul {:class content-items-class :data-array :items}
    (for [item (:slot/items node)]
      [:li {:class content-item-class :key (or (:id item) (:title item) (hash item))}
       (cond
@@ -149,11 +146,12 @@
 (defn component
   "A sidebar with possibly nested entries.
   Has :slot/logo, :slot/menu, and :slot/submenu.
-  :slot/menu and :slot/submenu consist of elements with:
+  :slot/menu and :slot/submenu consist of elements (items) with:
   - :title
   - :id
   - :slot/items
   - :slot/img
+  - :active (whether it's chosen)
   - :open
   - :divider (to add a dividing ruler)
   - :space (to add a ruler with some space around it)"
