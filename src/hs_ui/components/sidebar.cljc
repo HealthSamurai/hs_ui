@@ -145,7 +145,7 @@
 
 (defn component
   "A sidebar with possibly nested entries.
-  Has :slot/logo, :slot/menu, and :slot/submenu.
+  Has :slot/logo, :slot/header, :slot/subheader, :slot/menu, and :slot/submenu.
   :slot/menu and :slot/submenu consist of elements (items) with:
   - :title
   - :id
@@ -158,9 +158,13 @@
   [properties]
   [:aside (utils/merge-props {:data-object ::component :class root-class}
                              properties)
-   [:div {:class (concat header-class
-                         [(:class-header properties)])}
-    (:slot/logo properties)]
+   [:div {:class header-class}
+    (:slot/logo properties)
+    (:slot/header properties)]
+
+   (when (:slot/subheader properties)
+     [:div {:class header-class}
+      (:slot/subheader properties)])
    [:div {:data-object :menu :class content-class}
     [menu-items (:slot/menu properties)]]
    (when (:slot/submenu properties)
