@@ -1,4 +1,4 @@
-(ns hs-ui.components.search-filter
+(ns hs-ui.components.chip
   (:require
    [hs-ui.svg.close :as close-icon]
    [hs-ui.text :as text]
