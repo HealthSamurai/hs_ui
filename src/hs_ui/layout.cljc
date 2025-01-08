@@ -20,7 +20,9 @@
 
 (defn navbar
   [props]
-  [:div {:class "flex border-b border-separator items-center h-[64px] justify-between w-full px-x3"}
+  [:div (u/merge-props
+         {:class "flex border-b border-separator items-center h-[64px] justify-between w-full px-x3"}
+         props)
    [:div (:slot/left props)]
    [:div (:slot/middle props)]
    [:div (:slot/right props)]])
