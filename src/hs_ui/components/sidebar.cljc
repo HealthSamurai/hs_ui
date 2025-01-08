@@ -7,7 +7,7 @@
   ["w-[240px]"
    "h-[100vh]"
    "flex"
-   "text-[--basic-gray-7]"
+   "text-[theme(colors.elements-readable)]"
    "bg-white"
    "font-normal"
    "[border-right:1px_solid_var(--basic-gray-2)]"
@@ -47,14 +47,14 @@
    "rounded"
    "cursor-pointer"
    "hover:[text-decoration:none]"
-   "[&.item-active]:bg-[var(--basic-gray-1)]"
+   "[&.item-active]:bg-[theme(colors.surface-selected)]"
    "[&:not(.item-active)]:hover:text-inherit"
-   "[&:not(.item-active)]:hover:bg-[var(--basic-gray-0)]"])
+   "[&:not(.item-active)]:hover:bg-[theme(colors.surface-1)]"])
 
 (def divider-class
   ["my-2"
    "mx-1.5"
-   "text-[var(--basic-gray-2)]"
+   "text-[theme(colors.elements-assistive)]"
    "w-full"])
 
 (def content-item-class
@@ -119,7 +119,7 @@
        (when (:active item)
          [:data {:hidden true :data-key :active} (:active item)])
        (when (:title item)
-         [:span {:data-key :label :class "w-full truncate text-[--basic-gray-7]"}
+         [:span {:data-key :label :class "w-full truncate text-[theme(colors.elements-readable)]"}
           (:title item)])
        (when (:slot/items item)
          [:span.chevron hs-ui.svg.chevron-right/svg])])))
