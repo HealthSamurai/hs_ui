@@ -1,6 +1,8 @@
 (ns hs-ui.layout
   (:require [hs-ui.utils :as u]
             [hs-ui.text]
+            [hs-ui.svg.h-gripper]
+            [hs-ui.svg.v-gripper]
             #?(:cljs [reagent.core :as r])
             #?(:cljs [reagent.dom :as dom])
             [re-frame.core :as rf]))
@@ -171,40 +173,14 @@
             "flex justify-center items-center z-[200]"
             "[transform:translateX(-50%)translateY(-50%)]"]
     :style style}
-   [:svg {:xmlns "http://www.w3.org/2000/svg"
-          :width "100%"
-          :height "100%"
-          :viewBox "0 0 24 24"
-          :fill "currentColor"
-          :stroke "currentColor"
-          :stroke-linecap "round"
-          :stroke-linejoin "round"}
-    [:circle {:cx "9" :cy "5" :r "1"}]
-    [:circle {:cx "9" :cy "12" :r "1"}]
-    [:circle {:cx "9" :cy "19" :r "1"}]
-    [:circle {:cx "15" :cy "5" :r "1"}]
-    [:circle {:cx "15" :cy "12" :r "1"}]
-    [:circle {:cx "15" :cy "19" :r "1"}]]])
+   hs-ui.svg.v-gripper/svg])
 
 (defn- h-gripper [{:keys [style]}]
   [:div.gripper {:class ["absolute left-[50%] bg-[var(--basic-gray-2)] w-[30px] h-[12px] rounded"
                          "flex justify-center items-center z-[200] [transform:translateX(-50%)translateY(-50%)]"]
                  :style style}
    ;; TODO: Put it in svg/ dir too?
-   [:svg {:xmlns "http://www.w3.org/2000/svg"
-          :width "100%"
-          :height "100%"
-          :viewBox "0 0 24 24"
-          :fill "currentColor"
-          :stroke "currentColor"
-          :stroke-linecap "round"
-          :stroke-linejoin "round"}
-    [:circle {:cx "5"  :cy "9" :r "1"}]
-    [:circle {:cx "12" :cy "9" :r "1"}]
-    [:circle {:cx "19" :cy "9" :r "1"}]
-    [:circle {:cx "5"  :cy "15" :r "1"}]
-    [:circle {:cx "12" :cy "15" :r "1"}]
-    [:circle {:cx "19" :cy "15" :r "1"}]]])
+   hs-ui.svg.h-gripper/svg])
 
 
 (defn- v-separator
