@@ -8,7 +8,6 @@
     :fill "none",
     :xmlns "http://www.w3.org/2000/svg"}
    [:g
-    {:clip-path "url(#clip0_2354_948)"}
     [:path
      {:d
       "M1.73438 3.5H5.73438C6.44162 3.5 7.1199 3.78095 7.61999 4.28105C8.12009 4.78115 8.40104 5.45942 8.40104 6.16667V15.5C8.40104 14.9696 8.19033 14.4609 7.81526 14.0858C7.44018 13.7107 6.93147 13.5 6.40104 13.5H1.73438V3.5Z",
@@ -46,12 +45,4 @@
       :stroke "currentColor",
       :stroke-width "1.25",
       :stroke-linecap "round",
-      :stroke-linejoin "round"}]]
-   [:defs
-    [:clippath
-     {:id "clip0_2354_948"}
-     [:rect
-      {:width "16",
-       :height "16",
-       :fill "white",
-       :transform "translate(0.400391 0.5)"}]]]])
+      :stroke-linejoin "round"}]]])
