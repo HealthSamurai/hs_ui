@@ -103,6 +103,9 @@
     font-style: normal;
     font-weight: 500;
     line-height: 21px;
+    text-decoration: none;
+  }
+  .txt-link:hover {
     text-decoration-line: underline;
     text-underline-offset: 3px;
   }
