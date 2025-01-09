@@ -30,7 +30,7 @@
 
 (defn link
   [props & children]
-  (into [:a (utils/merge-props {:class "txt-link text-[theme(colors.cta)]"} props)] children))
+  (into [:a (utils/merge-props {:target "_blank" :class "txt-link text-[theme(colors.cta)]"} props)] children))
 
 (defn value
   [& attrs]
