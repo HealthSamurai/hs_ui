@@ -2,11 +2,11 @@
   (:require
    [hs-ui.utils :as u]
    [hs-ui.svg.chevron-down :as chevron-down]
-   [hs-ui.svg.chevron-flat :as chevron-flat]))
+   [hs-ui.components.tooltip]))
 
 (def root-class
   ["flex"
-   "justify-between"
+   "justify-end"
    "items-center"
    "py-2"
    "px-4"
@@ -39,23 +39,23 @@
 (def page-selection-class
   ["flex"
    "items-center"
-   "gap-2"])
+   "gap-[var(--spacing-half)]"])
 
 (def page-item-class
-  ["text-[theme(colors.elements-assistive)]"
+  ["flex"
+   "justify-center"
+   "text-[theme(colors.elements-assistive)]"
    "cursor-pointer"
-   "border"
-   "border-border-default"
    "rounded-corner-m"
    "bg-[theme(colors.surface-0)]"
-   "py-[8px]"
-   "px-[var(--spacing-x2)]"
+   "px-3"
+   "py-2"
 
    "has-[:checked]:text-[theme(colors.elements-readable)]"
-   "has-[:checked]:bg-[theme(colors.surface-selected)]"
 
    "hover:text-[theme(colors.elements-readable)]"
-   "hover:bg-[theme(colors.surface-selected)]"
+   "hover:bg-[theme(colors.surface-1)]"
+   "hover:bg-[theme(colors.surface-1)]"
 
    "has-[:disabled]:bg-[theme(colors.surface-0)]"
    "has-[:disabled]:text-[theme(colors.elements-disabled)]"])
@@ -70,15 +70,17 @@
                    :checked  (boolean (:selected? props))
                    :disabled (boolean (:disabled? props))
                    :on-change (fn [e] (.preventDefault e))}]
-   (:slot/content props)])
+   (if (:c/tooltip-value props)
+     [hs-ui.components.tooltip/component
+      {:place "top"
+       :tooltip [:pre (:c/tooltip-value props)]}
+      (:slot/content props)]
+     [:div (:slot/content props)])])
 
 (defn results-per-page-select
   [props]
   (let [{:keys [options selected-value on-change]} props]
     [:div {:class pagination-per-page-class}
-     [:span {:class "text-[theme(colors.elements-readable)]"}
-      "Results per page"]
-
      [:div {:class select-wrapper-class}
       [:select {:class     select-class
                 :value     selected-value
@@ -86,7 +88,7 @@
                              #(on-change (.. % -target -value)))}
        (for [opt options]
          ^{:key {:value opt}}
-         [:option {:value opt} (str opt)])]]]))
+         [:option {:value opt} (str opt " / page")])]]]))
 
 
 (defn component
@@ -107,28 +109,31 @@
         on-first-page (:c/on-first-page props)
         on-last-page (:c/on-last-page props)
         on-page-change (:c/on-page-change props)
-        start (max 1 (- page 2))
-        end   (min total-pages (+ page 2))
+        start (max 1 (cond (> page (- total-pages 3)) (- total-pages 4)
+                           :else (- page 2)))
+        end   (min total-pages (cond (> 4 page) 5
+                                 :else (+ 2 page)))
         page-range (range start (inc end))]
 
     [:div (u/merge-props {:class root-class} {:class (:class props)})
-     [results-per-page-select
-      {:options (if results-per-page-options results-per-page-options [10 30 100])
-       :selected-value results-per-page
-       :on-change      (props :c/on-rpp-change)}]
+
 
      [:div {:class page-selection-class}
-      (when on-first-page
-        [page-button {:id           :prev
-                      :disabled?    (= page 1)
-                      :on-click     (fn [_] (on-first-page (dec page)))
-                      :slot/content chevron-flat/svg}])
       (when on-page-change
-        [page-button {:id           :prev
-                      :disabled?    (= page 1)
+        [page-button {:disabled?    (= page 1)
                       :on-click     (fn [_] (on-page-change (dec page)))
                       :slot/content [:div {:class "rotate-90"}
-                                     chevron-down/svg]}])
+                                     chevron-down/svg]
+                      :c/tooltip-value (when (not= page 1) "Previous page")}])
+      (when (and on-first-page (> page 3))
+        [page-button {:on-click     (fn [_] (on-first-page))
+                      :slot/content "1"}])
+
+      (when (> page 4)
+        [page-button {:on-click     (fn [_] (on-page-change (- page 5)))
+                      :slot/content "..."
+                      :c/tooltip-value "Previous 5 pages"}])
+
 
       (for [p page-range]
         ^{:key p}
@@ -138,15 +143,23 @@
           :on-click     (props :c/on-page-change)
           :slot/content (str p)}])
 
+      (when (< page (- total-pages 3))
+        [page-button {:on-click     (fn [_] (on-page-change (min (+ page 5) total-pages)))
+                        :slot/content "..."
+                        :c/tooltip-value "Next 5 pages"}])
+
+      (when (and on-last-page (< page (- total-pages 2)))
+        [page-button {:disabled?    (= page total-pages)
+                      :on-click     (fn [_] (on-last-page))
+                      :slot/content total-pages}])
       (when on-page-change
-        [page-button {:id           :next
-                      :disabled?    (= page total-pages)
+        [page-button {:disabled?    (= page total-pages)
                       :on-click     (fn [_] (on-page-change (inc page)))
                       :slot/content [:div {:class "rotate-[-90deg]"}
-                                     chevron-down/svg]}])
-      (when on-last-page
-        [page-button {:id           :next
-                      :disabled?    (= page total-pages)
-                      :on-click     (fn [_] (on-last-page (inc page)))
-                      :slot/content [:div {:class "rotate-180"}
-                                     chevron-flat/svg]}])]]))
+                                     chevron-down/svg]
+                      :c/tooltip-value (when (not= page total-pages) "Next page")}])]
+
+     [results-per-page-select
+      {:options (if results-per-page-options results-per-page-options [10 30 100])
+       :selected-value results-per-page
+       :on-change      (props :c/on-rpp-change)}]]))
