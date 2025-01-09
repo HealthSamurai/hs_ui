@@ -8,7 +8,6 @@
     :viewBox "0 0 16 16",
     :fill "none"}
    [:g
-    {:clip-path "url(#clip0_785_14113)"}
     [:path
      {:fill-rule "evenodd",
       :clip-rule "evenodd",
@@ -44,8 +43,4 @@
       :clip-rule "evenodd",
       :d
       "M11.0648 2.47814C11.3183 2.26469 11.6968 2.29714 11.9102 2.5506L12.4457 3.18649C12.6592 3.43996 12.6267 3.81847 12.3733 4.03191C12.1198 4.24536 11.7413 4.21292 11.5278 3.95945L10.9923 3.32357C10.7789 3.0701 10.8113 2.69159 11.0648 2.47814Z",
-      :fill "currentColor"}]]
-   [:defs
-    [:clippath
-     {:id "clip0_785_14113"}
-     [:rect {:width "16", :height "16", :fill "white"}]]]])
+      :fill "currentColor"}]]])

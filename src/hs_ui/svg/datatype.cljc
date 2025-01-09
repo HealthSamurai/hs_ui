@@ -8,7 +8,6 @@
     :fill "none",
     :xmlns "http://www.w3.org/2000/svg"}
    [:g
-    {:clip-path "url(#clip0_858_18924)"}
     [:path
      {:d "M3.91406 5.77679L8.00281 8.08304L12.0793 5.77691",
       :stroke "currentColor",
@@ -27,12 +26,4 @@
       :stroke "currentColor",
       :stroke-width "1.25",
       :stroke-linecap "round",
-      :stroke-linejoin "round"}]]
-   [:defs
-    [:clippath
-     {:id "clip0_858_18924"}
-     [:rect
-      {:width "16",
-       :height "16",
-       :fill "white",
-       :transform "translate(0 0.0830078)"}]]]])
+      :stroke-linejoin "round"}]]])
