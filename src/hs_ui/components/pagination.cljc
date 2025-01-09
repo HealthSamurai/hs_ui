@@ -39,7 +39,8 @@
 (def page-selection-class
   ["flex"
    "items-center"
-   "gap-[var(--spacing-half)]"])
+   "gap-[var(--spacing-half)]"
+   "mr-2"])
 
 (def page-item-class
   ["flex"
@@ -116,8 +117,6 @@
         page-range (range start (inc end))]
 
     [:div (u/merge-props {:class root-class} {:class (:class props)})
-
-
      [:div {:class page-selection-class}
       (when on-page-change
         [page-button {:disabled?    (= page 1)
@@ -125,11 +124,11 @@
                       :slot/content [:div {:class "rotate-90"}
                                      chevron-down/svg]
                       :c/tooltip-value (when (not= page 1) "Previous page")}])
-      (when (and on-first-page (> page 3))
+      (when (and on-first-page (> page 3) (> total-pages 5))
         [page-button {:on-click     (fn [_] (on-first-page))
                       :slot/content "1"}])
 
-      (when (> page 4)
+      (when (and (> page 4) (> total-pages 5))
         [page-button {:on-click     (fn [_] (on-page-change (- page 5)))
                       :slot/content "..."
                       :c/tooltip-value "Previous 5 pages"}])
@@ -143,12 +142,12 @@
           :on-click     (props :c/on-page-change)
           :slot/content (str p)}])
 
-      (when (< page (- total-pages 3))
+      (when (and (< page (- total-pages 3)) (> total-pages 5))
         [page-button {:on-click     (fn [_] (on-page-change (min (+ page 5) total-pages)))
                         :slot/content "..."
                         :c/tooltip-value "Next 5 pages"}])
 
-      (when (and on-last-page (< page (- total-pages 2)))
+      (when (and on-last-page (< page (- total-pages 2)) (> total-pages 5))
         [page-button {:disabled?    (= page total-pages)
                       :on-click     (fn [_] (on-last-page))
                       :slot/content total-pages}])
