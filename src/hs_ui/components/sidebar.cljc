@@ -25,8 +25,7 @@
   ["flex"
    "items-center"
    "space-x-1"
-   "py-1"
-   "px-4"])
+   "py-1"])
 
 (def content-items-class
   ["w-full"
