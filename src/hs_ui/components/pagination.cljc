@@ -2,7 +2,9 @@
   (:require
    [hs-ui.utils :as u]
    [hs-ui.svg.chevron-down :as chevron-down]
-   [hs-ui.components.tooltip]))
+   [hs-ui.components.tooltip]
+   [hs-ui.svg.chevron-double]
+   [hs-ui.svg.dots]))
 
 (def root-class
   ["flex"
@@ -43,7 +45,8 @@
    "mr-2"])
 
 (def page-item-class
-  ["flex"
+  ["group"
+   "flex"
    "justify-center"
    "text-[theme(colors.elements-assistive)]"
    "cursor-pointer"
@@ -56,10 +59,26 @@
 
    "hover:text-[theme(colors.elements-readable)]"
    "hover:bg-[theme(colors.surface-1)]"
-   "hover:bg-[theme(colors.surface-1)]"
 
    "has-[:disabled]:bg-[theme(colors.surface-0)]"
-   "has-[:disabled]:text-[theme(colors.elements-disabled)]"])
+   "has-[:disabled]:text-[theme(colors.elements-disabled)]"
+   "has-[:checked]:bg-[theme(colors.surface-selected)]"])
+
+(def page-item-chevron
+  ["hidden"
+   "group-hover:block"
+   "transition"
+   "delay-700"
+   "duration-300"
+   "ease-in-out"])
+
+(def page-item-dots
+  ["block"
+   "group-hover:hidden"
+   "transition"
+   "delay-700"
+   "duration-300"
+   "ease-in-out"])
 
 (defn page-button
   [props]
@@ -130,7 +149,11 @@
 
       (when (and (> page 4) (> total-pages 5))
         [page-button {:on-click     (fn [_] (on-page-change (- page 5)))
-                      :slot/content "..."
+                      :slot/content [:div
+                                     [:div {:class page-item-dots}
+                                      hs-ui.svg.dots/svg]
+                                     [:div (u/merge-props {:class page-item-chevron} {:class "rotate-[-90deg]"})
+                                      hs-ui.svg.chevron-double/svg]]
                       :c/tooltip-value "Previous 5 pages"}])
 
 
@@ -144,7 +167,11 @@
 
       (when (and (< page (- total-pages 3)) (> total-pages 5))
         [page-button {:on-click     (fn [_] (on-page-change (min (+ page 5) total-pages)))
-                        :slot/content "..."
+                      :slot/content [:div
+                                     [:div {:class page-item-dots}
+                                      hs-ui.svg.dots/svg]
+                                     [:div (u/merge-props {:class page-item-chevron} {:class "rotate-90"})
+                                      hs-ui.svg.chevron-double/svg]]
                         :c/tooltip-value "Next 5 pages"}])
 
       (when (and on-last-page (< page (- total-pages 2)) (> total-pages 5))
