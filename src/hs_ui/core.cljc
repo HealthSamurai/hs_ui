@@ -101,7 +101,8 @@
 (def button-xs-red    hs-ui.components.button/xs-red)
 (def button-slim      hs-ui.components.button/slim)
 
-(def dialog hs-ui.components.dialog/component)
+(def dialog          hs-ui.components.dialog/component)
+(def dialog-template hs-ui.components.dialog/template)
 
 (def tooltip hs-ui.components.tooltip/component)
 

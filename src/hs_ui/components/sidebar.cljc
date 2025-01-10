@@ -10,7 +10,7 @@
    "text-[theme(colors.elements-readable)]"
    "bg-white"
    "font-normal"
-   "[border-right:1px_solid_var(--basic-gray-2)]"
+   "[border-right:1px_solid_#dbdde3]"
    "[flex-flow:column]"
    "[line-height:20px]"
    "[font-size:14px]"])
@@ -19,7 +19,7 @@
   ["p-1"
    "pb-0"
    "mb-4"
-   "[border-top:1px_solid_var(--basic-gray-2)]"])
+   "[border-top:1px_solid_#dbdde3]"])
 
 (def header-class
   ["flex"
