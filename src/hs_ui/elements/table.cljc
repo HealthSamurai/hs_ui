@@ -1,12 +1,19 @@
 (ns hs-ui.elements.table
-  (:require
-   [reagent.core :as r]
-   [clojure.string :as str]
-   [goog.events :as events]
-   [hs-ui.utils :as u]
-   [hs-ui.components.tooltip])
-  (:import
-   [goog.events EventType]))
+  #?(:cljs
+     (:require
+       [reagent.core :as r]
+       [clojure.string :as str]
+       [goog.events :as events]
+       [hs-ui.utils :as u]
+       [hs-ui.components.tooltip]))
+  #?(:clj
+     (:require
+       [clojure.string :as str]
+       [hs-ui.utils :as u]
+       [hs-ui.components.tooltip]))
+  #?(:cljs
+     (:import
+       [goog.events EventType])))
 
 (def root-class
   ["overflow-scroll"
