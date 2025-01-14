@@ -46,8 +46,7 @@
    "break-all"
    "overflow-hidden"
    "text-ellipsis"
-   "whitespace-nowrap"
-   ])
+   "whitespace-nowrap"])
 
 (def body-tr-class
   ["even:bg-[var(--color-surface-1)]"
@@ -56,48 +55,53 @@
    "data-[role=link]:hover:text-gray-400"
    "data-[role=link]:hover:bg-[var(--color-surface-1)]"])
 
+(def local-store-key "hs-table-state")
+
+(defn read-table-state!
+  "Reads the entire table-state map from localStorage, returning a Clojure map or nil."
+  [table-name]
+  #?(:cljs
+     (let [key (str local-store-key "-" table-name)]
+       (when-let [json-str (js/localStorage.getItem key)]
+         (try
+           (js->clj (js/JSON.parse json-str) :keywordize-keys true)
+           (catch :default _ nil))))
+     :clj nil))
+
+(defn write-table-state!
+  "Writes the given portion of table-state (column widths, hidden columns, col order) to localStorage as JSON."
+  [table-name new-state]
+  #?(:cljs
+     (let [key (str local-store-key "-" table-name)
+           st  (select-keys new-state [:col-widths :col-hidden :col-index-to-model])]
+       (js/localStorage.setItem key (js/JSON.stringify (clj->js st))))
+     :clj nil))
+
+
 (defn handle-drag-move
-  "Attach a drag-move handler that receives mouse X and Y positions."
   [on-move]
   (fn [e]
     (.preventDefault e)
     (on-move (.-clientX e) (.-clientY e))))
 
 (defn handle-drag-end
-  "Cleans up listeners when dragging has finished."
   [move-fn end-atom]
   (fn [e]
-    #?(:cljs (events/unlisten js/window EventType.MOUSEMOVE move-fn)
-       :clj nil)
-    #?(:cljs (events/unlisten js/window EventType.MOUSEUP @end-atom)
-       :clj nil)))
+    #?(:cljs (events/unlisten js/window EventType.MOUSEMOVE move-fn))
+    #?(:cljs (events/unlisten js/window EventType.MOUSEUP @end-atom))))
 
 (defn initiate-drag!
-  "Sets up global listeners to track drag movement and end of drag."
   [on-move]
   (let [move-fn (handle-drag-move on-move)
-        end-atom #?(:cljs (r/atom nil)
-                    :clj (atom nil))
-        cleanup-fn (handle-drag-end move-fn end-atom)]
-    (reset! end-atom cleanup-fn)
-    #?(:cljs (events/listen js/window EventType.MOUSEMOVE move-fn)
-       :clj nil)
-    #?(:cljs (events/listen js/window EventType.MOUSEUP cleanup-fn)
-       :clj nil)))
+        end-atom #?(:cljs (r/atom nil))]
+    (reset! end-atom (handle-drag-end move-fn end-atom))
+    #?(:cljs (events/listen js/window EventType.MOUSEMOVE move-fn))
+    #?(:cljs (events/listen js/window EventType.MOUSEUP @end-atom))))
 
-(defn deep-merge
-  [a b]
-  (if (and (map? a) (map? b))
-    (merge-with deep-merge a b)
-    b))
-
-(defn extract-col-model
-  "Given a state-atom and a col-index, returns the 'model' key in that position."
-  [state-atom col-idx]
+(defn extract-col-model [state-atom col-idx]
   (-> @state-atom :col-index-to-model (nth col-idx)))
 
 (defn reorder-columns!
-  "Swaps the column index in the state so drag-col is placed at drop-col."
   [drag-idx drop-idx state-atom]
   (let [current-cols   (:col-index-to-model @state-atom)
         lower          (min drag-idx drop-idx)
@@ -128,35 +132,37 @@
                    current-cols)))))
 
 (defn resizer-handle
-  "A small handle that resizes the DOM node given by `cell-ref` when dragged."
-  [cell-ref]
-  [:span {:class        "inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 mr-[-12px] z-50"
-          :on-click     #(.stopPropagation %)
-          :on-mouse-down
-          (fn [evt]
-            (when-let [cell-node @cell-ref] 
-              (let [init-x      (.-clientX evt)
-                    init-width  (.-clientWidth cell-node)]
-                (initiate-drag!
-                             (fn [x _]
-                               (aset cell-node "width" (- init-width (- init-x x)))))
-                (.preventDefault evt))))}
+  "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
+  [cell-ref model-idx state-atom table-name]
+  [:span
+   {:class        "inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 mr-[-12px] z-50"
+    :on-click     #(.stopPropagation %)
+    :on-mouse-down
+    (fn [evt]
+      (when-let [cell-node @cell-ref]
+        (let [init-x     (.-clientX evt)
+              init-width (.-clientWidth cell-node)]
+          (initiate-drag!
+           (fn [x _]
+             (let [new-width (max 30 (- init-width (- init-x x)))]
+               (swap! state-atom assoc-in
+                      [:col-widths model-idx] new-width)
+               (aset cell-node "width" new-width)
+               (write-table-state! table-name @state-atom))))
+          (.preventDefault evt))))}
    "|"])
 
 (defn header-cell
-  "Renders a <th> element, optionally draggable, with the provided column info."
-  [col-info visible-idx model-idx cfg state-atom data-atom]
+  [col-info visible-idx model-idx cfg state-atom]
   (let [st           @state-atom
         hidden-cols  (:col-hidden st)
         draggable?   (:draggable st)
-        col-model    (:column-model cfg)
-        cell-ref #?(:cljs (r/atom nil)
-                    :clj (atom nil))
-        ref-fn   (fn [el] (reset! cell-ref el))]
+        col-width    (get-in st [:col-widths (keyword (str model-idx))])
+        cell-ref     #?(:cljs (r/atom nil))]
     [:th
-     {:ref   ref-fn
-      :class column-name-class
-      :draggable    draggable?
+     {:ref         (fn [el] (reset! cell-ref el))
+      :class       column-name-class
+      :draggable   draggable?
       :on-drag-start (fn [e]
                        (-> (.-dataTransfer e) (.setData "text/plain" ""))
                        (swap! state-atom assoc :col-reordering true))
@@ -164,44 +170,43 @@
       :on-drag-end   (fn [_]
                        (let [hovered-col (:col-hover @state-atom)]
                          (when (not= visible-idx hovered-col)
-                           (reorder-columns! visible-idx hovered-col state-atom))
-                         (swap! state-atom
-                                assoc
+                           (reorder-columns! visible-idx hovered-col state-atom)
+                           (write-table-state! (:table-name cfg) @state-atom))
+                         (swap! state-atom assoc
                                 :col-hover nil
                                 :col-reordering nil)))
-      :style        (merge
+      :width       (when col-width (str col-width "px"))
+      :style       (merge
                      {:position "relative"
                       :cursor   (when draggable? "move")
-                      :display  (when (get hidden-cols model-idx) "none")}
+                      :display  (when (get hidden-cols (keyword (str model-idx))) "none")}
                      (when (and (:col-reordering st)
                                 (= visible-idx (:col-hover st)))
                        {:border-right "6px solid #3366CC"}))}
-     [:span {:style {:padding-right 50}}
-      (:header col-info)]
-     [resizer-handle cell-ref]]))
+
+     [:span (:header col-info)]
+
+     [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]]))
 
 (defn render-header-row
-  "Renders the table header row (i.e. <tr> containing <th>s)."
-  [col-model cfg data-atom state-atom]
+  [col-model cfg state-atom]
   [:tr
    (doall
-     (map-indexed
-       (fn [view-idx _]
-         (let [model-idx (extract-col-model state-atom view-idx)
-               info       (col-model model-idx)]
-           ^{:key (or (:key info) model-idx)}
-           [header-cell info view-idx model-idx cfg state-atom data-atom]))
-       col-model))])
+    (map-indexed
+     (fn [view-idx _]
+       (let [model-idx (extract-col-model state-atom view-idx)
+             info       (col-model model-idx)]
+         ^{:key (or (:key info) model-idx)}
+         [header-cell info view-idx model-idx cfg state-atom]))
+     col-model))])
 
 (defn resolve-cell-data
-  "Finds cell data either via a ‘path’ or by applying an ‘expr’ function."
   [row cell-def]
   (let [{:keys [path expr]} cell-def]
     (or (and path (get-in row path))
         (and expr (expr row)))))
 
 (defn render-data-row
-  "Renders a single <tr> with its <td> cells for a given row."
   [row row-idx row-key-fn state-atom cfg]
   (let [st          @state-atom
         hidden-map  (:col-hidden st)
@@ -210,68 +215,64 @@
     ^{:key (row-key-fn row row-idx)}
     [:tr {:class body-tr-class}
      (doall
-       (map-indexed
-         (fn [visible-idx _]
-           (let [model-idx (extract-col-model state-atom visible-idx)
-                 value (resolve-cell-data row (model model-idx))]
-             ^{:key (col-key row row-idx model-idx)}
-             [:td
-              {:class column-value-class
-               :style {:border-right (when (and (:col-reordering st)
-                                                (= visible-idx (:col-hover st)))
-                                       "2px solid #3366CC")
-                       :display (when (get hidden-map model-idx) "none")}}
-              [hs-ui.components.tooltip/component
-               {:place "top"
-                :class (:c/tooltip-style cfg)
-                :tooltip [:pre (or (:title value) (str (:value value)))]}
-               (:value value)]]))
-         (or model row)))]))
+      (map-indexed
+       (fn [visible-idx _]
+         (let [model-idx (extract-col-model state-atom visible-idx)
+               value     (resolve-cell-data row (model model-idx))]
+           ^{:key (col-key row row-idx model-idx)}
+           [:td
+            {:class column-value-class
+             :style {:border-right (when (and (:col-reordering st)
+                                              (= visible-idx (:col-hover st)))
+                                     "2px solid #3366CC")
+                      :display (when (get hidden-map model-idx) "none")}}
+            [hs-ui.components.tooltip/component
+             {:place   "top"
+              :class   (:c/tooltip-style cfg)
+              :tooltip [:pre (or (:title value) (str (:value value)))]}
+             (:value value)]]))
+       (or model row)))]))
 
 (defn render-all-rows
-  "Maps each row in ‘rows’ to a <tr> (via render-data-row)."
   [rows state-atom cfg]
   (let [row-key-fn (or (:row-key cfg) (fn [_ i] i))]
     (doall
-      (map-indexed
-        (fn [i row] (render-data-row row i row-key-fn state-atom cfg))
-        rows))))
+     (map-indexed
+      (fn [i row] (render-data-row row i row-key-fn state-atom cfg))
+      rows))))
 
 (defn column-visibility-ctrl
   "Renders a list of checkboxes or toggles that show/hide columns."
-  [state-atom col-model]
-  (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
-                       :clj nil)]
+  [state-atom col-model table-name]
+  (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden]))]
     [:ul {:class "flex"}
      (doall
-       (map-indexed
-         (fn [view-idx _]
-           (let [model-idx  (extract-col-model state-atom view-idx)
-                 info       (col-model model-idx)
-                 hidden-cell #?(:cljs (r/cursor hidden-cols [model-idx])
-                                :clj nil)]
-             ^{:key (or (:key info) model-idx)}
-             [:li
-              {:style    {:margin 8
-                          :cursor "pointer"}
-               :on-click #(swap! hidden-cell not)}
-              (:header info) " " (if @hidden-cell "☐" "☑")]))
-         col-model))]))
+      (map-indexed
+       (fn [view-idx _]
+         (let [model-idx   (extract-col-model state-atom view-idx)
+               info        (col-model model-idx)
+               hidden-cell #?(:cljs (r/cursor hidden-cols [(keyword (str model-idx))]))]
+           ^{:key (or (:key info) model-idx)}
+           [:li
+            {:style    {:margin 8
+                        :cursor "pointer"}
+             :on-click (fn []
+                         (swap! hidden-cell not)
+                         (write-table-state! table-name @state-atom))}
+            (:header info) " " (if @hidden-cell "☐" "☑")]))
+       col-model))]))
 
 (defn init-col-indices
-  "Given a list of column definitions, store their initial [0..n] indexes in state."
   [headers]
   (into [] (map-indexed (fn [i _] i) headers)))
 
 (defn core-table
-  "Reagent class for rendering the main table element with header/body."
- []
+  "Reagent component for rendering the <table> with header/body."
+  []
   (fn [cfg col-model data state-atom]
-    (let [data #?(:cljs (r/atom data)
-                  :clj (atom data))])
     [:table (:table cfg)
      [:thead {:class thead-class}
-      (render-header-row col-model cfg data state-atom)]
+      (render-header-row col-model cfg state-atom)]
      [:tbody (:tbody cfg)
       (render-all-rows data state-atom cfg)]]))
 
@@ -279,24 +280,32 @@
   "Generates a column model vector from a vector of maps with :name keys."
   [cols-data]
   (mapv
-    (fn [{n :name}]
-      {:path   [(keyword n)]
-       :header n
-       :key    (keyword n)})
-    cols-data))
+   (fn [{n :name}]
+     {:path   [(keyword n)]
+      :header n
+      :key    (keyword n)})
+   cols-data))
 
 (defn view
   [props]
-  (let [col-defs     (generate-cols (:columns props))
-        row-data     (:rows props)
-        cfg {:table           {:class (u/class-names root-class (:class props))}
-             :table-state     {:draggable (if (false? (:draggable props)) false true)}
-             :column-model    col-defs
-             :c/tooltip-style (:c/tooltip-style props)}
+  (let [col-defs    (generate-cols (:columns props))
+        row-data    (:rows props)
+        table-name  (or (:table-name props) "default")
+        cfg         {:table           {:class (u/class-names root-class (:class props))}
+                     :table-state     {:draggable (not= false (:draggable props))}
+                     :column-model    col-defs
+                     :c/tooltip-style (:c/tooltip-style props)
+                     :table-name      table-name}
         local-state #?(:cljs (r/atom (:table-state cfg))
-                       :clj (atom (:table-state cfg)))]
+                       :clj  (atom (:table-state cfg)))]
     (swap! local-state assoc :col-index-to-model (init-col-indices col-defs))
+
+    #?(:cljs
+       (when-let [saved-state (read-table-state! table-name)]
+         (swap! local-state merge saved-state)))
+
+    ;; Render
     [:div {:class "w-max mt-2"}
      [:div
-      [column-visibility-ctrl local-state col-defs]
+      [column-visibility-ctrl local-state col-defs table-name]
       [core-table cfg col-defs row-data local-state]]]))
