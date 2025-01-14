@@ -1,8 +1,6 @@
 (ns hs-ui.layout
   (:require [hs-ui.utils :as u]
             [hs-ui.text]
-            [hs-ui.svg.h-gripper]
-            [hs-ui.svg.v-gripper]
             #?(:cljs [reagent.core :as r])
             #?(:cljs [reagent.dom :as dom])
             [re-frame.core :as rf]))
@@ -166,23 +164,6 @@
        (when (= :right side)
          [vertical-resizer {:side side :panel-ref internal-ref}])])))
 
-
-(defn- v-gripper [{:keys [style]}]
-  [:div.gripper
-   {:class ["absolute top-[50%] bg-[#dbdde3] w-[12px] h-[30px] rounded"
-            "flex justify-center items-center z-[200]"
-            "[transform:translateX(-50%)translateY(-50%)]"]
-    :style style}
-   hs-ui.svg.v-gripper/svg])
-
-(defn- h-gripper [{:keys [style]}]
-  [:div.gripper {:class ["absolute left-[50%] bg-[#dbdde3] w-[30px] h-[12px] rounded"
-                         "flex justify-center items-center z-[200] [transform:translateX(-50%)translateY(-50%)]"]
-                 :style style}
-   ;; TODO: Put it in svg/ dir too?
-   hs-ui.svg.h-gripper/svg])
-
-
 (defn- v-separator
   [{:keys [class
            default-right-percent
@@ -262,7 +243,6 @@
          (fn [_]
            [:<>
             [:style ".separator:hover .separator-line {border: 1px solid #bfc1c7}
-                     .separator:hover .gripper {background-color: #bfc1c7}
                      .hover-separator:hover .separator {display: block;}"]
             [:div.separator {:class          (cond-> ["px-4 mx-[-1rem] z-[100] cursor-col-resize"]
 
@@ -274,8 +254,7 @@
                              :on-touch-start mouse-down}
              [:div.separator-line {:class (into ["h-full w-0 absolute z-[100] [border: 1px solid #dbdde3]"]
                                                 (if (vector? class) class [class]))
-                                   :style (when @resizing {:border "1px solid #83868e"})}]
-             [v-gripper {:style (when @resizing {:background-color "#83868e"})}]]])))))
+                                   :style (when @resizing {:border "1px solid #83868e"})}]]])))))
 
 (defn- h-separator
   [{:keys [class
@@ -351,8 +330,7 @@
                  (.addEventListener js/document "touchend" mouse-up))]
          (fn [_]
            [:<>
-            [:style ".separator:hover .separator-line {border: 1px solid #bfc1c7}
-                     .separator:hover .gripper {background-color: #bfc1c7}"]
+            [:style ".separator:hover .separator-line {border: 1px solid #bfc1c7}"]
             [:div.separator {:class          "py-4 my-[-1rem] cursor-row-resize z-[200]"
                              :style          {:bottom (str default-lower-percent "%")}
                              :ref            resizer-ref
@@ -360,8 +338,7 @@
                              :on-touch-start mouse-down}
              [:div.separator-line {:class (into ["w-full h-0 absolute z-[100] [border: 1px solid #dbdde3]"]
                                                 (if (vector? class) class [class]))
-                                   :style (when @resizing {:border "1px solid #83868e"})}]
-             [h-gripper {:style (when @resizing {:background-color "#83868e"})}]]])))))
+                                   :style (when @resizing {:border "1px solid #83868e"})}]]])))))
 
 (defn- assoc-prop-to-hiccup [hiccup prop-key prop-val]
   (let [el-name      (first hiccup)
