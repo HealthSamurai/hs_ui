@@ -3,7 +3,6 @@
    [reagent.core :as r]
    [clojure.string :as str]
    [goog.events :as events]
-   [goog.i18n.NumberFormat.Format]
    [hs-ui.utils :as u]
    [hs-ui.components.tooltip])
   (:import
@@ -61,8 +60,10 @@
   "Cleans up listeners when dragging has finished."
   [move-fn end-atom]
   (fn [e]
-    (events/unlisten js/window EventType.MOUSEMOVE move-fn)
-    (events/unlisten js/window EventType.MOUSEUP @end-atom)))
+    #?(:cljs (events/unlisten js/window EventType.MOUSEMOVE move-fn)
+       :clj nil)
+    #?(:cljs (events/unlisten js/window EventType.MOUSEUP @end-atom)
+       :clj nil)))
 
 (defn initiate-drag!
   "Sets up global listeners to track drag movement and end of drag."
@@ -72,8 +73,10 @@
                     :clj (atom nil))
         cleanup-fn (handle-drag-end move-fn end-atom)]
     (reset! end-atom cleanup-fn)
-    (events/listen js/window EventType.MOUSEMOVE move-fn)
-    (events/listen js/window EventType.MOUSEUP cleanup-fn)))
+    #?(:cljs (events/listen js/window EventType.MOUSEMOVE move-fn)
+       :clj nil)
+    #?(:cljs (events/listen js/window EventType.MOUSEUP cleanup-fn)
+       :clj nil)))
 
 (defn deep-merge
   [a b]
