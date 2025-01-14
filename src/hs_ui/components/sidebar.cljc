@@ -62,6 +62,7 @@
    "select-none"
    "cursor-pointer"
    "[&_.chevron]:[transition:.15s_transform_ease]"
+   "[&_details_::marker]:[display:none]"
    "[&_details[open]_.chevron_svg]:[transform:rotate(90deg)]"
    "[&_details:not[open]_.chevron_svg]:[transform:rotate(0deg)]"])
 
