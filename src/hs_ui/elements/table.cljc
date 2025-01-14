@@ -240,14 +240,16 @@
 (defn column-visibility-ctrl
   "Renders a list of checkboxes or toggles that show/hide columns."
   [state-atom col-model]
-  (let [hidden-cols (r/cursor state-atom [:col-hidden])]
+  (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
+                       :clj nil)]
     [:ul {:class "flex"}
      (doall
        (map-indexed
          (fn [view-idx _]
            (let [model-idx  (extract-col-model state-atom view-idx)
                  info       (col-model model-idx)
-                 hidden-cell (r/cursor hidden-cols [model-idx])]
+                 hidden-cell #?(:cljs (r/cursor hidden-cols [model-idx])
+                                :clj nil)]
              ^{:key (or (:key info) model-idx)}
              [:li
               {:style    {:margin 8
