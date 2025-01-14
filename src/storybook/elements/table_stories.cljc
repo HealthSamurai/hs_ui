@@ -9,7 +9,9 @@
     :argTypes  {"class"        {:control "text"}
                 "columns"      {:control "object"}
                 "rows"         {:control "object"}
-                "on-row-click" {:control "object"}}
+                "on-row-click" {:control "object"}
+                "draggable"    {:control "boolean"}
+                "visibility-ctrl" {:control "boolean"}}
     :render    (utils/storybook-render-default hs-ui.elements.table/view)}))
 
 (def ^:export Basic
@@ -30,10 +32,10 @@
                              "Gender"     {:value "Female"}
                              "Address"    {:value "4532 Eva Pearl Street Baton Rouge, LA 70802"}}]}}))
 
-(def ^:export CustomWidth
+(def ^:export DraggableWithVisibilityCtrl
   (clj->js {:args {:columns [{:name "First Name"}
                              {:name "Last Name"}
-                             {:name "Gender" :width "100px"}
+                             {:name "Gender"}
                              {:name "Address"}]
                    :rows    [{"First Name" {:value "Christy"}
                               "Last Name"  {:value "Butterfield"}
@@ -46,14 +48,15 @@
                              {"First Name" {:value "Christy"}
                               "Last Name"  {:value "Wise"}
                               "Gender"     {:value "Female"}
-                              "Address"    {:value "4532 Eva Pearl Street Baton Rouge, LA 70802"}}]}}))
+                              "Address"    {:value "4532 Eva Pearl Street Baton Rouge, LA 70802"}}]
+                   :draggable true
+                   :visibility-ctrl true}}))
 
-
-(def ^:export WithReferences
+(def ^:export CustomWidth
   (clj->js {:args {:on-row-click (fn [row] (prn row))
                    :columns [{:name "First Name"}
                              {:name "Last Name"}
-                             {:name "Gender" :width "100px"}
+                             {:name "Gender" :width "200px"}
                              {:name "Address"}]
                    :rows    [{"First Name" {:value "Christy"}
                               "Last Name"  {:value "Butterfield"}

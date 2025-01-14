@@ -71,6 +71,7 @@
 (defn write-table-state!
   "Writes the given portion of table-state (column widths, hidden columns, col order) to localStorage as JSON."
   [table-name new-state]
+
   #?(:cljs
      (let [key (str local-store-key "-" table-name)
            st  (select-keys new-state [:col-widths :col-hidden :col-index-to-model])]
@@ -146,7 +147,7 @@
            (fn [x _]
              (let [new-width (max 30 (- init-width (- init-x x)))]
                (swap! state-atom assoc-in
-                      [:col-widths model-idx] new-width)
+                      [:col-widths (keyword (str model-idx))] new-width)
                (aset cell-node "width" new-width)
                (write-table-state! table-name @state-atom))))
           (.preventDefault evt))))}
@@ -175,7 +176,7 @@
                          (swap! state-atom assoc
                                 :col-hover nil
                                 :col-reordering nil)))
-      :width       (when col-width (str col-width "px"))
+      :width       (if col-width (str col-width "px") (:width col-info))
       :style       (merge
                      {:position "relative"
                       :cursor   (when draggable? "move")
@@ -225,7 +226,7 @@
              :style {:border-right (when (and (:col-reordering st)
                                               (= visible-idx (:col-hover st)))
                                      "2px solid #3366CC")
-                      :display (when (get hidden-map model-idx) "none")}}
+                     :display (when (get hidden-map (keyword (str model-idx))) "none")}}
             [hs-ui.components.tooltip/component
              {:place   "top"
               :class   (:c/tooltip-style cfg)
@@ -277,13 +278,13 @@
       (render-all-rows data state-atom cfg)]]))
 
 (defn generate-cols
-  "Generates a column model vector from a vector of maps with :name keys."
   [cols-data]
   (mapv
-   (fn [{n :name}]
-     {:path   [(keyword n)]
-      :header n
-      :key    (keyword n)})
+   (fn [{:keys [name width]}]
+     {:path   [(keyword name)]
+      :header name
+      :key    (keyword name)
+      :width  width})
    cols-data))
 
 (defn view
@@ -292,7 +293,7 @@
         row-data    (:rows props)
         table-name  (or (:table-name props) "default")
         cfg         {:table           {:class (u/class-names root-class (:class props))}
-                     :table-state     {:draggable (not= false (:draggable props))}
+                     :table-state     {:draggable (or (:draggable props) false)}
                      :column-model    col-defs
                      :c/tooltip-style (:c/tooltip-style props)
                      :table-name      table-name}
@@ -302,10 +303,11 @@
 
     #?(:cljs
        (when-let [saved-state (read-table-state! table-name)]
-         (swap! local-state merge saved-state)))
+         (swap! local-state merge saved-state))
+       :clj nil)
 
-    ;; Render
     [:div {:class "w-max mt-2"}
      [:div
-      [column-visibility-ctrl local-state col-defs table-name]
+      (when (:visibility-ctrl props)
+          [column-visibility-ctrl local-state col-defs table-name])
       [core-table cfg col-defs row-data local-state]]]))
