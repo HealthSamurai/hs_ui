@@ -15,7 +15,7 @@
                      :opacity 1
                      :style {:zIndex 99}}
          [:div {:class (hs-ui.utils/class-names
-                        ["text-sm px-3 py-1 rounded shadow-xl"
+                        ["text-sm px-3 pt-2 pb-1 rounded shadow-xl"
                          (if error?
                            "text-white bg-[var(--color-critical-default)]"
                            "text-[var(--color-elements-readable-inv)] bg-[var(--color-elements-assistive)]")]
