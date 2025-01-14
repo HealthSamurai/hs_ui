@@ -1,13 +1,13 @@
 (ns hs-ui.elements.table
   (:require
-    [reagent.core :as r :refer [atom]]
-    [clojure.string :as str]
-    [goog.events :as events]
-    [goog.i18n.NumberFormat.Format]
-    [hs-ui.utils :as u]
-    [hs-ui.components.tooltip])
+   [reagent.core :as r]
+   [clojure.string :as str]
+   [goog.events :as events]
+   [goog.i18n.NumberFormat.Format]
+   [hs-ui.utils :as u]
+   [hs-ui.components.tooltip])
   (:import
-    [goog.events EventType]))
+   [goog.events EventType]))
 
 (def root-class
   ["overflow-scroll"
@@ -68,7 +68,8 @@
   "Sets up global listeners to track drag movement and end of drag."
   [on-move]
   (let [move-fn (handle-drag-move on-move)
-        end-atom (r/atom nil)
+        end-atom #?(:cljs (r/atom nil)
+                    :clj (atom nil))
         cleanup-fn (handle-drag-end move-fn end-atom)]
     (reset! end-atom cleanup-fn)
     (events/listen js/window EventType.MOUSEMOVE move-fn)
@@ -139,7 +140,8 @@
         hidden-cols  (:col-hidden st)
         draggable?   (:draggable st)
         col-model    (:column-model cfg)
-        cell-ref (r/atom nil)
+        cell-ref #?(:cljs (r/atom nil)
+                    :clj (atom nil))
         ref-fn   (fn [el] (reset! cell-ref el))]
     [:th
      {:ref   ref-fn
@@ -253,9 +255,11 @@
   "Reagent class for rendering the main table element with header/body."
  []
   (fn [cfg col-model data state-atom]
+    (let [data #?(:cljs (r/atom data)
+                  :clj (atom data))])
     [:table (:table cfg)
      [:thead {:class thead-class}
-      (render-header-row col-model cfg (r/atom data) state-atom)]
+      (render-header-row col-model cfg data state-atom)]
      [:tbody (:tbody cfg)
       (render-all-rows data state-atom cfg)]]))
 
@@ -277,7 +281,8 @@
              :table-state     {:draggable (if (false? (:draggable props)) false true)}
              :column-model    col-defs
              :c/tooltip-style (:c/tooltip-style props)}
-        local-state (r/atom (:table-state cfg))]
+        local-state #?(:cljs (r/atom (:table-state cfg))
+                       :clj (atom (:table-state cfg)))]
     (swap! local-state assoc :col-index-to-model (init-col-indices col-defs))
     [:div {:class "w-max mt-2"}
      [:div
