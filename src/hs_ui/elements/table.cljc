@@ -1,7 +1,6 @@
 (ns hs-ui.elements.table
   (:require
     [reagent.core :as r :refer [atom]]
-    [reagent.dom :as rdom]
     [clojure.string :as str]
     [goog.events :as events]
     [goog.i18n.NumberFormat.Format]
@@ -69,7 +68,7 @@
   "Sets up global listeners to track drag movement and end of drag."
   [on-move]
   (let [move-fn (handle-drag-move on-move)
-        end-atom (atom nil)
+        end-atom (r/atom nil)
         cleanup-fn (handle-drag-end move-fn end-atom)]
     (reset! end-atom cleanup-fn)
     (events/listen js/window EventType.MOUSEMOVE move-fn)
