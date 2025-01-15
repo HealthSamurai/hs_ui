@@ -2,7 +2,7 @@
 
 (def svg
   [:svg {:xmlns "http://www.w3.org/2000/svg" :width "16" :height "17" :viewBox "0 0 16 17" :fill "none"}
-   [:g {:clip-path "url(#clip0_120_743)"}
+   [:g
     [:path {:d "M8 11.4623H9.33333" :stroke "currentColor" :stroke-width "1.25" :stroke-linecap "round" :stroke-linejoin "round"}]
     [:path {:d "M8 14.7955H9.33333" :stroke "currentColor" :stroke-width "1.25" :stroke-linecap "round" :stroke-linejoin "round"}]
     [:path {:d "M8 1.46228H9.33333" :stroke "currentColor" :stroke-width "1.25" :stroke-linecap "round" :stroke-linejoin "round"}]
@@ -17,7 +17,4 @@
     [:path {:d "M2.66699 3.46228V3.12895C2.66699 2.68692 2.84259 2.263 3.15515 1.95044C3.46771 1.63788 3.89163 1.46228 4.33366 1.46228H5.33366"
             :stroke "currentColor" :stroke-width "1.25" :stroke-linecap "round" :stroke-linejoin "round"}]
     [:path {:d "M5.33366 14.7956H4.33366C3.89163 14.7956 3.46771 14.62 3.15515 14.3075C2.84259 13.9949 2.66699 13.571 2.66699 13.1289C2.66699 12.6869 2.84259 12.263 3.15515 11.9504C3.46771 11.6379 3.89163 11.4623 4.33366 11.4623H5.33366"
-            :stroke "currentColor" :stroke-width "1.25" :stroke-linecap "round" :stroke-linejoin "round"}]]
-   [:defs
-    [:clipPath {:id "clip0_120_743"}
-     [:rect {:width "16" :height "16" :fill "white" :transform "translate(0 0.128906)"}]]]])
+            :stroke "currentColor" :stroke-width "1.25" :stroke-linecap "round" :stroke-linejoin "round"}]]])
