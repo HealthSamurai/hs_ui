@@ -5,12 +5,20 @@
        [clojure.string :as str]
        [goog.events :as events]
        [hs-ui.utils :as u]
-       [hs-ui.components.tooltip]))
+       [hs-ui.components.tooltip]
+       [hs-ui.components.list-item]
+       [hs-ui.components.list-items]
+       [hs-ui.organisms.checkbox]
+       [hs-ui.svg.ellipses-vertical]))
   #?(:clj
      (:require
        [clojure.string :as str]
        [hs-ui.utils :as u]
-       [hs-ui.components.tooltip]))
+       [hs-ui.components.tooltip]
+       [hs-ui.components.list-item]
+       [hs-ui.components.list-items]
+       [hs-ui.organisms.checkbox]
+       [hs-ui.svg.ellipses-vertical]))
   #?(:cljs
      (:import
        [goog.events EventType])))
@@ -94,7 +102,8 @@
 (defn initiate-drag!
   [on-move]
   (let [move-fn (handle-drag-move on-move)
-        end-atom #?(:cljs (r/atom nil))]
+        end-atom #?(:cljs (r/atom nil)
+                    :clj (atom nil))]
     (reset! end-atom (handle-drag-end move-fn end-atom))
     #?(:cljs (events/listen js/window EventType.MOUSEMOVE move-fn))
     #?(:cljs (events/listen js/window EventType.MOUSEUP @end-atom))))
@@ -159,7 +168,8 @@
         hidden-cols  (:col-hidden st)
         draggable?   (:draggable st)
         col-width    (get-in st [:col-widths (keyword (str model-idx))])
-        cell-ref     #?(:cljs (r/atom nil))]
+        cell-ref     #?(:cljs (r/atom nil)
+                        :clj (atom nil))]
     [:th
      {:ref         (fn [el] (reset! cell-ref el))
       :class       column-name-class
@@ -242,28 +252,41 @@
       (fn [i row] (render-data-row row i row-key-fn state-atom cfg))
       rows))))
 
-(defn column-visibility-ctrl
-  "Renders a list of checkboxes or toggles that show/hide columns."
+(defn column-visibility-dropdown
   [state-atom col-model table-name]
-  (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden]))]
-    [:ul {:class "flex"}
-     (doall
-      (map-indexed
-       (fn [view-idx _]
-         (let [model-idx   (extract-col-model state-atom view-idx)
-               info        (col-model model-idx)
-               hidden-cell #?(:cljs (r/cursor hidden-cols [(keyword (str model-idx))]))]
-           ^{:key (or (:key info) model-idx)}
-           [:li
-            {:style    {:margin 8
-                        :cursor "pointer"}
-             :on-click (fn []
-                         (swap! hidden-cell not)
-                         (write-table-state! table-name @state-atom))}
-            (:header info) " " (if @hidden-cell "☐" "☑")]))
-       col-model))]))
+  (let [menu-open? #?(:cljs (r/atom false)
+                      :clj (atom false))]
+    (fn [state-atom col-model table-name]
+      (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
+                           :clj nil)]
 
-(defn init-col-indices
+        [:div {:class "relative inline-block z-50 w-full"}
+         [:div
+          {:on-click #(swap! menu-open? not)
+           :class "p-2 cursor-pointer w-full flex content-center justify-center"}
+          hs-ui.svg.ellipses-vertical/svg]
+         (when @menu-open?
+           [:div {:class "absolute right-0 mt-2 bg-white border shadow-md p-2 z-10"}
+            [hs-ui.components.list-items/component {}
+             (doall
+              (map-indexed
+               (fn [view-idx _]
+                 (let [model-idx   (extract-col-model state-atom view-idx)
+                       info        (col-model model-idx)
+                       hidden-cell #?(:cljs (r/cursor hidden-cols [(keyword (str model-idx))])
+                                      :clj nil)]
+
+                   [hs-ui.components.list-item/component {:on-click (fn []
+                                                                      (swap! hidden-cell not)
+                                                                      (write-table-state! table-name @state-atom))}
+                    [:div {:class "flex justify-between w-full"}
+                     [:div {:class "mr-4"} (:header info)]
+                     [hs-ui.organisms.checkbox/component
+                      {:checked (if @hidden-cell false true)
+                       :c/root-class "w-auto"}]]]))
+               col-model))]])]))))
+
+(defn init-col-indaxes
   [headers]
   (into [] (map-indexed (fn [i _] i) headers)))
 
@@ -281,33 +304,33 @@
   [cols-data]
   (mapv
    (fn [{:keys [name width]}]
-     {:path   [(keyword name)]
-      :header name
-      :key    (keyword name)
-      :width  width})
+     (let [key (if (empty? name) :empty-key (keyword name))]
+       {:path   [key]
+        :header name
+        :key    key
+        :width  width}))
    cols-data))
 
 (defn view
   [props]
-  (let [col-defs    (generate-cols (:columns props))
-        row-data    (:rows props)
-        table-name  (or (:table-name props) "default")
-        cfg         {:table           {:class (u/class-names root-class (:class props))}
+  (let [col-defs   (generate-cols (:columns props))
+        row-data   (:rows props)
+        table-name (or (:table-name props) "default")
+        cfg        {:table           {:class (u/class-names root-class (:class props))}
                      :table-state     {:draggable (or (:draggable props) false)}
                      :column-model    col-defs
                      :c/tooltip-style (:c/tooltip-style props)
                      :table-name      table-name}
         local-state #?(:cljs (r/atom (:table-state cfg))
                        :clj  (atom (:table-state cfg)))]
-    (swap! local-state assoc :col-index-to-model (init-col-indices col-defs))
-
+    (swap! local-state assoc :col-index-to-model (init-col-indaxes col-defs))
     #?(:cljs
        (when-let [saved-state (read-table-state! table-name)]
          (swap! local-state merge saved-state))
        :clj nil)
 
     [:div {:class "w-max mt-2"}
-     [:div
-      (when (:visibility-ctrl props)
-          [column-visibility-ctrl local-state col-defs table-name])
-      [core-table cfg col-defs row-data local-state]]]))
+     (when (:visibility-ctrl props)
+       [:div {:class "absolute top-5 right-4 z-50 w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"}
+        [column-visibility-dropdown local-state col-defs table-name]])
+     [core-table cfg col-defs row-data local-state]]))
