@@ -24,8 +24,8 @@
        [goog.events EventType])))
 
 (def root-class
-  ["overflow-scroll"
-   "table-fixed"
+  ["table-fixed"
+   "w-full"
    "border-spacing-0"
    "border-separate"])
 
@@ -145,7 +145,7 @@
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
   [:span
-   {:class        "inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 mr-[-12px] z-50"
+   {:class        "inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 mr-[-12px] z-30"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
@@ -163,7 +163,7 @@
    "|"])
 
 (defn header-cell
-  [col-info visible-idx model-idx cfg state-atom]
+  [col-info visible-idx model-idx cfg state-atom last-child]
   (let [st           @state-atom
         hidden-cols  (:col-hidden st)
         draggable?   (:draggable st)
@@ -186,7 +186,14 @@
                          (swap! state-atom assoc
                                 :col-hover nil
                                 :col-reordering nil)))
-      :width       (if col-width (str col-width "px") (:width col-info))
+      :width       (cond
+                     col-width
+                     (str col-width "px")
+
+                     (:width col-info)
+                     (:width col-info)
+
+                     :else nil)
       :style       (merge
                      {:position "relative"
                       :cursor   (when draggable? "move")
@@ -197,7 +204,8 @@
 
      [:span (:header col-info)]
 
-     [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]]))
+     (when-not last-child
+       [resizer-handle cell-ref model-idx state-atom (:table-name cfg)])]))
 
 (defn render-header-row
   [col-model cfg state-atom]
@@ -208,7 +216,7 @@
        (let [model-idx (extract-col-model state-atom view-idx)
              info       (col-model model-idx)]
          ^{:key (or (:key info) model-idx)}
-         [header-cell info view-idx model-idx cfg state-atom]))
+         [header-cell info view-idx model-idx cfg state-atom (= view-idx (- (count col-model) 1))]))
      col-model))])
 
 (defn resolve-cell-data
@@ -222,9 +230,13 @@
   (let [st          @state-atom
         hidden-map  (:col-hidden st)
         col-key     (or (:col-key cfg) (fn [_ rn cn] cn))
-        model       (:column-model cfg)]
+        model       (:column-model cfg)
+        on-row-click (:on-row-click cfg)]
     ^{:key (row-key-fn row row-idx)}
-    [:tr {:class body-tr-class}
+    [:tr {:class body-tr-class
+          :data-role     (when on-row-click "link")
+          :on-click      (when on-row-click #(on-row-click row))
+          :aria-selected (:selected? row)}
      (doall
       (map-indexed
        (fn [visible-idx _]
@@ -249,7 +261,7 @@
   (let [row-key-fn (or (:row-key cfg) (fn [_ i] i))]
     (doall
      (map-indexed
-      (fn [i row] (render-data-row row i row-key-fn state-atom cfg))
+      (fn [i row] (render-data-row row i row-key-fn state-atom cfg ))
       rows))))
 
 (defn column-visibility-dropdown
@@ -260,11 +272,13 @@
       (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
                            :clj nil)]
 
-        [:div {:class "relative inline-block z-50 w-full"}
-         [:div
-          {:on-click #(swap! menu-open? not)
-           :class "p-2 cursor-pointer w-full flex content-center justify-center"}
-          hs-ui.svg.ellipses-vertical/svg]
+        [:div {:class "relative inline-block z-50 w-full mt-2.5"}
+         [:div {:class "w-full flex justify-center"}
+          [:div {:on-click #(swap! menu-open? not)
+                 :class
+                 (hs-ui.utils/class-names "p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"
+                                          (if @menu-open? "rounded-[50%] bg-[var(--color-separator)]" ""))}
+           hs-ui.svg.ellipses-vertical/svg]]
          (when @menu-open?
            [:div {:class "absolute right-0 mt-2 bg-white border shadow-md p-2 z-10"}
             [hs-ui.components.list-items/component {}
@@ -283,6 +297,9 @@
                      [:div {:class "mr-4"} (:header info)]
                      [hs-ui.organisms.checkbox/component
                       {:checked (if @hidden-cell false true)
+                       :on-change (fn []
+                                    (swap! hidden-cell not)
+                                    (write-table-state! table-name @state-atom))
                        :c/root-class "w-auto"}]]]))
                col-model))]])]))))
 
@@ -290,21 +307,32 @@
   [headers]
   (into [] (map-indexed (fn [i _] i) headers)))
 
+(defn colgroup [props]
+  [:colgroup
+   (for [column (:columns props)]
+     [:col {:key   (u/key ::colgroup column)
+            :style {:width (:width column "auto")}}])])
+
 (defn core-table
   "Reagent component for rendering the <table> with header/body."
   []
   (fn [cfg col-model data state-atom]
-    [:table (:table cfg)
-     [:thead {:class thead-class}
-      (render-header-row col-model cfg state-atom)]
-     [:tbody (:tbody cfg)
-      (render-all-rows data state-atom cfg)]]))
+    [:div {:class "relative"}
+     [:table (:table cfg)
+      [:colgroup
+       (for [column col-model]
+         [:col {:key   (u/key ::colgroup column)
+                :style {:width "auto"}}])]
+      [:thead {:class thead-class}
+       (render-header-row col-model cfg state-atom)]
+      [:tbody (:tbody cfg)
+       (render-all-rows data state-atom cfg)]]]))
 
 (defn generate-cols
   [cols-data]
   (mapv
    (fn [{:keys [name width]}]
-     (let [key (if (empty? name) :empty-key (keyword name))]
+     (let [key (if (empty? name) "" (keyword name))]
        {:path   [key]
         :header name
         :key    key
@@ -317,10 +345,11 @@
         row-data   (:rows props)
         table-name (or (:table-name props) "default")
         cfg        {:table           {:class (u/class-names root-class (:class props))}
-                     :table-state     {:draggable (or (:draggable props) false)}
-                     :column-model    col-defs
-                     :c/tooltip-style (:c/tooltip-style props)
-                     :table-name      table-name}
+                    :table-state     {:draggable (or (:draggable props) false)}
+                    :column-model    col-defs
+                    :c/tooltip-style (:c/tooltip-style props)
+                    :table-name      table-name
+                    :on-row-click (:on-row-click props)}
         local-state #?(:cljs (r/atom (:table-state cfg))
                        :clj  (atom (:table-state cfg)))]
     (swap! local-state assoc :col-index-to-model (init-col-indaxes col-defs))
@@ -329,8 +358,8 @@
          (swap! local-state merge saved-state))
        :clj nil)
 
-    [:div {:class "w-max mt-2"}
+    [:div {:class "w-full"}
      (when (:visibility-ctrl props)
-       [:div {:class "absolute top-5 right-4 z-50 w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"}
+       [:div {:class "absolute top-0 right-1 z-40 w-[100px] h-[46px] bg-white"}
         [column-visibility-dropdown local-state col-defs table-name]])
      [core-table cfg col-defs row-data local-state]]))
