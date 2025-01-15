@@ -1,6 +1,7 @@
 (ns hs-ui.organisms.checkbox
   (:require [hs-ui.text]
             [hs-ui.components.checkbox]
+            [hs-ui.components.content-expand]
             [hs-ui.utils]
             [hs-ui.layout]))
 
