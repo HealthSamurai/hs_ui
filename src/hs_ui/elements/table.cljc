@@ -45,20 +45,25 @@
    "relative"
    "break-all"
    "hover:shadow-[inset_0_0_0_1px_var(--color-cta)]"
+   "transition-shadow"
+   "delay-[400ms]"
    "group/cell"])
 
 (def cell-toolbar-class
   ["absolute"
    "-top-[var(--spacing-x3)]"
    "left-0"
+   "flex"
    "px-[6px]"
    "py-[var(--spacing-half)]"
    "gap-[6px]"
    "bg-[var(--color-cta)]"
    "rounded-t"
-   "z-10"
-   "hidden"
-   "group-hover/cell:flex"])
+   "invisible"
+   "group-hover/cell:visible"
+   "transition-[visibility]"
+   "ease-out"
+   "delay-[400ms]"])
 
 (def cell-toolbar-icon-class
   ["opacity-50"
