@@ -312,15 +312,9 @@
                        :c/root-class "w-auto"}]]]))
                col-model))]])]))))
 
-(defn init-col-indaxes
+(defn init-col-indexes
   [headers]
   (into [] (map-indexed (fn [i _] i) headers)))
-
-(defn colgroup [props]
-  [:colgroup
-   (for [column (:columns props)]
-     [:col {:key   (utils/key ::colgroup column)
-            :style {:width (:width column "auto")}}])])
 
 (defn core-table
   "Reagent component for rendering the <table> with header/body."
@@ -359,10 +353,12 @@
                     :c/tooltip-style (:c/tooltip-style props)
                     :table-name      table-name
                     :on-row-click (:on-row-click props)}
-        local-state (utils/ratom (:table-state cfg))]
-    (swap! local-state assoc :col-index-to-model (init-col-indaxes col-defs))
+        local-state (utils/ratom (:table-state cfg))
+        model-indexes (init-col-indexes col-defs)]
+    (swap! local-state assoc :col-index-to-model model-indexes)
     #?(:cljs
-       (when-let [saved-state (read-table-state! table-name)]
+       (when-let [saved-state (-> (read-table-state! table-name)
+                                  (assoc :col-index-to-model model-indexes))]
          (swap! local-state merge saved-state))
        :clj nil)
 
