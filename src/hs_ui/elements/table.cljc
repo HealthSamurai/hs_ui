@@ -9,7 +9,7 @@
       [hs-ui.components.list-item]
       [hs-ui.components.list-items]
       [hs-ui.organisms.checkbox]
-      [hs-ui.svg.ellipses-vertical]))
+      [hs-ui.svg.settings]))
   #?(:clj
      (:require
       [reagent.core :as r]
@@ -19,7 +19,7 @@
       [hs-ui.components.list-item]
       [hs-ui.components.list-items]
       [hs-ui.organisms.checkbox]
-      [hs-ui.svg.ellipses-vertical]))
+      [hs-ui.svg.settings]))
   #?(:cljs
      (:import
       [goog.events EventType])))
@@ -34,15 +34,14 @@
   ["text-[var(--color-elements-assistive)]"])
 
 (def column-name-class
-  ["p-4"
-   "pl-6"
+  ["group"
+   "p-4"
    "font-medium"
    "text-nowrap"
    "text-left"
    "bg-[var(--color-surface-0)]"
    "border-b"
    "border-[var(--color-separator)]"
-
    "sticky"
    "top-0"])
 
@@ -145,7 +144,7 @@
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
   [:span
-   {:class        "inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 mr-[-12px] z-[5]"
+   {:class        "hidden group-hover:inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 z-[5]"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
@@ -199,9 +198,10 @@
                       :display  (when (get hidden-cols (keyword (str model-idx))) "none")}
                      (when (and (:col-reordering st)
                                 (= visible-idx (:col-hover st)))
-                       {:border-right "6px solid #3366CC"}))}
+                       {:border "2px solid var(--color-cta)"}))}
 
-     [:span (:header col-info)]
+     [:span {:class "block overflow-hidden"}
+      (:header col-info)]
 
      (when-not last-child
        [resizer-handle cell-ref model-idx state-atom (:table-name cfg)])]))
@@ -244,10 +244,11 @@
            ^{:key (col-key row row-idx model-idx)}
            [:td
             {:class column-value-class
-             :style {:border-right (when (and (:col-reordering st)
-                                              (= visible-idx (:col-hover st)))
-                                     "2px solid #3366CC")
-                     :display (when (get hidden-map (keyword (str model-idx))) "none")}}
+             :style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
+                      (and (:col-reordering st)
+                           (= visible-idx (:col-hover st)))
+                      (merge {:border-left "2px dashed var(--color-cta)"
+                              :border-right "2px dashed var(--color-cta)"}))}
             [hs-ui.components.tooltip/component
              {:place   "top"
               :class   (:c/tooltip-style cfg)
@@ -272,7 +273,7 @@
                                (when (nil? (.closest target ".dropdown-container"))
                                  (reset! menu-open? false)))))]
 
-    ;; :on-mose-down react event on element doen't work here for some reason
+    ;; :on-mous-down react event on element doen't work here for some reason
     ;; so had to add js/document listener
     #?(:cljs (.addEventListener js/document "mousedown" on-click-outside)
        :clj nil)
@@ -285,9 +286,10 @@
          [:div {:class "w-full flex justify-center"}
           [:div {:on-click #(swap! menu-open? not)
                  :class
-                 (utils/class-names "p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"
+                 (utils/class-names "text-[theme(colors.elements-assistive)] p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"
+
                                           (if @menu-open? "rounded-[50%] bg-[var(--color-separator)]" ""))}
-           hs-ui.svg.ellipses-vertical/svg]]
+           hs-ui.svg.settings/svg]]
          (when @menu-open?
            [:div {:class "absolute right-0 mt-2 bg-white border shadow-md p-2 z-10"}
             [hs-ui.components.list-items/component {}
@@ -364,6 +366,6 @@
 
     [:div {:class "w-full"}
      (when (:visibility-ctrl props)
-       [:div {:class "absolute top-0 right-1 z-10 w-[32px] h-[32px] bg-white"}
+       [:div {:class "absolute top-0 right-1 z-10 w-[32px] h-[48px] bg-white"}
         [column-visibility-dropdown local-state col-defs table-name]])
      [core-table cfg col-defs row-data local-state]]))
