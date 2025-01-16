@@ -145,7 +145,7 @@
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
   [:span
-   {:class        "inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 mr-[-12px] z-30"
+   {:class        "inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 mr-[-12px] z-[5]"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
@@ -272,7 +272,7 @@
       (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
                            :clj nil)]
 
-        [:div {:class "relative inline-block z-50 w-full mt-2.5"}
+        [:div {:class "relative inline-block w-full mt-2.5"}
          [:div {:class "w-full flex justify-center"}
           [:div {:on-click #(swap! menu-open? not)
                  :class
@@ -360,6 +360,6 @@
 
     [:div {:class "w-full"}
      (when (:visibility-ctrl props)
-       [:div {:class "absolute top-0 right-1 z-40 w-[100px] h-[46px] bg-white"}
+       [:div {:class "absolute top-0 right-1 z-10 w-[32px] h-[32px] bg-white"}
         [column-visibility-dropdown local-state col-defs table-name]])
      [core-table cfg col-defs row-data local-state]]))
