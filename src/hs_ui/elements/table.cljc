@@ -1,27 +1,28 @@
 (ns hs-ui.elements.table
   #?(:cljs
      (:require
-       [reagent.core :as r]
-       [clojure.string :as str]
-       [goog.events :as events]
-       [hs-ui.utils :as u]
-       [hs-ui.components.tooltip]
-       [hs-ui.components.list-item]
-       [hs-ui.components.list-items]
-       [hs-ui.organisms.checkbox]
-       [hs-ui.svg.ellipses-vertical]))
+      [reagent.core :as r]
+      [clojure.string :as str]
+      [goog.events :as events]
+      [hs-ui.utils :as utils]
+      [hs-ui.components.tooltip]
+      [hs-ui.components.list-item]
+      [hs-ui.components.list-items]
+      [hs-ui.organisms.checkbox]
+      [hs-ui.svg.ellipses-vertical]))
   #?(:clj
      (:require
-       [clojure.string :as str]
-       [hs-ui.utils :as u]
-       [hs-ui.components.tooltip]
-       [hs-ui.components.list-item]
-       [hs-ui.components.list-items]
-       [hs-ui.organisms.checkbox]
-       [hs-ui.svg.ellipses-vertical]))
+      [reagent.core :as r]
+      [clojure.string :as str]
+      [hs-ui.utils :as utils]
+      [hs-ui.components.tooltip]
+      [hs-ui.components.list-item]
+      [hs-ui.components.list-items]
+      [hs-ui.organisms.checkbox]
+      [hs-ui.svg.ellipses-vertical]))
   #?(:cljs
      (:import
-       [goog.events EventType])))
+      [goog.events EventType])))
 
 (def root-class
   ["table-fixed"
@@ -102,8 +103,7 @@
 (defn initiate-drag!
   [on-move]
   (let [move-fn (handle-drag-move on-move)
-        end-atom #?(:cljs (r/atom nil)
-                    :clj (atom nil))]
+        end-atom (utils/ratom nil)]
     (reset! end-atom (handle-drag-end move-fn end-atom))
     #?(:cljs (events/listen js/window EventType.MOUSEMOVE move-fn))
     #?(:cljs (events/listen js/window EventType.MOUSEUP @end-atom))))
@@ -168,8 +168,7 @@
         hidden-cols  (:col-hidden st)
         draggable?   (:draggable st)
         col-width    (get-in st [:col-widths (keyword (str model-idx))])
-        cell-ref     #?(:cljs (r/atom nil)
-                        :clj (atom nil))]
+        cell-ref     (utils/ratom nil)]
     [:th
      {:ref         (fn [el] (reset! cell-ref el))
       :class       column-name-class
@@ -266,17 +265,27 @@
 
 (defn column-visibility-dropdown
   [state-atom col-model table-name]
-  (let [menu-open? #?(:cljs (r/atom false)
-                      :clj (atom false))]
+  (let [menu-open? (utils/ratom false)
+        on-click-outside (fn [e]
+                           (when @menu-open?
+                             (let [target (.-target e)]
+                               (when (nil? (.closest target ".dropdown-container"))
+                                 (reset! menu-open? false)))))]
+
+    ;; :on-mose-down react event on element doen't work here for some reason
+    ;; so had to add js/document listener
+    #?(:cljs (.addEventListener js/document "mousedown" on-click-outside)
+       :clj nil)
+
     (fn [state-atom col-model table-name]
       (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
                            :clj nil)]
 
-        [:div {:class "relative inline-block w-full mt-2.5"}
+        [:div {:class "relative inline-block w-full mt-2.5 dropdown-container"}
          [:div {:class "w-full flex justify-center"}
           [:div {:on-click #(swap! menu-open? not)
                  :class
-                 (hs-ui.utils/class-names "p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"
+                 (utils/class-names "p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"
                                           (if @menu-open? "rounded-[50%] bg-[var(--color-separator)]" ""))}
            hs-ui.svg.ellipses-vertical/svg]]
          (when @menu-open?
@@ -310,7 +319,7 @@
 (defn colgroup [props]
   [:colgroup
    (for [column (:columns props)]
-     [:col {:key   (u/key ::colgroup column)
+     [:col {:key   (utils/key ::colgroup column)
             :style {:width (:width column "auto")}}])])
 
 (defn core-table
@@ -321,7 +330,7 @@
      [:table (:table cfg)
       [:colgroup
        (for [column col-model]
-         [:col {:key   (u/key ::colgroup column)
+         [:col {:key   (utils/key ::colgroup column)
                 :style {:width "auto"}}])]
       [:thead {:class thead-class}
        (render-header-row col-model cfg state-atom)]
@@ -344,14 +353,13 @@
   (let [col-defs   (generate-cols (:columns props))
         row-data   (:rows props)
         table-name (or (:table-name props) "default")
-        cfg        {:table           {:class (u/class-names root-class (:class props))}
+        cfg        {:table           {:class (utils/class-names root-class (:class props))}
                     :table-state     {:draggable (or (:draggable props) false)}
                     :column-model    col-defs
                     :c/tooltip-style (:c/tooltip-style props)
                     :table-name      table-name
                     :on-row-click (:on-row-click props)}
-        local-state #?(:cljs (r/atom (:table-state cfg))
-                       :clj  (atom (:table-state cfg)))]
+        local-state (utils/ratom (:table-state cfg))]
     (swap! local-state assoc :col-index-to-model (init-col-indaxes col-defs))
     #?(:cljs
        (when-let [saved-state (read-table-state! table-name)]
