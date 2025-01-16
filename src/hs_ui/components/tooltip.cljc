@@ -6,7 +6,8 @@
 (defn component [{:keys [class place tooltip error?]} children]
   (let [reference-id (gensym "reference-id-")]
     [:<>
-     [:div {:id reference-id} children]
+     [:div {:id reference-id
+            :class "truncate"} children]
      #?(:cljs
         [:> Tooltip {:anchorSelect (str "#" reference-id)
                      :offset 3
