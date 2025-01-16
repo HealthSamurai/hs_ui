@@ -242,7 +242,7 @@
          ;; In this component there should be a general design.
          (fn [_]
            [:<>
-            [:style ".separator:hover .separator-line {border: 1px solid #bfc1c7}
+            [:style ".separator:hover .separator-line {border: 1px solid var(--color-cta)}
                      .hover-separator:hover .separator {display: block;}"]
             [:div.separator {:class          (cond-> ["px-4 mx-[-1rem] z-[100] cursor-col-resize"]
 
@@ -330,7 +330,7 @@
                  (.addEventListener js/document "touchend" mouse-up))]
          (fn [_]
            [:<>
-            [:style ".separator:hover .separator-line {border: 1px solid #bfc1c7}"]
+            [:style ".separator:hover .separator-line {border: 1px solid var(--color-cta)}"]
             [:div.separator {:class          "py-4 my-[-1rem] cursor-row-resize z-[200]"
                              :style          {:bottom (str default-lower-percent "%")}
                              :ref            resizer-ref
