@@ -254,7 +254,7 @@
                              :on-touch-start mouse-down}
              [:div.separator-line {:class (into ["h-full w-0 absolute z-[100] [border: 1px solid #dbdde3]"]
                                                 (if (vector? class) class [class]))
-                                   :style (when @resizing {:border "1px solid #83868e"})}]]])))))
+                                   :style (when @resizing {:border "1px solid var(--color-cta)"})}]]])))))
 
 (defn- h-separator
   [{:keys [class
@@ -338,7 +338,7 @@
                              :on-touch-start mouse-down}
              [:div.separator-line {:class (into ["w-full h-0 absolute z-[100] [border: 1px solid #dbdde3]"]
                                                 (if (vector? class) class [class]))
-                                   :style (when @resizing {:border "1px solid #83868e"})}]]])))))
+                                   :style (when @resizing {:border "1px solid var(--color-cta)"})}]]])))))
 
 (defn- assoc-prop-to-hiccup [hiccup prop-key prop-val]
   (let [el-name      (first hiccup)
