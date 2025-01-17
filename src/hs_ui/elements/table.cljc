@@ -31,7 +31,9 @@
    "border-separate"])
 
 (def thead-class
-  ["text-[var(--color-elements-assistive)]"])
+  ["sticky"
+   "top-0"
+   "text-[var(--color-elements-assistive)]"])
 
 (def column-name-class
   ["group"
@@ -283,7 +285,7 @@
                            :clj nil)]
 
         [:div {:class "relative inline-block w-full mt-2.5 dropdown-container"}
-         [:div {:class "w-full flex justify-center"}
+         [:div {:class "w-full flex justify-start"}
           [:div {:on-click #(swap! menu-open? not)
                  :class
                  (utils/class-names "text-[theme(colors.elements-assistive)] p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"
@@ -366,6 +368,6 @@
 
     [:div {:class "w-full"}
      (when (:visibility-ctrl props)
-       [:div {:class "absolute top-0 right-1 z-10 w-[32px] h-[48px] bg-white"}
+       [:div {:class "absolute top-0 right-0 z-10 w-[45px] h-[48px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
         [column-visibility-dropdown local-state col-defs table-name]])
      [core-table cfg col-defs row-data local-state]]))
