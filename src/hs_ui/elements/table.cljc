@@ -252,8 +252,7 @@
                       (merge {:border-left "2px dashed var(--color-cta)"
                               :border-right "2px dashed var(--color-cta)"}))}
             [hs-ui.components.tooltip/component
-             {:place   "top"
-              :class   (:c/tooltip-style cfg)
+             {:class   (:c/tooltip-style cfg)
               :tooltip [:pre (or (:title value) (str (:value value)))]}
              (:value value)]]))
        (or model row)))]))
