@@ -50,7 +50,6 @@
 (def column-value-class
   ["px-4"
    "py-2"
-   "max-w-[3px]"
    "whitespace-nowrap"
    "truncate"
    "break-all"

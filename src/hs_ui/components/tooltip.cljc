@@ -24,7 +24,7 @@
 
     (fn [{:keys [tooltip class error?]
           :or   {class ""}}
-         & children]
+         & content]
 
       (letfn [(update-position! []
                 #?(:cljs (when (and @show? @parent-ref @tooltip-ref)
@@ -117,20 +117,24 @@
                                       :top  final-top})))
                    :clj nil))]
 
-        (fn [{:keys [tooltip class error?] :or {class ""}} & children]
-          [:div
-           {:on-mouse-leave (fn [_]
-                              (reset! show? false))}
+        (fn [{:keys [tooltip class error?] :or {class ""}} & content]
+          [:div {:class "w-full overflow-hidden"
+                 :on-mouse-leave (fn [_]
+                                   (reset! show? false))}
+
 
            [:div
             {:ref            #(reset! parent-ref %)
-             :class          "truncate w-min"
+             :class          "truncate w-fit max-w-full"
              :on-mouse-enter (fn [_]
                                (reset! show? true)
                                (reset! tooltip-placement nil)
                                #?(:cljs (r/after-render update-position!)
                                   :clj nil))}
-            (into [:<>] children)]
+
+            (if (string? content)
+              content
+              (into [:<>] content))]
 
            (when @show?
              [:div
