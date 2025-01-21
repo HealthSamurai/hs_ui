@@ -3,22 +3,23 @@
    #?(:cljs [reagent.core :as r])
    [hs-ui.utils :as utils]))
 
-(def ^:private margin-from-top 16)
+(def ^:private margin-top 16)
+(def ^:private margin-left 16)
 
 (defn- clamp-tooltip-top
   [raw-top tooltip-height doc-height]
-  (let [top1    (max raw-top margin-from-top)
+  (let [top1    (max raw-top margin-top)
         t-bottom (+ top1 tooltip-height)]
     (if (<= t-bottom doc-height)
       top1
-      (max margin-from-top (- doc-height tooltip-height)))))
+      (max margin-top (- doc-height tooltip-height)))))
 
 (defn component
   []
-  (let [show?        (utils/ratom false)
-        parent-ref   (utils/ratom nil)
-        tooltip-ref  (utils/ratom nil)
-        tooltip-pos  (utils/ratom nil)
+  (let [show?             (utils/ratom false)
+        parent-ref        (utils/ratom nil)
+        tooltip-ref       (utils/ratom nil)
+        tooltip-pos       (utils/ratom nil)
         tooltip-placement (utils/ratom nil)]
 
     (fn [{:keys [tooltip class error?]
@@ -49,20 +50,33 @@
                                  t-height   (.-height tooltip-rect)
 
                                  ;; Offsets
-                                 offset 8
-                                 ;; How close to an edge we decide to flip left/right
+                                 offset        8
                                  min-left-dist  300
                                  min-right-dist 300
+
+                                 ;; Decide if it's "big" according to your own logic/threshold
+                                 big-threshold 300
+                                 is-big?       (> t-height big-threshold)
 
                                  ;; If we haven't decided a placement yet, pick one now:
                                  chosen-placement
                                  (or @tooltip-placement
-                                     (cond
-                                       (< p-left min-left-dist)                   :right
-                                       (> p-right (- doc-width min-right-dist))   :left
-                                       :else                                      :top))
+                                     (if is-big?
+                                       (if (< p-center-x (/ doc-width 2))
+                                         :right
+                                         :left)
 
-                                 ;; Based on chosen-placement, compute an (x,y) "raw" location
+                                       (cond
+                                         (< p-left min-left-dist)
+                                         :right
+
+                                         (> p-right (- doc-width min-right-dist))
+                                         :left
+
+                                         :else
+                                         :top)))
+
+                                 ;; Compute an (x,y) raw location
                                  [raw-left raw-top chosen-placement']
                                  (case chosen-placement
                                    :right
@@ -76,17 +90,15 @@
                                      [left top :left])
 
                                    :top
-                                   (let [above-top (- p-top offset t-height)
-                                         below-top (+ p-bottom offset)
-                                         top (if (neg? above-top)
-                                               below-top
-                                               above-top)
-                                         left (- p-center-x (/ t-width 2))
+                                   (let [above-top       (- p-top offset t-height)
+                                         below-top       (+ p-bottom offset)
+                                         top             (if (neg? above-top)
+                                                           below-top  ; flip to bottom if no space
+                                                           above-top)
+                                         left            (- p-center-x (/ t-width 2))
                                          final-placement (if (neg? above-top) :bottom :top)]
                                      [left top final-placement])
 
-                                   ;; Optionally handle :bottom explicitly if you want:
-                                   :bottom
                                    (let [below-top (+ p-bottom offset)
                                          left      (- p-center-x (/ t-width 2))]
                                      [left below-top :bottom]))
@@ -97,33 +109,37 @@
 
                                  final-top  (clamp-tooltip-top raw-top t-height doc-height)]
 
-
-                             ;; Update the actual tooltip coordinates:
-                             (reset! tooltip-pos {:left (if (< final-left 16) 16 final-left) :top final-top})))
+                             (reset! tooltip-placement chosen-placement')
+                             (reset! tooltip-pos
+                                     {:left (if (< final-left margin-left)
+                                              margin-left
+                                              final-left)
+                                      :top  final-top})))
                    :clj nil))]
 
-        
         (fn [{:keys [tooltip class error?] :or {class ""}} & children]
-          [:div {:on-mouse-leave (fn [_]
-                                    (reset! show? false))}
+          [:div
+           {:on-mouse-leave (fn [_]
+                              (reset! show? false))}
 
-           [:div {:ref            #(reset! parent-ref %)
-                  :class "truncate"
-                  :on-mouse-enter (fn [_]
-                                    (reset! show? true)
-                                    (reset! tooltip-placement nil)
-                                    #?(:cljs (r/after-render update-position!)
-                                       :clj nil))}
+           [:div
+            {:ref            #(reset! parent-ref %)
+             :class          "truncate w-min"
+             :on-mouse-enter (fn [_]
+                               (reset! show? true)
+                               (reset! tooltip-placement nil)
+                               #?(:cljs (r/after-render update-position!)
+                                  :clj nil))}
             (into [:<>] children)]
 
-           ;; The tooltip itself, visible if show? is true
            (when @show?
-             [:div {:ref   #(reset! tooltip-ref %)
-                    :class (hs-ui.utils/class-names
-                            ["text-sm  p-2 rounded shadow-xl z-[999]"
+             [:div
+              {:ref   #(reset! tooltip-ref %)
+               :class (hs-ui.utils/class-names
+                        ["text-sm p-2 rounded shadow-xl z-[999]"
                          (if error?
                            "text-white bg-[var(--color-critical-default)]"
                            "text-[var(--color-elements-readable-inv)] bg-[var(--color-elements-assistive)]")]
-                            class)
-                    :style (merge {:position "fixed"} @tooltip-pos)}
+                        class)
+               :style (merge {:position "fixed"} @tooltip-pos)}
               tooltip])])))))
