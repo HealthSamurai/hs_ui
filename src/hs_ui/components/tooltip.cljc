@@ -136,10 +136,10 @@
              [:div
               {:ref   #(reset! tooltip-ref %)
                :class (hs-ui.utils/class-names
-                        ["text-sm p-2 rounded shadow-xl z-[999]"
-                         (if error?
-                           "text-white bg-[var(--color-critical-default)]"
-                           "text-[var(--color-elements-readable-inv)] bg-[var(--color-elements-assistive)]")]
-                        class)
+                       ["text-sm p-2 rounded shadow-xl z-[999]"
+                        (if error?
+                          "text-white bg-[var(--color-critical-default)]"
+                          "text-[var(--color-elements-readable-inv)] bg-[var(--color-elements-assistive)]")]
+                       class)
                :style (merge {:position "fixed"} @tooltip-pos)}
               tooltip])])))))

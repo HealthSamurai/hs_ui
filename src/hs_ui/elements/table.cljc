@@ -226,6 +226,24 @@
     (or (and path (get-in row path))
         (and expr (expr row)))))
 
+(defn need-tooltip? [value]
+  (not (cond (= value "false")
+             true
+
+             (= value "true")
+             true
+
+             (boolean? value)
+             true
+
+             (= value "-")
+             true?
+
+             (empty? value)
+             true
+
+             :else false)))
+
 (defn render-data-row
   [row row-idx row-key-fn state-atom cfg]
   (let [st          @state-atom
@@ -251,10 +269,12 @@
                            (= visible-idx (:col-hover st)))
                       (merge {:border-left "2px dashed var(--color-cta)"
                               :border-right "2px dashed var(--color-cta)"}))}
-            [hs-ui.components.tooltip/component
-             {:class   (:c/tooltip-style cfg)
-              :tooltip [:pre (or (:title value) (str (:value value)))]}
-             (:value value)]]))
+            (if (need-tooltip? (:value value))
+              [hs-ui.components.tooltip/component
+               {:class   (:c/tooltip-style cfg)
+                :tooltip [:pre (or (:tooltip value) (str (:value value)))]}
+               (:value value)]
+              [:div (:value value)])]))
        (or model row)))]))
 
 (defn render-all-rows
