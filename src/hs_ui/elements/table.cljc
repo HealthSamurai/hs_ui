@@ -199,7 +199,8 @@
                       :display  (when (get hidden-cols (keyword (str model-idx))) "none")}
                      (when (and (:col-reordering st)
                                 (= visible-idx (:col-hover st)))
-                       {:border "2px solid var(--color-cta)"}))}
+                       {:border "0.25rem solid var(--color-cta)"
+                        :padding "0.75rem"}))}
 
      [:span {:class "block overflow-hidden"}
       (:header col-info)]
