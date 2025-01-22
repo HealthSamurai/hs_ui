@@ -1,32 +1,19 @@
 (ns hs-ui.elements.table
-  #?(:cljs
-     (:require
-      [reagent.core :as r]
-      [clojure.string :as str]
-      [goog.events :as events]
-      [hs-ui.utils :as utils]
-      [hs-ui.components.tooltip]
-      [hs-ui.components.list-item]
-      [hs-ui.components.list-items]
-      [hs-ui.organisms.checkbox]
-      [hs-ui.svg.settings]))
-  #?(:clj
-     (:require
-      [reagent.core :as r]
-      [clojure.string :as str]
-      [hs-ui.utils :as utils]
-      [hs-ui.components.tooltip]
-      [hs-ui.components.list-item]
-      [hs-ui.components.list-items]
-      [hs-ui.organisms.checkbox]
-      [hs-ui.svg.settings]))
-  #?(:cljs
-     (:import
-      [goog.events EventType])))
+  (:require
+   [clojure.string :as str]
+   [hs-ui.utils :as utils]
+   [hs-ui.components.tooltip]
+   [hs-ui.components.list-item]
+   [hs-ui.components.list-items]
+   [hs-ui.organisms.checkbox]
+   [hs-ui.svg.settings]
+   #?(:cljs [reagent.core :as r])
+   #?(:cljs [goog.events :as events]))
+  #?(:cljs (:import [goog.events EventType])))
 
 (def root-class
   ["table-fixed"
-   "w-full"
+   "w-0"
    "border-spacing-0"
    "border-separate"])
 
@@ -146,8 +133,8 @@
 (defn resizer-handle
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
-  [:span
-   {:class        "hidden group-hover:inline-block w-2 absolute cursor-ew-resize h-full top-[30%] right-0 z-[5]"
+  [:button
+   {:class        "hidden active:text-[var(--color-cta)] group-hover:inline-block w-6 absolute cursor-ew-resize top-[30%] right-0 z-[5]"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
@@ -159,18 +146,27 @@
              (let [new-width (max 30 (- init-width (- init-x x)))]
                (swap! state-atom assoc-in
                       [:col-widths (keyword (str model-idx))] new-width)
-               (aset cell-node "width" new-width)
                (write-table-state! table-name @state-atom))))
           (.preventDefault evt))))}
    "|"])
 
 (defn header-cell
-  [col-info visible-idx model-idx cfg state-atom last-child]
+  [col-info visible-idx model-idx cfg state-atom last-child last-column-width]
   (let [st           @state-atom
         hidden-cols  (:col-hidden st)
         draggable?   (:draggable st)
         col-width    (get-in st [:col-widths (keyword (str model-idx))])
-        cell-ref     (utils/ratom nil)]
+        cell-ref     (utils/ratom nil)
+        current-col-width (cond
+                            col-width
+                            (str col-width "px")
+
+                            last-child (str @last-column-width "px")
+
+                            (:width col-info)
+                            (:width col-info)
+
+                            :else "200px")]
     [:th
      {:ref         (fn [el] (reset! cell-ref el))
       :class       column-name-class
@@ -187,18 +183,12 @@
                          (swap! state-atom assoc
                                 :col-hover nil
                                 :col-reordering nil)))
-      :width       (cond
-                     col-width
-                     (str col-width "px")
 
-                     (:width col-info)
-                     (:width col-info)
-
-                     :else nil)
       :style       (merge
                      {:position "relative"
                       :cursor   (when draggable? "move")
-                      :display  (when (get hidden-cols (keyword (str model-idx))) "none")}
+                      :display  (when (get hidden-cols (keyword (str model-idx))) "none")
+                      :width current-col-width}
                      (when (and (:col-reordering st)
                                 (= visible-idx (:col-hover st)))
                        {:border "0.25rem solid var(--color-cta)"
@@ -207,20 +197,23 @@
      [:span {:class "block overflow-hidden"}
       (:header col-info)]
 
-     (when-not last-child
-       [resizer-handle cell-ref model-idx state-atom (:table-name cfg)])]))
+     [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]]))
 
 (defn render-header-row
-  [col-model cfg state-atom]
-  [:tr
-   (doall
-    (map-indexed
-     (fn [view-idx _]
-       (let [model-idx (extract-col-model state-atom view-idx)
-             info       (col-model model-idx)]
-         ^{:key (or (:key info) model-idx)}
-         [header-cell info view-idx model-idx cfg state-atom (= view-idx (- (count col-model) 1))]))
-     col-model))])
+  [col-model cfg state-atom last-column-width]
+  [:<>
+   [:style "
+     tr:has(button:active) button:not(:active) {display: none !important;}
+     tr button:active{display: inline-block !important;}"]
+   [:tr
+    (doall
+     (map-indexed
+      (fn [view-idx _]
+        (let [model-idx (extract-col-model state-atom view-idx)
+              info       (col-model model-idx)]
+          ^{:key (or (:key info) model-idx)}
+          [header-cell info view-idx model-idx cfg state-atom (= view-idx (- (count col-model) 1)) last-column-width]))
+      col-model))]])
 
 (defn resolve-cell-data
   [row cell-def]
@@ -344,17 +337,18 @@
 (defn core-table
   "Reagent component for rendering the <table> with header/body."
   []
-  (fn [cfg col-model data state-atom]
-    [:div {:class "relative"}
-     [:table (:table cfg)
-      [:colgroup
-       (for [column col-model]
-         [:col {:key   (utils/key ::colgroup column)
-                :style {:width "auto"}}])]
-      [:thead {:class thead-class}
-       (render-header-row col-model cfg state-atom)]
-      [:tbody (:tbody cfg)
-       (render-all-rows data state-atom cfg)]]]))
+  (let [last-column-width (utils/ratom nil)]
+    (fn [cfg col-model data state-atom]
+      [:div {:class "relative"}
+       [:table (assoc (:table cfg) :ref (fn [e] (when (and e (not @last-column-width))
+                                                  (reset! last-column-width
+                                                          (max (- (.-clientWidth (.-parentElement e))
+                                                                  (.-clientWidth e))
+                                                               200)))))
+        [:thead {:class thead-class}
+         (render-header-row col-model cfg state-atom last-column-width)]
+        [:tbody (:tbody cfg)
+         (render-all-rows data state-atom cfg)]]])))
 
 (defn generate-cols
   [cols-data]
@@ -372,21 +366,18 @@
   (let [col-defs   (generate-cols (:columns props))
         row-data   (:rows props)
         table-name (or (:table-name props) "default")
+        model-indexes (init-col-indexes col-defs)
         cfg        {:table           {:class (utils/class-names root-class (:class props))}
-                    :table-state     {:draggable (or (:draggable props) false)}
+                    :table-state     (merge
+                                      {:draggable (or (:draggable props) false)
+                                       :col-index-to-model model-indexes}
+                                      (some-> (read-table-state! table-name)
+                                              (assoc :col-index-to-model model-indexes)))
                     :column-model    col-defs
                     :c/tooltip-style (:c/tooltip-style props)
                     :table-name      table-name
                     :on-row-click (:on-row-click props)}
-        local-state (utils/ratom (:table-state cfg))
-        model-indexes (init-col-indexes col-defs)]
-    (swap! local-state assoc :col-index-to-model model-indexes)
-    #?(:cljs
-       (when-let [saved-state (-> (read-table-state! table-name)
-                                  (assoc :col-index-to-model model-indexes))]
-         (swap! local-state merge saved-state))
-       :clj nil)
-
+        local-state (utils/ratom (:table-state cfg))]
     [:div {:class "w-full"}
      (when (:visibility-ctrl props)
        [:div {:class "absolute top-0 right-0 z-10 w-[45px] h-[48px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
