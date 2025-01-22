@@ -48,8 +48,9 @@
    "top-0"])
 
 (def column-value-class
-  ["px-4"
-   "py-2"
+  ["p-4"
+   "border-x-2"
+   "border-transparent"
    "whitespace-nowrap"
    "truncate"
    "break-all"
