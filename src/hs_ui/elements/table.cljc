@@ -48,8 +48,9 @@
    "top-0"])
 
 (def column-value-class
-  ["p-4"
-   "border-x-2"
+  ["px-3"
+   "py-2"
+   "border-x-[0.25rem]"
    "border-transparent"
    "whitespace-nowrap"
    "truncate"
@@ -268,8 +269,8 @@
              :style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
                       (and (:col-reordering st)
                            (= visible-idx (:col-hover st)))
-                      (merge {:border-left "2px dashed var(--color-cta)"
-                              :border-right "2px dashed var(--color-cta)"}))}
+                      (merge {:border-left "0.25rem dashed var(--color-cta)"
+                              :border-right "0.25rem dashed var(--color-cta)"}))}
             (if (need-tooltip? (:value value))
               [hs-ui.components.tooltip/component
                {:class   (:c/tooltip-style cfg)
