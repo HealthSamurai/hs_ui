@@ -98,7 +98,8 @@
     #?(:cljs (events/listen js/window EventType.MOUSEUP @end-atom))))
 
 (defn extract-col-model [state-atom col-idx]
-  (-> @state-atom :col-index-to-model (nth col-idx)))
+  (let [col-index-to-model (:col-index-to-model @state-atom)]
+    (nth col-index-to-model col-idx)))
 
 (defn reorder-columns!
   [drag-idx drop-idx state-atom]
@@ -129,6 +130,7 @@
                             (= shift-dir :left))
                        (current-cols (dec view-col))))
                    current-cols)))))
+
 
 (defn resizer-handle
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
@@ -213,6 +215,10 @@
                                      total-column-indexes)]
     (= index (last visible-columns))))
 
+(defn get-col-info [col-model model-idx]
+  (-> (filter #(= model-idx (:header %)) col-model)
+      (first)))
+
 (defn render-header-row
   [col-model cfg state-atom]
   [:<>
@@ -224,8 +230,8 @@
      (map-indexed
       (fn [view-idx _]
         (let [model-idx (extract-col-model state-atom view-idx)
-              info       (col-model model-idx)]
-          ^{:key (or (:key info) model-idx)}
+              info       (get-col-info col-model model-idx)]
+          ^{:key view-idx}
           [header-cell info view-idx model-idx cfg state-atom (last-column-index? state-atom col-model view-idx)]))
       col-model))]])
 
@@ -269,7 +275,7 @@
       (map-indexed
        (fn [visible-idx _]
          (let [model-idx (extract-col-model state-atom visible-idx)
-               value     (resolve-cell-data row (model model-idx))
+               value     (resolve-cell-data row (get-col-info model model-idx))
                table-name (:table-name cfg)
                previous-visible-idx (get-in @position-on-drag [table-name :previous-visible-idx])
                cur-border-side (get-in @position-on-drag [table-name :border-side])]
@@ -341,7 +347,7 @@
               (map-indexed
                (fn [view-idx _]
                  (let [model-idx   (extract-col-model state-atom view-idx)
-                       info        (col-model model-idx)
+                       info        (get-col-info col-model model-idx)
                        hidden-cell #?(:cljs (r/cursor hidden-cols [(keyword (str model-idx))])
                                       :clj nil)]
 
@@ -360,7 +366,9 @@
 
 (defn init-col-indexes
   [headers]
-  (into [] (map-indexed (fn [i _] i) headers)))
+  (into [] (map (fn [header]
+                  (or (:header header) "empty"))
+                        headers)))
 
 (defn core-table
   "Reagent component for rendering the <table> with header/body."
@@ -384,18 +392,26 @@
         :width  width}))
    cols-data))
 
+(defn merge-model-indexes [new from-ls]
+  (->> (concat from-ls new)
+       (reduce (fn [acc item]
+                 (if (contains? (set acc) item)
+                   acc
+                   (conj acc item))) [])))
+
 (defn view
   [props]
   (let [col-defs   (generate-cols (:columns props))
         row-data   (:rows props)
         table-name (or (:table-name props) "default")
-        model-indexes (init-col-indexes col-defs)
+        model-indexes-new (init-col-indexes col-defs)
+        state-from-local-storage (read-table-state! table-name)
+        model-indexes (merge-model-indexes model-indexes-new
+                                           (or (:col-index-to-model state-from-local-storage) []))
         cfg        {:table           {:class (utils/class-names root-class (:class props))}
                     :table-state     (merge
-                                      {:draggable (or (:draggable props) false)
-                                       :col-index-to-model model-indexes}
-                                      (some-> (read-table-state! table-name)
-                                              (assoc :col-index-to-model model-indexes)))
+                                      {:draggable (or (:draggable props) false)}
+                                      (assoc state-from-local-storage :col-index-to-model model-indexes))
                     :column-model    col-defs
                     :c/tooltip-style (:c/tooltip-style props)
                     :table-name      table-name
