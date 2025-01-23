@@ -159,6 +159,13 @@
   (let [st           @state-atom
         hidden-cols  (:col-hidden st)
         draggable?   (:draggable st)
+        table-name   (:table-name cfg)
+        previous-visible-idx (get-in @position-on-drag [table-name :previous-visible-idx])
+        cur-border-side (get-in @position-on-drag [table-name :border-side])
+        border-side (when (and (:col-reordering st)
+                               (= visible-idx (:col-hover st))
+                               (not= previous-visible-idx (:col-hover st)))
+                      (if (> (:col-hover st) previous-visible-idx) :border-right :border-left))
         col-width    (get-in st [:col-widths (keyword (str model-idx))])
         cell-ref     (utils/ratom nil)
         current-col-width (cond
@@ -184,7 +191,12 @@
       :on-drag-start (fn [e]
                        (-> (.-dataTransfer e) (.setData "text/plain" ""))
                        (swap! state-atom assoc :col-reordering true))
-      :on-drag-over  #(swap! state-atom assoc :col-hover visible-idx)
+      :on-drag-over  (fn [_]
+                       (do (swap! state-atom assoc :col-hover visible-idx)
+                           (when border-side
+                             (swap! position-on-drag #(-> %
+                                                          (assoc-in [table-name :previous-visible-idx] (:col-hover st))
+                                                          (assoc-in [table-name :border-side] border-side))))))
       :on-drag-end   (fn [_]
                        (let [hovered-col (:col-hover @state-atom)]
                          (when (not= visible-idx hovered-col)
@@ -193,7 +205,7 @@
                          (swap! state-atom assoc
                                 :col-hover nil
                                 :col-reordering nil)
-                         (swap! position-on-drag assoc-in [(:table-name cfg) :border-side] nil)))
+                         (swap! position-on-drag assoc-in [table-name :border-side] nil)))
 
       :style       (merge
                      {:position "relative"
@@ -202,8 +214,9 @@
                       :width current-col-width}
                      (when (and (:col-reordering st)
                                 (= visible-idx (:col-hover st)))
-                       {:border "0.25rem solid var(--color-cta)"
-                        :padding "0.75rem"}))}
+                       (if (= :border-left (get-in @position-on-drag [(:table-name cfg) :border-side]))
+                         {:border-left "0.25rem solid var(--color-elements-assistive)" :padding-left "0.75rem"}
+                         {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
 
      [:span {:class "block overflow-hidden"}
       (:header col-info)]
@@ -285,20 +298,13 @@
            ^{:key (col-key row row-idx model-idx)}
            [:td
             {:class column-value-class
-             :style (let [border-side (when (and (:col-reordering st)
-                                                 (= visible-idx (:col-hover st))
-                                                 (not= previous-visible-idx (:col-hover st)))
-                                        (if (> (:col-hover st) previous-visible-idx) :border-right :border-left))
-                          style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
+             :style (let [style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
                                   (and (:col-reordering st)
                                        (= visible-idx (:col-hover st))
                                        cur-border-side)
-                                  (merge (if (= :border-right cur-border-side) {:border-right "0.25rem dashed var(--color-cta)"}
-                                             {:border-left "0.25rem dashed var(--color-cta)"})))]
-                      (when border-side
-                        (swap! position-on-drag #(-> %
-                                                     (assoc-in [table-name :previous-visible-idx] (:col-hover st))
-                                                     (assoc-in [table-name :border-side] border-side))))
+                                  (merge (if (= :border-right cur-border-side)
+                                           {:border-right "0.25rem solid var(--color-elements-assistive)"}
+                                           {:border-left "0.25rem solid var(--color-elements-assistive)"})))]
                       style)}
             (if (need-tooltip? (:value value))
               [hs-ui.components.tooltip/component
