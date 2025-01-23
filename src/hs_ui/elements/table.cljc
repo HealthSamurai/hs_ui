@@ -150,8 +150,7 @@
           (.preventDefault evt))))}
    "|"])
 
-(def border-side-state (utils/ratom nil))
-(def previous-visible-idx (utils/ratom nil))
+(def ^:private position-on-drag (utils/ratom {}))
 
 (defn header-cell
   [col-info visible-idx model-idx cfg state-atom last-child last-column-width]
@@ -186,7 +185,7 @@
                          (swap! state-atom assoc
                                 :col-hover nil
                                 :col-reordering nil)
-                         (reset! border-side-state nil)))
+                         (swap! position-on-drag assoc-in [(:table-name cfg) :border-side] nil)))
 
       :style       (merge
                      {:position "relative"
@@ -259,24 +258,28 @@
       (map-indexed
        (fn [visible-idx _]
          (let [model-idx (extract-col-model state-atom visible-idx)
-               value     (resolve-cell-data row (model model-idx))]
-
+               value     (resolve-cell-data row (model model-idx))
+               table-name (:table-name cfg)
+               previous-visible-idx (get-in @position-on-drag [table-name :previous-visible-idx])
+               cur-border-side (get-in @position-on-drag [table-name :border-side])]
 
            ^{:key (col-key row row-idx model-idx)}
            [:td
             {:class column-value-class
              :style (let [border-side (when (and (:col-reordering st)
                                                  (= visible-idx (:col-hover st))
-                                                 (not= @previous-visible-idx (:col-hover st)))
-                                        (if (> (:col-hover st) @previous-visible-idx) :border-right :border-left))
+                                                 (not= previous-visible-idx (:col-hover st)))
+                                        (if (> (:col-hover st) previous-visible-idx) :border-right :border-left))
                           style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
                                   (and (:col-reordering st)
                                        (= visible-idx (:col-hover st))
-                                       @border-side-state)
-                                  (merge (if (= :border-right @border-side-state) {:border-right "0.25rem dashed var(--color-cta)"}
+                                       cur-border-side)
+                                  (merge (if (= :border-right cur-border-side) {:border-right "0.25rem dashed var(--color-cta)"}
                                              {:border-left "0.25rem dashed var(--color-cta)"})))]
-                      (when border-side (do (reset! previous-visible-idx (:col-hover st))
-                                 (reset! border-side-state border-side)))
+                      (when border-side
+                        (swap! position-on-drag #(-> %
+                                                     (assoc-in [table-name :previous-visible-idx] (:col-hover st))
+                                                     (assoc-in [table-name :border-side] border-side))))
                       style)}
             (if (need-tooltip? (:value value))
               [hs-ui.components.tooltip/component
