@@ -150,6 +150,9 @@
           (.preventDefault evt))))}
    "|"])
 
+(def border-side-state (utils/ratom nil))
+(def previous-visible-idx (utils/ratom nil))
+
 (defn header-cell
   [col-info visible-idx model-idx cfg state-atom last-child last-column-width]
   (let [st           @state-atom
@@ -182,7 +185,8 @@
                            (write-table-state! (:table-name cfg) @state-atom))
                          (swap! state-atom assoc
                                 :col-hover nil
-                                :col-reordering nil)))
+                                :col-reordering nil)
+                         (reset! border-side-state nil)))
 
       :style       (merge
                      {:position "relative"
@@ -256,14 +260,24 @@
        (fn [visible-idx _]
          (let [model-idx (extract-col-model state-atom visible-idx)
                value     (resolve-cell-data row (model model-idx))]
+
+
            ^{:key (col-key row row-idx model-idx)}
            [:td
             {:class column-value-class
-             :style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
-                      (and (:col-reordering st)
-                           (= visible-idx (:col-hover st)))
-                      (merge {:border-left "0.25rem dashed var(--color-cta)"
-                              :border-right "0.25rem dashed var(--color-cta)"}))}
+             :style (let [border-side (when (and (:col-reordering st)
+                                                 (= visible-idx (:col-hover st))
+                                                 (not= @previous-visible-idx (:col-hover st)))
+                                        (if (> (:col-hover st) @previous-visible-idx) :border-right :border-left))
+                          style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
+                                  (and (:col-reordering st)
+                                       (= visible-idx (:col-hover st))
+                                       @border-side-state)
+                                  (merge (if (= :border-right @border-side-state) {:border-right "0.25rem dashed var(--color-cta)"}
+                                             {:border-left "0.25rem dashed var(--color-cta)"})))]
+                      (when border-side (do (reset! previous-visible-idx (:col-hover st))
+                                 (reset! border-side-state border-side)))
+                      style)}
             (if (need-tooltip? (:value value))
               [hs-ui.components.tooltip/component
                {:class   (:c/tooltip-style cfg)
