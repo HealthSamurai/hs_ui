@@ -59,7 +59,7 @@
   "Reads the entire table-state map from localStorage, returning a Clojure map or nil."
   [table-name]
   #?(:cljs
-     (let [key (str local-store-key "-" table-name)]
+     (let [key (str local-store-key "-" table-name "-v2")]
        (when-let [json-str (js/localStorage.getItem key)]
          (try
            (js->clj (js/JSON.parse json-str) :keywordize-keys true)
@@ -71,7 +71,7 @@
   [table-name new-state]
 
   #?(:cljs
-     (let [key (str local-store-key "-" table-name)
+     (let [key (str local-store-key "-" table-name "-v2")
            st  (select-keys new-state [:col-widths :col-hidden :col-index-to-model])]
        (js/localStorage.setItem key (js/JSON.stringify (clj->js st))))
      :clj nil))
