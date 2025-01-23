@@ -175,8 +175,10 @@
     [:td
      {:ref         (fn [el]
                      (reset! cell-ref el)
-                     (when (and el last-child (= 0 (.-clientWidth el)))
-                       (aset (.-style el) "width" "200px")))
+                     (when (and el last-child)
+                       (if (= 0 (.-clientWidth el))
+                         (aset (.-style el) "width" "200px")
+                         (aset (.-style el) "width" "100%"))))
       :class       column-name-class
       :draggable   draggable?
       :on-drag-start (fn [e]
