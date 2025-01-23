@@ -13,7 +13,7 @@
 
 (def root-class
   ["table-fixed"
-   "w-0"
+   "w-full"
    "border-spacing-0"
    "border-separate"])
 
@@ -153,24 +153,28 @@
 (def ^:private position-on-drag (utils/ratom {}))
 
 (defn header-cell
-  [col-info visible-idx model-idx cfg state-atom last-child last-column-width]
+  [col-info visible-idx model-idx cfg state-atom last-child]
   (let [st           @state-atom
         hidden-cols  (:col-hidden st)
         draggable?   (:draggable st)
         col-width    (get-in st [:col-widths (keyword (str model-idx))])
         cell-ref     (utils/ratom nil)
         current-col-width (cond
+                            last-child "100%"
+
                             col-width
                             (str col-width "px")
 
-                            last-child (str @last-column-width "px")
 
                             (:width col-info)
                             (:width col-info)
 
                             :else "200px")]
-    [:th
-     {:ref         (fn [el] (reset! cell-ref el))
+    [:td
+     {:ref         (fn [el]
+                     (reset! cell-ref el)
+                     (when (and el last-child (= 0 (.-clientWidth el)))
+                       (aset (.-style el) "width" "200px")))
       :class       column-name-class
       :draggable   draggable?
       :on-drag-start (fn [e]
@@ -202,8 +206,15 @@
 
      [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]]))
 
+(defn last-column-index?
+  [state-atom col-model index]
+  (let [total-column-indexes (range (count col-model))
+        visible-columns      (filter #(not (get (:col-hidden @state-atom) (keyword (str %))))
+                                     total-column-indexes)]
+    (= index (last visible-columns))))
+
 (defn render-header-row
-  [col-model cfg state-atom last-column-width]
+  [col-model cfg state-atom]
   [:<>
    [:style "
      tr:has(button:active) button:not(:active) {display: none !important;}
@@ -215,7 +226,7 @@
         (let [model-idx (extract-col-model state-atom view-idx)
               info       (col-model model-idx)]
           ^{:key (or (:key info) model-idx)}
-          [header-cell info view-idx model-idx cfg state-atom (= view-idx (- (count col-model) 1)) last-column-width]))
+          [header-cell info view-idx model-idx cfg state-atom (last-column-index? state-atom col-model view-idx)]))
       col-model))]])
 
 (defn resolve-cell-data
@@ -354,18 +365,13 @@
 (defn core-table
   "Reagent component for rendering the <table> with header/body."
   []
-  (let [last-column-width (utils/ratom nil)]
-    (fn [cfg col-model data state-atom]
-      [:div {:class "relative"}
-       [:table (assoc (:table cfg) :ref (fn [e] (when (and e (not @last-column-width))
-                                                  (reset! last-column-width
-                                                          (max (- (.-clientWidth (.-parentElement e))
-                                                                  (.-clientWidth e))
-                                                               200)))))
-        [:thead {:class thead-class}
-         (render-header-row col-model cfg state-atom last-column-width)]
-        [:tbody (:tbody cfg)
-         (render-all-rows data state-atom cfg)]]])))
+  (fn [cfg col-model data state-atom]
+    [:div {:class "relative"}
+     [:table (:table cfg)
+      [:thead {:class thead-class}
+       (render-header-row col-model cfg state-atom)]
+      [:tbody (:tbody cfg)
+       (render-all-rows data state-atom cfg)]]]))
 
 (defn generate-cols
   [cols-data]
