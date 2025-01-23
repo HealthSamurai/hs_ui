@@ -20,7 +20,8 @@
         parent-ref        (utils/ratom nil)
         tooltip-ref       (utils/ratom nil)
         tooltip-pos       (utils/ratom nil)
-        tooltip-placement (utils/ratom nil)]
+        tooltip-placement (utils/ratom nil)
+        timeout-id        (utils/ratom nil)]
 
     (fn [{:keys [tooltip class error?]
           :or   {class ""}}
@@ -127,10 +128,15 @@
             {:ref            #(reset! parent-ref %)
              :class          "truncate w-fit max-w-full"
              :on-mouse-enter (fn [_]
-                               (reset! show? true)
-                               (reset! tooltip-placement nil)
-                               #?(:cljs (r/after-render update-position!)
-                                  :clj nil))}
+                               (let [id (js/setTimeout (fn []
+                                                      (reset! show? true)
+                                                      (reset! tooltip-placement nil)
+                                                      #?(:cljs (r/after-render update-position!)
+                                                         :clj nil)) 300)]
+                                 (reset! timeout-id id)))
+             :on-mouse-leave (fn [_]
+                               (when @timeout-id
+                                 (js/clearTimeout @timeout-id)))}
 
             (if (string? content)
               content
