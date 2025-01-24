@@ -162,10 +162,6 @@
         table-name   (:table-name cfg)
         previous-visible-idx (get-in @position-on-drag [table-name :previous-visible-idx])
         cur-border-side (get-in @position-on-drag [table-name :border-side])
-        border-side (when (and (:col-reordering st)
-                               (= visible-idx (:col-hover st))
-                               (not= previous-visible-idx (:col-hover st)))
-                      (if (> (:col-hover st) previous-visible-idx) :border-right :border-left))
         col-width    (get-in st [:col-widths (keyword (str model-idx))])
         cell-ref     (utils/ratom nil)
         current-col-width (cond
@@ -190,17 +186,33 @@
       :draggable   draggable?
       :on-drag-start (fn [e]
                        (-> (.-dataTransfer e) (.setData "text/plain" ""))
-                       (swap! state-atom assoc :col-reordering true
-                              :dragging-column model-idx))
-      :on-drag-over  (fn [_]
-                       (swap! state-atom assoc :col-hover visible-idx)
-                       (when border-side
-                         (swap! position-on-drag #(-> %
-                                                      (assoc-in [table-name :previous-visible-idx] (:col-hover st))
-                                                      (assoc-in [table-name :border-side] border-side)))))
+                       (swap! state-atom assoc
+                              :col-reordering true
+                              :dragging-column model-idx
+                              :dragging-column-index visible-idx))
+      :on-drag-over   (fn [e]
+                        (let [current-cursor-position (.-clientX e)
+                              old-cursor-position (:cursor-position st)
+                              border-side (when (not= current-cursor-position old-cursor-position)
+                                            (if (> current-cursor-position old-cursor-position)
+                                              :border-right
+                                              :border-left))]
+                          (when (< 40 (abs (- current-cursor-position old-cursor-position)))
+                            (swap! state-atom assoc :cursor-position (.-clientX e)))
+                          (when border-side
+                            (swap! position-on-drag #(assoc-in % [table-name :border-side] border-side)))))
+      :on-drag-enter  (fn [e]
+                        (swap! state-atom assoc :col-hover visible-idx))
       :on-drag-end   (fn [_]
                        (let [hovered-col (:col-hover @state-atom)]
-                         (when (not= visible-idx hovered-col)
+                         (when (and (not= visible-idx hovered-col)
+                                    (or
+                                     (and (= :border-left cur-border-side)
+                                          (not= (:dragging-column-index st)
+                                                (dec hovered-col)))
+                                     (and (= :border-right cur-border-side)
+                                          (not= (:dragging-column-index st)
+                                                (inc hovered-col)))))
                            (reorder-columns! visible-idx hovered-col state-atom)
                            (write-table-state! (:table-name cfg) @state-atom))
                          (swap! state-atom assoc
@@ -219,10 +231,20 @@
                (assoc :background "rgba(113, 118, 132, 0.10)")
 
                (and (:col-reordering st)
-                    (= visible-idx (:col-hover st)))
-               (merge (if (= :border-left (get-in @position-on-drag [(:table-name cfg) :border-side]))
-                        {:border-left "0.25rem solid var(--color-elements-assistive)" :padding-left "0.75rem"}
-                        {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
+                    (= visible-idx (:col-hover st))
+                    (not= (:dragging-column st) model-idx)
+                    cur-border-side)
+               (merge
+                (cond
+                  (and (= :border-left cur-border-side)
+                       (not= (:dragging-column-index st)
+                             (dec visible-idx)))
+                  {:border-left "0.25rem solid var(--color-elements-assistive)" :padding-left "0.75rem"}
+
+                  (and (= :border-right cur-border-side)
+                       (not= (:dragging-column-index st)
+                             (inc visible-idx)))
+                  {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
 
      [:span {:class "block overflow-hidden"}
       (or (:header col-info) model-idx)]
@@ -308,10 +330,19 @@
 
                                   (and (:col-reordering st)
                                        (= visible-idx (:col-hover st))
+                                       (not= (:dragging-column st) model-idx)
                                        cur-border-side)
-                                  (merge (if (= :border-right cur-border-side)
-                                           {:border-right "0.25rem solid var(--color-elements-assistive)"}
-                                           {:border-left "0.25rem solid var(--color-elements-assistive)"}))
+                                  (merge
+                                   (cond
+                                     (and (= :border-left cur-border-side)
+                                          (not= (:dragging-column-index st)
+                                                (dec visible-idx)))
+                                     {:border-left "0.25rem solid var(--color-elements-assistive)"}
+
+                                     (and (= :border-right cur-border-side)
+                                          (not= (:dragging-column-index st)
+                                                (inc visible-idx)))
+                                     {:border-right "0.25rem solid var(--color-elements-assistive)"}))
 
                                   (= (:dragging-column st) model-idx)
                                   ;; TODO: fix color to var
