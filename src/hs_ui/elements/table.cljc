@@ -190,7 +190,8 @@
       :draggable   draggable?
       :on-drag-start (fn [e]
                        (-> (.-dataTransfer e) (.setData "text/plain" ""))
-                       (swap! state-atom assoc :col-reordering true))
+                       (swap! state-atom assoc :col-reordering true
+                              :dragging-column model-idx))
       :on-drag-over  (fn [_]
                        (do (swap! state-atom assoc :col-hover visible-idx)
                            (when border-side
@@ -204,19 +205,24 @@
                            (write-table-state! (:table-name cfg) @state-atom))
                          (swap! state-atom assoc
                                 :col-hover nil
-                                :col-reordering nil)
+                                :col-reordering nil
+                                :dragging-column nil)
                          (swap! position-on-drag assoc-in [table-name :border-side] nil)))
 
-      :style       (merge
-                     {:position "relative"
+      :style (cond-> {:position "relative"
                       :cursor   (when draggable? "move")
                       :display  (when (get hidden-cols (keyword (str model-idx))) "none")
                       :width current-col-width}
-                     (when (and (:col-reordering st)
-                                (= visible-idx (:col-hover st)))
-                       (if (= :border-left (get-in @position-on-drag [(:table-name cfg) :border-side]))
-                         {:border-left "0.25rem solid var(--color-elements-assistive)" :padding-left "0.75rem"}
-                         {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
+
+               (= (:dragging-column st) model-idx)
+               ;; TODO: fix color to var
+               (assoc :background "rgba(113, 118, 132, 0.10)")
+
+               (and (:col-reordering st)
+                    (= visible-idx (:col-hover st)))
+               (merge (if (= :border-left (get-in @position-on-drag [(:table-name cfg) :border-side]))
+                        {:border-left "0.25rem solid var(--color-elements-assistive)" :padding-left "0.75rem"}
+                        {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
 
      [:span {:class "block overflow-hidden"}
       (:header col-info)]
@@ -299,12 +305,17 @@
            [:td
             {:class column-value-class
              :style (let [style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
+
                                   (and (:col-reordering st)
                                        (= visible-idx (:col-hover st))
                                        cur-border-side)
                                   (merge (if (= :border-right cur-border-side)
                                            {:border-right "0.25rem solid var(--color-elements-assistive)"}
-                                           {:border-left "0.25rem solid var(--color-elements-assistive)"})))]
+                                           {:border-left "0.25rem solid var(--color-elements-assistive)"}))
+
+                                  (= (:dragging-column st) model-idx)
+                                  ;; TODO: fix color to var
+                                  (assoc :background "rgba(113, 118, 132, 0.10)"))]
                       style)}
             (if (need-tooltip? (:value value))
               [hs-ui.components.tooltip/component
