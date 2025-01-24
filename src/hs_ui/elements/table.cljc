@@ -193,11 +193,11 @@
                        (swap! state-atom assoc :col-reordering true
                               :dragging-column model-idx))
       :on-drag-over  (fn [_]
-                       (do (swap! state-atom assoc :col-hover visible-idx)
-                           (when border-side
-                             (swap! position-on-drag #(-> %
-                                                          (assoc-in [table-name :previous-visible-idx] (:col-hover st))
-                                                          (assoc-in [table-name :border-side] border-side))))))
+                       (swap! state-atom assoc :col-hover visible-idx)
+                       (when border-side
+                         (swap! position-on-drag #(-> %
+                                                      (assoc-in [table-name :previous-visible-idx] (:col-hover st))
+                                                      (assoc-in [table-name :border-side] border-side)))))
       :on-drag-end   (fn [_]
                        (let [hovered-col (:col-hover @state-atom)]
                          (when (not= visible-idx hovered-col)
@@ -225,7 +225,7 @@
                         {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
 
      [:span {:class "block overflow-hidden"}
-      (:header col-info)]
+      (or (:header col-info) model-idx)]
 
      [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]]))
 
@@ -275,6 +275,9 @@
              (empty? value)
              true
 
+             (nil? value)
+             true
+
              :else false)))
 
 (defn render-data-row
@@ -319,7 +322,7 @@
                {:class   (:c/tooltip-style cfg)
                 :tooltip [:pre (or (:tooltip value) (str (:value value)))]}
                (:value value)]
-              [:div (:value value)])]))
+              [:div (or (:value value) "-")])]))
        (or model row)))]))
 
 (defn render-all-rows
