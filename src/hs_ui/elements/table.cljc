@@ -18,13 +18,13 @@
    "border-separate"])
 
 (def thead-class
-  ["sticky"
+  ["group"
+   "sticky"
    "top-0"
    "text-[var(--color-elements-assistive)]"])
 
 (def column-name-class
-  ["group"
-   "p-4"
+  ["p-4"
    "font-medium"
    "text-nowrap"
    "text-left"
@@ -136,7 +136,7 @@
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
   [:button
-   {:class        "hidden active:text-[var(--color-cta)] group-hover:inline-block w-6 absolute cursor-ew-resize top-[30%] right-0 z-[5]"
+   {:class        "hidden text-[var(--color-separator)] active:text-[var(--color-cta)] group-hover:inline-block w-6 absolute cursor-ew-resize top-[30%] right-0 z-[5]"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
@@ -243,9 +243,6 @@
 (defn render-header-row
   [col-model cfg state-atom]
   [:<>
-   [:style "
-     tr:has(button:active) button:not(:active) {display: none !important;}
-     tr button:active{display: inline-block !important;}"]
    [:tr
     (doall
      (map-indexed
