@@ -7,6 +7,7 @@
    [hs-ui.components.list-items]
    [hs-ui.organisms.checkbox]
    [hs-ui.svg.settings]
+   [hs-ui.svg.trailing]
    #?(:cljs [reagent.core :as r])
    #?(:cljs [goog.events :as events]))
   #?(:cljs (:import [goog.events EventType])))
@@ -185,6 +186,7 @@
       :class       column-name-class
       :draggable   draggable?
       :on-drag-start (fn [e]
+                       (set! (.. e -dataTransfer -effectAllowed) "move")
                        (-> (.-dataTransfer e) (.setData "text/plain" ""))
                        (swap! state-atom assoc
                               :col-reordering true
@@ -222,7 +224,12 @@
                          (swap! position-on-drag assoc-in [table-name :border-side] nil)))
 
       :style (cond-> {:position "relative"
-                      :cursor   (when draggable? "move")
+                      :cursor   (cond
+                                  (:col-reordering st)
+                                  "grabbing"
+
+                                  draggable?
+                                  "grab")
                       :display  (when (get hidden-cols (keyword (str model-idx))) "none")
                       :width current-col-width}
 
@@ -365,7 +372,7 @@
       rows))))
 
 (defn column-visibility-dropdown
-  [state-atom col-model table-name]
+  [state-atom col-model cfg]
   (let [menu-open? (utils/ratom false)
         on-click-outside (fn [e]
                            (when @menu-open?
@@ -378,40 +385,112 @@
     #?(:cljs (.addEventListener js/document "mousedown" on-click-outside)
        :clj nil)
 
-    (fn [state-atom col-model table-name]
-      (let [hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
+    (fn [state-atom col-model cfg]
+      (let [st @state-atom
+            table-name (:tabel-name cfg)
+            draggable? (:draggable @state-atom)
+            hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
                            :clj nil)]
 
         [:div {:class "relative inline-block w-full mt-2.5 dropdown-container"}
          [:div {:class "w-full flex justify-start"}
           [:div {:on-click #(swap! menu-open? not)
                  :class
-                 (utils/class-names "text-[theme(colors.elements-assistive)] p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)]"
+                 (utils/class-names "text-[theme(colors.elements-assistive)] p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)] hover:text-[var(--color-cta)]"
 
                                           (if @menu-open? "rounded-[50%] bg-[var(--color-separator)]" ""))}
            hs-ui.svg.settings/svg]]
          (when @menu-open?
-           [:div {:class "absolute right-0 mt-2 bg-white border shadow-md p-2 z-10"}
-            [hs-ui.components.list-items/component {}
+           [:div {:class "absolute right-[16px] mt-2 bg-white border shadow-md p-2 z-10 rounded-md"}
+
+            [hs-ui.components.list-items/component  {}
              (doall
               (map-indexed
                (fn [view-idx _]
                  (let [model-idx   (extract-col-model state-atom view-idx)
                        info        (get-col-info col-model model-idx)
                        hidden-cell #?(:cljs (r/cursor hidden-cols [(keyword (str model-idx))])
-                                      :clj nil)]
+                                      :clj nil)
+                       cur-border-side (get-in @position-on-drag [table-name :control-border-side])]
 
-                   [hs-ui.components.list-item/component {:on-click (fn []
+                   [hs-ui.components.list-item/component {:key view-idx
+                                                          :on-click (fn []
                                                                       (swap! hidden-cell not)
-                                                                      (write-table-state! table-name @state-atom))}
-                    [:div {:class "flex justify-between w-full"}
-                     [:div {:class "mr-4"} (:header info)]
+                                                                      (write-table-state! table-name @state-atom))
+                                                          :class (utils/class-names "group px-[8px]"
+                                                                                    (if (:col-reordering st) "!cursor-grabbing" ""))
+                                                          :draggable   draggable?
+                                                          :style (let [need-border? (and (:col-reordering st)
+                                                                                         (= view-idx (:col-hover st))
+                                                                                         (not= (:dragging-column st) model-idx)
+                                                                                         cur-border-side)]
+                                                                   (cond-> {:border-top "0.25rem solid transparent"
+                                                                            :border-bottom "0.25rem solid transparent"}
+                                                                     (and need-border?
+                                                                          (= :border-bottom cur-border-side)
+                                                                          (not= (:dragging-column-index st)
+                                                                                (dec view-idx)))
+                                                                     (merge {:border-bottom "0.25rem solid var(--color-elements-assistive)"
+                                                                             :border-radius 0
+                                                                             :padding-bottom 0})
+
+                                                                     (and need-border?
+                                                                          (= :border-top cur-border-side)
+                                                                          (not= (:dragging-column-index st)
+                                                                                (inc view-idx)))
+                                                                     (merge {:border-top "0.25rem solid var(--color-elements-assistive)"
+                                                                             :border-radius 0
+                                                                             :padding-top 0})))
+                                                          :on-drag-start (fn [e]
+                                                                           (set! (.. e -dataTransfer -effectAllowed) "move")
+                                                                           (-> (.-dataTransfer e) (.setData "text/plain" ""))
+                                                                           (swap! state-atom assoc
+                                                                                  :col-reordering true
+                                                                                  :dragging-column model-idx
+                                                                                  :dragging-column-index view-idx))
+                                                          :on-drag-over   (fn [e]
+                                                                            (let [current-cursor-position (.-clientY e)
+                                                                                  old-cursor-position (:cursor-position st)
+                                                                                  border-side (when (not= current-cursor-position old-cursor-position)
+                                                                                                (if (> current-cursor-position old-cursor-position)
+                                                                                                  :border-bottom
+                                                                                                  :border-top))]
+                                                                              (when (< 8 (abs (- current-cursor-position old-cursor-position)))
+                                                                                (swap! state-atom assoc :cursor-position (.-clientY e)))
+                                                                              (when border-side
+                                                                                (swap! position-on-drag #(assoc-in % [table-name :control-border-side] border-side)))))
+                                                          :on-drag-enter  (fn [e]
+                                                                            (swap! state-atom assoc :col-hover view-idx))
+                                                          :on-drag-end   (fn [_]
+                                                                           (let [hovered-col (:col-hover @state-atom)]
+                                                                             (when (and (not= view-idx hovered-col)
+                                                                                        (or
+                                                                                         (and (= :border-bottom cur-border-side)
+                                                                                              (not= (:dragging-column-index st)
+                                                                                                    (dec hovered-col)))
+                                                                                         (and (= :border-top cur-border-side)
+                                                                                              (not= (:dragging-column-index st)
+                                                                                                    (inc hovered-col)))))
+                                                                               (reorder-columns! view-idx hovered-col state-atom)
+                                                                               (write-table-state! (:table-name cfg) @state-atom))
+                                                                             (swap! state-atom assoc
+                                                                                    :col-hover nil
+                                                                                    :col-reordering nil
+                                                                                    :dragging-column nil)
+                                                                             (swap! position-on-drag assoc-in [table-name :border-side] nil)))}
+
+                    [:div {:class "flex w-full justify-between"}
                      [hs-ui.organisms.checkbox/component
                       {:checked (if @hidden-cell false true)
                        :on-change (fn []
                                     (swap! hidden-cell not)
                                     (write-table-state! table-name @state-atom))
-                       :c/root-class "w-auto"}]]]))
+                       :c/root-class "w-auto"
+                       :c/small true}]
+                     [:div {:class "mr-4 flex justify-start w-full"} (or (:header info) model-idx)]
+                     [:div {:class "w-[23px] flex items-center"}
+                      [:div {:class (utils/class-names "hidden group-hover:block cursor-grab"
+                                                       (if (:col-reordering st) "text-[--color-cta] !cursor-grabbing" ""))} hs-ui.svg.trailing/svg]]]]))
                col-model))]])]))))
 
 (defn init-col-indexes
@@ -470,5 +549,5 @@
     [:div {:class "w-full"}
      (when (:visibility-ctrl props)
        [:div {:class "absolute top-0 right-0 z-10 w-[45px] h-[48px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
-        [column-visibility-dropdown local-state col-defs table-name]])
+        [column-visibility-dropdown local-state col-defs cfg]])
      [core-table cfg col-defs row-data local-state]]))
