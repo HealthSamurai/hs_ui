@@ -17,9 +17,12 @@
    [hs-ui.components.radio-button]
    [hs-ui.components.kvlist]
    [hs-ui.components.dialog]
+   [hs-ui.components.chip]
    [hs-ui.components.tab]
    [hs-ui.components.tooltip]
    [hs-ui.components.monaco]
+   [hs-ui.components.pagination]
+   [hs-ui.components.sidebar]
 
    [hs-ui.organisms.checkbox]
    [hs-ui.organisms.input]
@@ -46,11 +49,13 @@
 (def checkbox hs-ui.components.checkbox/component)
 (def content-expand hs-ui.components.content-expand/component)
 (def breadcrumbs hs-ui.components.breadcrumbs/component)
+(def chip hs-ui.components.chip/component)
 (def tab         hs-ui.components.tab/component)
 
 (def list-item  hs-ui.components.list-item/component)
 (def list-items hs-ui.components.list-items/component)
 (def kvlist     hs-ui.components.kvlist/component)
+(def pagination hs-ui.components.pagination/component)
 
 (def alert hs-ui.components.alert/component)
 
@@ -96,8 +101,11 @@
 (def button-xs-red    hs-ui.components.button/xs-red)
 (def button-slim      hs-ui.components.button/slim)
 
-(def dialog hs-ui.components.dialog/component)
+(def dialog          hs-ui.components.dialog/component)
+(def dialog-template hs-ui.components.dialog/template)
 
 (def tooltip hs-ui.components.tooltip/component)
 
 (def monaco hs-ui.components.monaco/component)
+
+(def sidebar hs-ui.components.sidebar/component)

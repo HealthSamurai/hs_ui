@@ -20,7 +20,9 @@
 
 (defn navbar
   [props]
-  [:div {:class "flex border-b border-separator items-center h-[64px] justify-between w-full px-x3"}
+  [:div (u/merge-props
+         {:class "flex border-b border-separator items-center h-[64px] justify-between w-full px-x3"}
+         props)
    [:div (:slot/left props)]
    [:div (:slot/middle props)]
    [:div (:slot/right props)]])
@@ -162,49 +164,6 @@
        (when (= :right side)
          [vertical-resizer {:side side :panel-ref internal-ref}])])))
 
-
-(defn- v-gripper [{:keys [style]}]
-  [:div.gripper
-   {:class ["absolute top-[50%] bg-[var(--basic-gray-2)] w-[12px] h-[30px] rounded"
-            "flex justify-center items-center z-[200]"
-            "[transform:translateX(-50%)translateY(-50%)]"]
-    :style style}
-   [:svg {:xmlns "http://www.w3.org/2000/svg"
-          :width "100%"
-          :height "100%"
-          :viewBox "0 0 24 24"
-          :fill "currentColor"
-          :stroke "currentColor"
-          :stroke-linecap "round"
-          :stroke-linejoin "round"}
-    [:circle {:cx "9" :cy "5" :r "1"}]
-    [:circle {:cx "9" :cy "12" :r "1"}]
-    [:circle {:cx "9" :cy "19" :r "1"}]
-    [:circle {:cx "15" :cy "5" :r "1"}]
-    [:circle {:cx "15" :cy "12" :r "1"}]
-    [:circle {:cx "15" :cy "19" :r "1"}]]])
-
-(defn- h-gripper [{:keys [style]}]
-  [:div.gripper {:class ["absolute left-[50%] bg-[var(--basic-gray-2)] w-[30px] h-[12px] rounded"
-                         "flex justify-center items-center z-[200] [transform:translateX(-50%)translateY(-50%)]"]
-                 :style style}
-   ;; TODO: Put it in svg/ dir too?
-   [:svg {:xmlns "http://www.w3.org/2000/svg"
-          :width "100%"
-          :height "100%"
-          :viewBox "0 0 24 24"
-          :fill "currentColor"
-          :stroke "currentColor"
-          :stroke-linecap "round"
-          :stroke-linejoin "round"}
-    [:circle {:cx "5"  :cy "9" :r "1"}]
-    [:circle {:cx "12" :cy "9" :r "1"}]
-    [:circle {:cx "19" :cy "9" :r "1"}]
-    [:circle {:cx "5"  :cy "15" :r "1"}]
-    [:circle {:cx "12" :cy "15" :r "1"}]
-    [:circle {:cx "19" :cy "15" :r "1"}]]])
-
-
 (defn- v-separator
   [{:keys [class
            default-right-percent
@@ -283,8 +242,7 @@
          ;; In this component there should be a general design.
          (fn [_]
            [:<>
-            [:style ".separator:hover .separator-line {border: 1px solid var(--basic-gray-3)}
-                     .separator:hover .gripper {background-color: var(--basic-gray-3)}
+            [:style ".separator:hover .separator-line {border: 1px solid var(--color-cta)}
                      .hover-separator:hover .separator {display: block;}"]
             [:div.separator {:class          (cond-> ["px-4 mx-[-1rem] z-[100] cursor-col-resize"]
 
@@ -294,10 +252,9 @@
                              :ref            resizer-ref
                              :on-mouse-down  mouse-down
                              :on-touch-start mouse-down}
-             [:div.separator-line {:class (into ["h-full w-0 absolute z-[100] [border: 1px solid var(--basic-gray-2,#BFC1C7)]"]
+             [:div.separator-line {:class (into ["h-full w-0 absolute z-[100] [border: 1px solid #dbdde3]"]
                                                 (if (vector? class) class [class]))
-                                   :style (when @resizing {:border "1px solid var(--basic-gray-4)"})}]
-             [v-gripper {:style (when @resizing {:background-color "var(--basic-gray-4)"})}]]])))))
+                                   :style (when @resizing {:border "1px solid var(--color-cta)"})}]]])))))
 
 (defn- h-separator
   [{:keys [class
@@ -373,17 +330,15 @@
                  (.addEventListener js/document "touchend" mouse-up))]
          (fn [_]
            [:<>
-            [:style ".separator:hover .separator-line {border: 1px solid var(--basic-gray-3)}
-                     .separator:hover .gripper {background-color: var(--basic-gray-3)}"]
+            [:style ".separator:hover .separator-line {border: 1px solid var(--color-cta)}"]
             [:div.separator {:class          "py-4 my-[-1rem] cursor-row-resize z-[200]"
                              :style          {:bottom (str default-lower-percent "%")}
                              :ref            resizer-ref
                              :on-mouse-down  mouse-down
                              :on-touch-start mouse-down}
-             [:div.separator-line {:class (into ["w-full h-0 absolute z-[100] [border: 1px solid var(--basic-gray-2,#BFC1C7)]"]
+             [:div.separator-line {:class (into ["w-full h-0 absolute z-[100] [border: 1px solid #dbdde3]"]
                                                 (if (vector? class) class [class]))
-                                   :style (when @resizing {:border "1px solid var(--basic-gray-4)"})}]
-             [h-gripper {:style (when @resizing {:background-color "var(--basic-gray-4)"})}]]])))))
+                                   :style (when @resizing {:border "1px solid var(--color-cta)"})}]]])))))
 
 (defn- assoc-prop-to-hiccup [hiccup prop-key prop-val]
   (let [el-name      (first hiccup)

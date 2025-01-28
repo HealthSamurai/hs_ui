@@ -29,6 +29,15 @@
   #?(:cljs (js/JSON.stringify (clj->js edn) nil 2)
      :clj  (cheshire.core/generate-string edn {:pretty true})))
 
+(defn json-string->edn
+  [json-string]
+  (when (seq json-string)
+    #?(:cljs (try (js->clj (js/JSON.parse json-string)
+                           :keywordize-keys true)
+                  (catch js/Error e
+                    (prn "error" ::json-string->edn)))
+       :clj (cheshire.core/parse-string json-string keyword))))
+
 (defn unsecured-copy-to-clipboard
   [text]
   #?(:cljs (let [textarea (js/document.createElement "textarea")]
@@ -210,3 +219,18 @@
                 search-string)
        :keywordize-keys true)
       (mapv :item))))
+
+(defn set-storage-item
+  [keyname value]
+  #?(:cljs (js/localStorage.setItem keyname value)
+     :clj  nil))
+
+(defn get-storage-item
+  [keyname]
+  #?(:cljs (js/localStorage.getItem keyname)
+     :clj  nil))
+
+(defn remove-storage-item
+  [keyname]
+  #?(:cljs (js/localStorage.removeItem keyname)
+     :clj  nil))

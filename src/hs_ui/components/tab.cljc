@@ -31,6 +31,6 @@
    [:input.hidden {:type           "radio"
                    :value          (:id props)
                    :name           (:name props)
-                   :checked        (:c/selected? props)
+                   :checked        (boolean (:c/selected? props))
                    :on-change      (:on-change props)}]
    (:slot/content props)])

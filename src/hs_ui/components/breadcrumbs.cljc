@@ -6,6 +6,7 @@
   ["txt-body"
    "text-[theme(colors.cta)]"
    "flex"
+   "cursor-pointer"
    "items-center"
    ;; Hovered
    "hover:underline"

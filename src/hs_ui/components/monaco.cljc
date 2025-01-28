@@ -27,7 +27,7 @@
                                        (hs-ui.utils/target-value event)))}])
      (->
       {:key (:id properties)
-       :theme    (:theme properties "suitkin-theme")
+       :theme    (:theme properties "hs-ui-theme")
        :defaultPath (:defaultPath properties)
        :defaultValue (:defaultValue properties)
        :language "json"
@@ -67,7 +67,7 @@
            (set-json-defaults instance (:schemas properties) (:defaultPath properties)))
          #?(:cljs
             (.defineTheme (.-editor ^js/Object instance)
-                          "suitkin-theme"
+                          "hs-ui-theme"
                           (clj->js {:base    "vs"
                                     :inherit true
                                     :rules   [{:token "string.key.json" :foreground "#EA4A35"}

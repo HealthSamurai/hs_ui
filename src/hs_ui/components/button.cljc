@@ -164,6 +164,7 @@
   :data-active
   :data-loading
   :c/loading-icon
+  :c/icon
 
   And other <button>, <label>, or <a> properties."
   [properties children]
@@ -172,7 +173,13 @@
                      loading? (assoc :disabled true))]
     [(get-element-name properties)
      (utils/merge-props {:class base-class} properties)
-     (if loading? (loading-icon properties children) children)]))
+     (if loading?
+       (loading-icon properties children)
+       [:<>
+        (when (:c/icon properties)
+          [:span {:class "mr-1"}
+           (:c/icon properties)])
+        children])]))
 
 (defn primary
   [& arguments]
