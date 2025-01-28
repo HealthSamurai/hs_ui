@@ -37,7 +37,7 @@
    "sticky"
    "top-0"])
 
-(def column-value-class
+(def table-cell-class
   ["px-3"
    "py-2"
    "border-x-[0.25rem]"
@@ -376,7 +376,7 @@
 
            ^{:key (col-key row row-idx model-idx)}
            [:td
-            {:class column-value-class
+            {:class table-cell-class
              :style (let [style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
 
                                   (and (:col-reordering st)
@@ -404,7 +404,8 @@
                {:class   (:c/tooltip-style cfg)
                 :tooltip [:pre (or (:tooltip value) (str (:value value)))]}
                (:value value)]
-              [:div (or (:value value) "-")])]))
+              [:div (or (:value value) "-")])
+            [cell-toolbar]]))
        (or model row)))]))
 
 (defn render-all-rows
