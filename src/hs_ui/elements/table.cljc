@@ -56,7 +56,8 @@
   ["even:bg-[var(--color-surface-1)]"
    "aria-selected:bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
-   "data-[role=link]:hover:bg-[var(--color-surface-1)]"
+   "data-[role=link]:hover:text-gray-400"
+   "data-[role=link]:hover:bg-[rgba(34,120,225,0.10)]"
    "group/row"])
 
 (def text-class
@@ -91,7 +92,7 @@
   "Reads the entire table-state map from localStorage, returning a Clojure map or nil."
   [table-name]
   #?(:cljs
-     (let [key (str local-store-key "-" table-name "-v2")]
+     (let [key (str local-store-key "-" table-name "-v3")]
        (when-let [json-str (js/localStorage.getItem key)]
          (try
            (js->clj (js/JSON.parse json-str) :keywordize-keys true)
@@ -101,9 +102,8 @@
 (defn write-table-state!
   "Writes the given portion of table-state (column widths, hidden columns, col order) to localStorage as JSON."
   [table-name new-state]
-
   #?(:cljs
-     (let [key (str local-store-key "-" table-name "-v2")
+     (let [key (str local-store-key "-" table-name "-v3")
            st  (select-keys new-state [:col-widths :col-hidden :col-index-to-model])]
        (js/localStorage.setItem key (js/JSON.stringify (clj->js st))))
      :clj nil))
@@ -116,16 +116,17 @@
     (on-move (.-clientX e) (.-clientY e))))
 
 (defn handle-drag-end
-  [move-fn end-atom]
+  [move-fn end-fn end-atom]
   (fn [e]
+    (end-fn)
     #?(:cljs (events/unlisten js/window EventType.MOUSEMOVE move-fn))
     #?(:cljs (events/unlisten js/window EventType.MOUSEUP @end-atom))))
 
 (defn initiate-drag!
-  [on-move]
+  [on-move on-end]
   (let [move-fn (handle-drag-move on-move)
         end-atom (utils/ratom nil)]
-    (reset! end-atom (handle-drag-end move-fn end-atom))
+    (reset! end-atom (handle-drag-end move-fn on-end end-atom))
     #?(:cljs (events/listen js/window EventType.MOUSEMOVE move-fn))
     #?(:cljs (events/listen js/window EventType.MOUSEUP @end-atom))))
 
@@ -168,23 +169,37 @@
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
   [:button
-   {:class        "hidden text-[var(--color-separator)] active:text-[var(--color-cta)] group-hover:inline-block w-6 absolute cursor-ew-resize top-[30%] right-0 z-[5]"
+   {:class        "absolute cursor-ew-resize top-[30%] right-[-10px] hidden text-[var(--color-separator)] hover:text-[var(--color-cta)] active:text-[var(--color-cta)] group-hover:inline-block w-6 z-[1]"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
+
       (when-let [cell-node @cell-ref]
         (let [init-x     (.-clientX evt)
               init-width (.-clientWidth cell-node)]
+          (swap! state-atom assoc :col-resizing true)
           (initiate-drag!
            (fn [x _]
              (let [new-width (max 30 (- init-width (- init-x x)))]
                (swap! state-atom assoc-in
                       [:col-widths (keyword (str model-idx))] new-width)
-               (write-table-state! table-name @state-atom))))
+               (write-table-state! table-name @state-atom)))
+           (fn [_]
+             (swap! state-atom assoc :col-resizing false)))
           (.preventDefault evt))))}
    "|"])
 
 (def ^:private position-on-drag (utils/ratom {}))
+
+(defn table-wider-than-vw?
+  [table-name]
+  #?(:cljs (when-let [el (-> js/document
+                             (.querySelector (str "." table-name)))]
+             (let [viewport-width (.-innerWidth js/window)
+                   element-width  (.-offsetWidth el)
+                   limit-width    (- viewport-width 332)]
+               (> element-width limit-width)))
+     :clj nil))
 
 (defn header-cell
   [col-info visible-idx model-idx cfg state-atom last-child]
@@ -197,23 +212,19 @@
         col-width    (get-in st [:col-widths (keyword (str model-idx))])
         cell-ref     (utils/ratom nil)
         current-col-width (cond
-                            last-child "100%"
-
                             col-width
                             (str col-width "px")
-
 
                             (:width col-info)
                             (:width col-info)
 
                             :else "200px")]
-    [:td
+
+    [:th
      {:ref         (fn [el]
                      (reset! cell-ref el)
-                     (when (and el last-child)
-                       (if (= 0 (.-clientWidth el))
-                         (aset (.-style el) "width" "200px")
-                         (aset (.-style el) "width" "100%"))))
+                     (when (and el last-child (not= 0 (.-clientWidth el)) (not (table-wider-than-vw? table-name)))
+                       (set! (.-width (.-style el)) "100%")))
       :class       column-name-class
       :draggable   draggable?
       :on-drag-start (fn [e]
@@ -223,19 +234,6 @@
                               :col-reordering true
                               :dragging-column model-idx
                               :dragging-column-index visible-idx))
-      :on-drag-over   (fn [e]
-                        (let [current-cursor-position (.-clientX e)
-                              old-cursor-position (:cursor-position st)
-                              border-side (when (not= current-cursor-position old-cursor-position)
-                                            (if (> current-cursor-position old-cursor-position)
-                                              :border-right
-                                              :border-left))]
-                          (when (< 40 (abs (- current-cursor-position old-cursor-position)))
-                            (swap! state-atom assoc :cursor-position (.-clientX e)))
-                          (when border-side
-                            (swap! position-on-drag #(assoc-in % [table-name :border-side] border-side)))))
-      :on-drag-enter  (fn [e]
-                        (swap! state-atom assoc :col-hover visible-idx))
       :on-drag-end   (fn [_]
                        (let [hovered-col (:col-hover @state-atom)]
                          (when (and (not= visible-idx hovered-col)
@@ -284,10 +282,15 @@
                              (inc visible-idx)))
                   {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
 
-     [:span {:class "block overflow-hidden"}
-      (or (:header col-info) model-idx)]
+      [:span {:class "block overflow-hidden"}
+       (or (:header col-info) model-idx)]
 
-     [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]]))
+     ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
+     (when-not (and cur-border-side
+                    (:col-reordering st)
+                    (= visible-idx (if (= cur-border-side :border-right) (:col-hover st) (dec (:col-hover st))))
+                    (not= (:dragging-column st) model-idx))
+       [resizer-handle cell-ref model-idx state-atom (:table-name cfg)])]))
 
 (defn last-column-index?
   [state-atom col-model index]
@@ -435,7 +438,7 @@
 
     (fn [state-atom col-model cfg]
       (let [st @state-atom
-            table-name (:tabel-name cfg)
+            table-name (:table-name cfg)
             draggable? (:draggable @state-atom)
             hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
                            :clj nil)]
@@ -466,17 +469,17 @@
                                                                       (swap! hidden-cell not)
                                                                       (write-table-state! table-name @state-atom))
                                                           :class (utils/class-names "group px-[8px]"
-                                                                                    (if (:col-reordering st) "!cursor-grabbing" ""))
+                                                                                    (if (:control-col-reordering st) "!cursor-grabbing" ""))
                                                           :draggable   draggable?
-                                                          :style (let [need-border? (and (:col-reordering st)
-                                                                                         (= view-idx (:col-hover st))
-                                                                                         (not= (:dragging-column st) model-idx)
+                                                          :style (let [need-border? (and (:control-col-reordering st)
+                                                                                         (= view-idx (:control-col-hover st))
+                                                                                         (not= (:control-dragging-column st) model-idx)
                                                                                          cur-border-side)]
                                                                    (cond-> {:border-top "0.25rem solid transparent"
                                                                             :border-bottom "0.25rem solid transparent"}
                                                                      (and need-border?
                                                                           (= :border-bottom cur-border-side)
-                                                                          (not= (:dragging-column-index st)
+                                                                          (not= (:control-dragging-column-index st)
                                                                                 (dec view-idx)))
                                                                      (merge {:border-bottom "0.25rem solid var(--color-elements-assistive)"
                                                                              :border-radius 0
@@ -484,7 +487,7 @@
 
                                                                      (and need-border?
                                                                           (= :border-top cur-border-side)
-                                                                          (not= (:dragging-column-index st)
+                                                                          (not= (:control-dragging-column-index st)
                                                                                 (inc view-idx)))
                                                                      (merge {:border-top "0.25rem solid var(--color-elements-assistive)"
                                                                              :border-radius 0
@@ -493,39 +496,39 @@
                                                                            (set! (.. e -dataTransfer -effectAllowed) "move")
                                                                            (-> (.-dataTransfer e) (.setData "text/plain" ""))
                                                                            (swap! state-atom assoc
-                                                                                  :col-reordering true
-                                                                                  :dragging-column model-idx
-                                                                                  :dragging-column-index view-idx))
+                                                                                  :control-col-reordering true
+                                                                                  :control-dragging-column model-idx
+                                                                                  :control-dragging-column-index view-idx))
                                                           :on-drag-over   (fn [e]
                                                                             (let [current-cursor-position (.-clientY e)
-                                                                                  old-cursor-position (:cursor-position st)
+                                                                                  old-cursor-position (:control-cursor-position st)
                                                                                   border-side (when (not= current-cursor-position old-cursor-position)
                                                                                                 (if (> current-cursor-position old-cursor-position)
                                                                                                   :border-bottom
                                                                                                   :border-top))]
-                                                                              (when (< 8 (abs (- current-cursor-position old-cursor-position)))
-                                                                                (swap! state-atom assoc :cursor-position (.-clientY e)))
+                                                                              (when (< 6 (abs (- current-cursor-position old-cursor-position)))
+                                                                                (swap! state-atom assoc :control-cursor-position (.-clientY e)))
                                                                               (when border-side
                                                                                 (swap! position-on-drag #(assoc-in % [table-name :control-border-side] border-side)))))
                                                           :on-drag-enter  (fn [e]
-                                                                            (swap! state-atom assoc :col-hover view-idx))
+                                                                            (swap! state-atom assoc :control-col-hover view-idx))
                                                           :on-drag-end   (fn [_]
-                                                                           (let [hovered-col (:col-hover @state-atom)]
+                                                                           (let [hovered-col (:control-col-hover @state-atom)]
                                                                              (when (and (not= view-idx hovered-col)
                                                                                         (or
                                                                                          (and (= :border-bottom cur-border-side)
-                                                                                              (not= (:dragging-column-index st)
+                                                                                              (not= (:control-dragging-column-index st)
                                                                                                     (dec hovered-col)))
                                                                                          (and (= :border-top cur-border-side)
-                                                                                              (not= (:dragging-column-index st)
+                                                                                              (not= (:control-dragging-column-index st)
                                                                                                     (inc hovered-col)))))
                                                                                (reorder-columns! view-idx hovered-col state-atom)
                                                                                (write-table-state! (:table-name cfg) @state-atom))
                                                                              (swap! state-atom assoc
-                                                                                    :col-hover nil
-                                                                                    :col-reordering nil
-                                                                                    :dragging-column nil)
-                                                                             (swap! position-on-drag assoc-in [table-name :border-side] nil)))}
+                                                                                    :control-col-hover nil
+                                                                                    :control-col-reordering nil
+                                                                                    :control-dragging-column nil)
+                                                                             (swap! position-on-drag assoc-in [table-name :control-border-side] nil)))}
 
                     [:div {:class "flex w-full justify-between"}
                      [hs-ui.organisms.checkbox/component
@@ -538,7 +541,8 @@
                      [:div {:class "mr-4 flex justify-start w-full"} (or (:header info) model-idx)]
                      [:div {:class "w-[23px] flex items-center"}
                       [:div {:class (utils/class-names "hidden group-hover:block cursor-grab"
-                                                       (if (:col-reordering st) "text-[--color-cta] !cursor-grabbing" ""))} hs-ui.svg.trailing/svg]]]]))
+                                                       (if (:control-col-reordering st) "text-[--color-cta] !cursor-grabbing" ""))}
+                       hs-ui.svg.trailing/svg]]]]))
                col-model))]])]))))
 
 (defn init-col-indexes
@@ -546,17 +550,75 @@
   (into [] (map (fn [header]
                   (or (:header header) "empty"))
                         headers)))
-
 (defn core-table
-  "Reagent component for rendering the <table> with header/body."
   []
   (fn [cfg col-model data state-atom]
-    [:div {:class "relative"}
-     [:table (:table cfg)
-      [:thead {:class thead-class}
-       (render-header-row col-model cfg state-atom)]
-      [:tbody (:tbody cfg)
-       (render-all-rows data state-atom cfg)]]]))
+    (let [table-name (:table-name cfg)
+          st         @state-atom]
+      [:div {:class "relative"}
+       [:table
+        {:class         (utils/class-names (-> cfg :table :class) table-name)
+         :on-drag-over (fn [e]
+                         (.preventDefault e)
+                         (let [st @state-atom
+                               current-cursor-position (.-clientX e)
+                               old-cursor-position    (:cursor-position st)
+                               border-side (when (not= current-cursor-position old-cursor-position)
+                                             (if (> current-cursor-position old-cursor-position)
+                                               :border-right
+                                               :border-left))
+                               old-border-side (get-in @position-on-drag [table-name :border-side])]
+                           (when (< 40 (abs (- current-cursor-position old-cursor-position)))
+                             (swap! state-atom assoc :cursor-position current-cursor-position))
+                           (when (and border-side (not= old-border-side border-side))
+                             (swap! position-on-drag
+                                    #(assoc-in % [table-name :border-side] border-side)))))
+
+         :on-drag-enter (fn [e]
+                          (let [cell (.-target e)
+                                cell-index (.-cellIndex cell)]
+                            (when (some? cell-index)
+                              (swap! state-atom assoc :col-hover cell-index))))
+
+         :on-drag-end (fn [_]
+                        (let [hovered-col (:col-hover @state-atom)
+                              visible-idx   (:dragging-column-index st)
+                              cur-border-side    (get-in st [table-name :border-side])]
+                          (when (and (not= visible-idx hovered-col)
+                                     (or
+                                      (and (= :border-left cur-border-side)
+                                           (not= (:dragging-column-index st)
+                                                 (dec hovered-col)))
+                                      (and (= :border-right cur-border-side)
+                                           (not= (:dragging-column-index st)
+                                                 (inc hovered-col)))))
+                            (reorder-columns! visible-idx hovered-col state-atom)
+                            (write-table-state! (:table-name cfg) @state-atom))
+                          (swap! state-atom assoc
+                                 :col-hover nil
+                                 :col-reordering nil
+                                 :dragging-column nil)
+                          (swap! position-on-drag assoc-in [table-name :border-side] nil)))}
+
+        [:thead {:class thead-class}
+         [:tr
+          (doall
+           (map-indexed
+            (fn [view-idx _]
+              (let [model-idx (extract-col-model state-atom view-idx)
+                    info      (get-col-info col-model model-idx)]
+                ^{:key view-idx}
+                [header-cell
+                 info
+                 view-idx
+                 model-idx
+                 cfg
+                 state-atom
+                 (last-column-index? state-atom col-model view-idx)]))
+            col-model))]]
+
+        [:tbody
+         (render-all-rows data state-atom cfg)]]])))
 
 (defn generate-cols
   [cols-data]
