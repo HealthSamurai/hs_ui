@@ -137,7 +137,7 @@
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
   [:button
-   {:class        "hidden text-[var(--color-separator)] hover:text-[var(--color-cta)] active:text-[var(--color-cta)] group-hover:inline-block w-6 absolute cursor-ew-resize top-[30%] right-0 z-[5]"
+   {:class        "absolute cursor-ew-resize top-[30%] right-[-10px] hidden text-[var(--color-separator)] hover:text-[var(--color-cta)] active:text-[var(--color-cta)] group-hover:inline-block w-6 z-[1]"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
@@ -182,7 +182,6 @@
         current-col-width (cond
                             col-width
                             (str col-width "px")
-
 
                             (:width col-info)
                             (:width col-info)
@@ -251,10 +250,15 @@
                              (inc visible-idx)))
                   {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
 
-     [:span {:class "block overflow-hidden"}
-      (or (:header col-info) model-idx)]
+      [:span {:class "block overflow-hidden"}
+       (or (:header col-info) model-idx)]
 
-     [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]]))
+     ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
+     (when-not (and cur-border-side
+                    (:col-reordering st)
+                    (= visible-idx (if (= cur-border-side :border-right) (:col-hover st) (dec (:col-hover st))))
+                    (not= (:dragging-column st) model-idx))
+       [resizer-handle cell-ref model-idx state-atom (:table-name cfg)])]))
 
 (defn last-column-index?
   [state-atom col-model index]
