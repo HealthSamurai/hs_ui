@@ -8,8 +8,6 @@
    [hs-ui.organisms.checkbox]
    [hs-ui.svg.settings]
    [hs-ui.svg.trailing]
-   [hs-ui.svg.plus :as plus-icon]
-   [hs-ui.svg.minus :as minus-icon]
    #?(:cljs [reagent.core :as r])
    #?(:cljs [goog.events :as events]))
   #?(:cljs (:import [goog.events EventType])))
@@ -315,11 +313,6 @@
           [header-cell info view-idx model-idx cfg state-atom (last-column-index? state-atom col-model view-idx)]))
       col-model))]])
 
-(defn cell-toolbar []
-  [:div {:class cell-toolbar-class}
-   [:span {:class cell-toolbar-icon-class} plus-icon/svg]
-   [:span {:class cell-toolbar-icon-class} minus-icon/svg]])
-
 (defn resolve-cell-data
   [row cell-def]
   (let [{:keys [path expr]} cell-def]
@@ -347,6 +340,16 @@
 
              :else false)))
 
+(defn cell-toolbar
+  [icons]
+  [:div {:class cell-toolbar-class}
+   [:<>
+    (map-indexed
+     (fn [idx {:keys [svg on-click]}]
+       ^{:key idx}
+       [:span {:class cell-toolbar-icon-class :on-click on-click} svg])
+     icons)]])
+
 (defn render-data-row
   [row row-idx row-key-fn state-atom cfg]
   (let [st          @state-atom
@@ -370,7 +373,7 @@
 
            ^{:key (col-key row row-idx model-idx)}
            [:td
-            {:class (if (:cell-toolbar cfg)
+            {:class (if (:cell-toolbar-active? cfg)
                       (concat table-cell-class table-cell-border-class)
                       table-cell-class)
              :style (let [style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
@@ -401,7 +404,11 @@
                 :tooltip [:pre (or (:tooltip value) (str (:value value)))]}
                (:value value)]
               [:div {:class text-class} (or (:value value) "-")])
-            (when (:cell-toolbar cfg) [cell-toolbar])]))
+            [cell-toolbar
+             (map
+              (fn [icon]
+                (update icon :on-click partial model-idx (:value value)))
+              (:cell-toolbar-icons cfg))]]))
        (or model row)))]))
 
 (defn render-all-rows
@@ -586,7 +593,8 @@
                     :c/tooltip-style (:c/tooltip-style props)
                     :table-name      table-name
                     :on-row-click (:on-row-click props)
-                    :cell-toolbar (:cell-toolbar props)}
+                    :cell-toolbar-active? (seq (:cell-toolbar-icons props))
+                    :cell-toolbar-icons (:cell-toolbar-icons props)}
         local-state (utils/ratom (:table-state cfg))]
     [:div {:class "w-full relative"}
      (when (:visibility-ctrl props)
