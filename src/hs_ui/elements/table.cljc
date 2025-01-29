@@ -43,11 +43,16 @@
    "border-x-[0.25rem]"
    "border-transparent"
    "whitespace-nowrap"
-   "truncate"
    "break-all"
-   "overflow-hidden"
    "text-ellipsis"
-   "whitespace-nowrap"])
+   "whitespace-nowrap"
+   "group/cell"])
+
+(def table-cell-border-class
+  ["relative"
+   "hover:shadow-[inset_0_0_0_1px_var(--color-cta)]"
+   "transition-shadow"
+   "delay-[400ms]"])
 
 (def body-row-class
   ["even:bg-[var(--color-surface-1)]"
@@ -60,17 +65,6 @@
   ["truncate"
    "group-hover/row:opacity-40"
    "group-hover/cell:opacity-100"])
-
-(def table-cell-class
-  ["px-4"
-   "py-2"
-   "whitespace-nowrap"
-   "relative"
-   "break-all"
-   "hover:shadow-[inset_0_0_0_1px_var(--color-cta)]"
-   "transition-shadow"
-   "delay-[400ms]"
-   "group/cell"])
 
 (def cell-toolbar-class
   ["absolute"
@@ -376,7 +370,9 @@
 
            ^{:key (col-key row row-idx model-idx)}
            [:td
-            {:class table-cell-class
+            {:class (if (:cell-toolbar cfg)
+                      (concat table-cell-class table-cell-border-class)
+                      table-cell-class)
              :style (let [style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
 
                                   (and (:col-reordering st)
@@ -404,8 +400,8 @@
                {:class   (:c/tooltip-style cfg)
                 :tooltip [:pre (or (:tooltip value) (str (:value value)))]}
                (:value value)]
-              [:div (or (:value value) "-")])
-            [cell-toolbar]]))
+              [:div {:class text-class} (or (:value value) "-")])
+            (when (:cell-toolbar cfg) [cell-toolbar])]))
        (or model row)))]))
 
 (defn render-all-rows
@@ -589,7 +585,8 @@
                     :column-model    col-defs
                     :c/tooltip-style (:c/tooltip-style props)
                     :table-name      table-name
-                    :on-row-click (:on-row-click props)}
+                    :on-row-click (:on-row-click props)
+                    :cell-toolbar (:cell-toolbar props)}
         local-state (utils/ratom (:table-state cfg))]
     [:div {:class "w-full"}
      (when (:visibility-ctrl props)
