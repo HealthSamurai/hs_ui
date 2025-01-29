@@ -588,7 +588,7 @@
                     :on-row-click (:on-row-click props)
                     :cell-toolbar (:cell-toolbar props)}
         local-state (utils/ratom (:table-state cfg))]
-    [:div {:class "w-full"}
+    [:div {:class "w-full relative"}
      (when (:visibility-ctrl props)
        [:div {:class "absolute top-0 right-0 z-10 w-[45px] h-[48px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
         [column-visibility-dropdown local-state col-defs cfg]])
