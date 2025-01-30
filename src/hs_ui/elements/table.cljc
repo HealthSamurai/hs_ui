@@ -35,24 +35,56 @@
    "sticky"
    "top-0"])
 
-(def column-value-class
+(def table-cell-class
   ["px-3"
    "py-2"
    "border-x-[0.25rem]"
    "border-transparent"
    "whitespace-nowrap"
-   "truncate"
    "break-all"
-   "overflow-hidden"
    "text-ellipsis"
-   "whitespace-nowrap"])
+   "whitespace-nowrap"
+   "group/cell"])
 
-(def body-tr-class
+(def table-cell-border-class
+  ["relative"
+   "hover:shadow-[inset_0_0_0_1px_var(--color-cta)]"
+   "transition-shadow"
+   "delay-[400ms]"])
+
+(def body-row-class
   ["even:bg-[var(--color-surface-1)]"
    "aria-selected:bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
    "data-[role=link]:hover:text-gray-400"
-   "data-[role=link]:hover:bg-[rgba(34,120,225,0.10)]"])
+   "data-[role=link]:hover:bg-[rgba(34,120,225,0.10)]"
+   "group/row"])
+
+(def text-class
+  ["truncate"
+   "group-hover/row:opacity-40"
+   "group-hover/cell:opacity-100"])
+
+(def cell-toolbar-class
+  ["absolute"
+   "-top-[var(--spacing-x3)]"
+   "left-0"
+   "flex"
+   "px-[6px]"
+   "py-[var(--spacing-half)]"
+   "gap-[6px]"
+   "bg-[var(--color-cta)]"
+   "rounded-t"
+   "invisible"
+   "group-hover/cell:visible"
+   "transition-[visibility]"
+   "ease-out"
+   "delay-[400ms]"])
+
+(def cell-toolbar-icon-class
+  ["opacity-50"
+   "text-[theme(colors.elements-readable-inv)]"
+   "hover:opacity-100"])
 
 (def local-store-key "hs-table-state")
 
@@ -311,6 +343,16 @@
 
              :else false)))
 
+(defn cell-toolbar
+  [icons]
+  [:div {:class cell-toolbar-class}
+   [:<>
+    (map-indexed
+     (fn [idx {:keys [svg on-click]}]
+       ^{:key idx}
+       [:span {:class cell-toolbar-icon-class :on-click on-click} svg])
+     icons)]])
+
 (defn render-data-row
   [row row-idx row-key-fn state-atom cfg]
   (let [st          @state-atom
@@ -319,7 +361,7 @@
         model       (:column-model cfg)
         on-row-click (:on-row-click cfg)]
     ^{:key (row-key-fn row row-idx)}
-    [:tr {:class body-tr-class
+    [:tr {:class body-row-class
           :data-role     (when on-row-click "link")
           :on-click      (when on-row-click #(on-row-click row))
           :aria-selected (:selected? row)}
@@ -334,7 +376,9 @@
 
            ^{:key (col-key row row-idx model-idx)}
            [:td
-            {:class column-value-class
+            {:class (if (:cell-toolbar-active? cfg)
+                      (concat table-cell-class table-cell-border-class)
+                      table-cell-class)
              :style (let [style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
 
                                   (and (:col-reordering st)
@@ -362,7 +406,12 @@
                {:class   (:c/tooltip-style cfg)
                 :tooltip [:pre (or (:tooltip value) (str (:value value)))]}
                (:value value)]
-              [:div (or (:value value) "-")])]))
+              [:div {:class text-class} (or (:value value) "-")])
+            [cell-toolbar
+             (map
+              (fn [icon]
+                (update icon :on-click partial model-idx (:value value)))
+              (:cell-toolbar-icons cfg))]]))
        (or model row)))]))
 
 (defn render-all-rows
@@ -605,7 +654,9 @@
                     :column-model    col-defs
                     :c/tooltip-style (:c/tooltip-style props)
                     :table-name      table-name
-                    :on-row-click (:on-row-click props)}
+                    :on-row-click (:on-row-click props)
+                    :cell-toolbar-active? (seq (:cell-toolbar-icons props))
+                    :cell-toolbar-icons (:cell-toolbar-icons props)}
         local-state (utils/ratom (:table-state cfg))]
     [:div {:class "w-full"}
      (when (:visibility-ctrl props)
