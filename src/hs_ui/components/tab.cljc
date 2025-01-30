@@ -4,7 +4,8 @@
 (def root-class
   ["txt-label"
    "text-[theme(colors.elements-assistive)]"
-   "pb-[4.5px]"
+   "pt-[6px]"
+   "pb-[5px]"
    "cursor-pointer"
    ;; Hovered
    "hover:text-[theme(colors.elements-readable)]"

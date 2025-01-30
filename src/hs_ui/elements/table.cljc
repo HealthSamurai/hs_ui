@@ -25,7 +25,8 @@
    "text-[var(--color-elements-assistive)]"])
 
 (def column-name-class
-  ["p-4"
+  ["px-5"
+   "py-4"
    "font-medium"
    "text-nowrap"
    "text-left"
@@ -36,9 +37,9 @@
    "top-0"])
 
 (def table-cell-class
-  ["px-3"
+  ["px-[14px]"
    "py-2"
-   "border-x-[0.25rem]"
+   "border-x-[3.5px]"
    "border-transparent"
    "whitespace-nowrap"
    "break-all"
@@ -56,14 +57,15 @@
   ["even:bg-[var(--color-surface-1)]"
    "aria-selected:bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
-   "data-[role=link]:hover:text-gray-400"
+   "data-[role=link]:hover:text[var(--color-elements-readable)]"
    "data-[role=link]:hover:bg-[rgba(34,120,225,0.10)]"
+   "data-[role=link]:hover:outline"
+   "data-[role=link]:hover:-outline-offset-1"
+   "data-[role=link]:hover:outline-[var(--color-border-XS-regular)]"
    "group/row"])
 
 (def text-class
-  ["truncate"
-   "group-hover/row:opacity-40"
-   "group-hover/cell:opacity-100"])
+  ["truncate"])
 
 (def cell-toolbar-class
   ["absolute"
@@ -264,7 +266,7 @@
 
                (= (:dragging-column st) model-idx)
                ;; TODO: fix color to var
-               (assoc :background "rgba(113, 118, 132, 0.10)")
+               (assoc :background "#F1F1F3")
 
                (and (:col-reordering st)
                     (= visible-idx (:col-hover st))
@@ -275,12 +277,12 @@
                   (and (= :border-left cur-border-side)
                        (not= (:dragging-column-index st)
                              (dec visible-idx)))
-                  {:border-left "0.25rem solid var(--color-elements-assistive)" :padding-left "0.75rem"}
+                  {:border-left "0.25rem solid var(--color-elements-assistive)" :padding-left "1rem"}
 
                   (and (= :border-right cur-border-side)
                        (not= (:dragging-column-index st)
                              (inc visible-idx)))
-                  {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "0.75rem"})))}
+                  {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "1rem"})))}
 
       [:span {:class "block overflow-hidden"}
        (or (:header col-info) model-idx)]
@@ -480,7 +482,7 @@
                                                                      (and need-border?
                                                                           (= :border-bottom cur-border-side)
                                                                           (not= (:control-dragging-column-index st)
-                                                                                (dec view-idx)))
+                                                                                (inc view-idx)))
                                                                      (merge {:border-bottom "0.25rem solid var(--color-elements-assistive)"
                                                                              :border-radius 0
                                                                              :padding-bottom 0})
@@ -488,7 +490,7 @@
                                                                      (and need-border?
                                                                           (= :border-top cur-border-side)
                                                                           (not= (:control-dragging-column-index st)
-                                                                                (inc view-idx)))
+                                                                                (dec view-idx)))
                                                                      (merge {:border-top "0.25rem solid var(--color-elements-assistive)"
                                                                              :border-radius 0
                                                                              :padding-top 0})))
@@ -575,7 +577,7 @@
                                     #(assoc-in % [table-name :border-side] border-side)))))
 
          :on-drag-enter (fn [e]
-                          (let [cell (.-target e)
+                          (let [cell (.closest (.-target e) "tr, th")
                                 cell-index (.-cellIndex cell)]
                             (when (some? cell-index)
                               (swap! state-atom assoc :col-hover cell-index))))
