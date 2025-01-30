@@ -658,8 +658,8 @@
                     :cell-toolbar-active? (seq (:cell-toolbar-icons props))
                     :cell-toolbar-icons (:cell-toolbar-icons props)}
         local-state (utils/ratom (:table-state cfg))]
-    [:div {:class "w-full"}
+    [:div {:class "w-full relative"}
      (when (:visibility-ctrl props)
-       [:div {:class "absolute top-0 right-0 z-10 w-[45px] h-[48px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
+       [:div {:class "fixed right-0 z-10 w-[45px] h-[48px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
         [column-visibility-dropdown local-state col-defs cfg]])
      [core-table cfg col-defs row-data local-state]]))
