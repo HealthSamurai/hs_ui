@@ -401,7 +401,7 @@
                  (utils/class-names "text-[theme(colors.elements-assistive)] p-2 cursor-pointer flex content-center justify-center w-[32px] h-[32px] hover:rounded-[50%] hover:bg-[var(--color-separator)] hover:text-[var(--color-cta)]"
 
                                           (if @menu-open? "rounded-[50%] bg-[var(--color-separator)]" ""))}
-           hs-ui.svg.settings/svg]]
+           [:div {:class "mt-[1px]"} hs-ui.svg.settings/svg]]]
          (when @menu-open?
            [:div {:class "absolute right-[16px] mt-2 bg-white border shadow-md p-2 z-10 rounded-md"}
 
