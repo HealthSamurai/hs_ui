@@ -12,7 +12,8 @@
    "py-1"
    "inline-flex"
    "items-center"
-   "gap-2"])
+   "gap-2"
+   "text-nowrap"])
 
 (defn component
   "Properties:
