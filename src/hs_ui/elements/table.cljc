@@ -22,7 +22,8 @@
   ["group"
    "sticky"
    "top-0"
-   "text-[var(--color-elements-assistive)]"])
+   "text-[var(--color-elements-assistive)]"
+   "z-[1]"])
 
 (def column-name-class
   ["px-5"
@@ -75,6 +76,7 @@
    "px-[6px]"
    "py-[var(--spacing-half)]"
    "gap-[6px]"
+   "z-[2]"
    "bg-[var(--color-cta)]"
    "rounded-t"
    "invisible"
