@@ -5,7 +5,7 @@
 
 (def root-class
   ["w-[240px]"
-   "h-[100vh]"
+   "h-full"
    "flex"
    "text-[theme(colors.elements-readable)]"
    "bg-white"
