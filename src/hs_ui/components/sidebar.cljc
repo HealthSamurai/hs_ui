@@ -29,20 +29,23 @@
 
 (def content-items-class
   ["w-full"
+   "space-y-[2px]"
    "[&_details]:w-full"
    "[&.root>li:last-child]:mb-[100px]"
    "[&_a]:hover:text-inherit"
-   "[&_li_a]:pl-[16px]"
-   "[&_li_li_a]:pl-[40px]"
-   "[&_li_li_li_a]:pl-[64px]"])
+   "[&_li_a]:pl-[12px]"
+   "[&_li_li_a]:ml-[8px]"
+   "[&_li_li_a]:pl-[8px]"
+   "[&_li_li_li_a]:pl-[64px]"
+   "[&_li_li_li_a]:ml-[8px]"])
 
 (def menu-item-class
   ["flex"
    "flex-column"
    "w-full"
    "items-center"
-   "space-x-2"
-   "[padding:_6px_16px_6px_0px]"
+   "space-x-[8px]"
+   "[padding:_6px_8px_6px_8px]"
    "rounded"
    "cursor-pointer"
    "hover:[text-decoration:none]"
@@ -67,15 +70,11 @@
    "[&_details:not[open]_.chevron_svg]:[transform:rotate(0deg)]"])
 
 (def content-class
-  ["ml-1"
-   "mr-1"
-   "mt-1"
+  ["p-2"
+   "pr-[6px]"
+   "mr-[5px]"
    "overflow-y-auto"
    "h-full"])
-
-(defn open-menu-item?
-  [item]
-  (some :active (:slot/items item)))
 
 (defn on-open-menu
   [item]
@@ -88,7 +87,6 @@
 (defn open-before?
   [item]
   (hs-ui.utils/get-storage-item (:title item)))
-
 
 (defn details-constructor
   [element item]
@@ -104,25 +102,19 @@
            (set! (.-open element) true))))))
 
 (defn menu-item
-  [props]
-  (let [open? (hs-ui.utils/ratom false)]
-    (fn [item]
-      [:a (utils/merge-props
-           {:class (vec
-                    (concat
-                     menu-item-class
-                     [(when (:active item) "item-active")
-                      (when-not (:title item)
-                        "flex justify-center")]))}
-           props)
-       (:slot/img item)
-       (when (:active item)
-         [:data {:hidden true :data-key :active} (:active item)])
-       (when (:title item)
-         [:span {:data-key :label :class "w-full truncate text-[theme(colors.elements-readable)]"}
-          (:title item)])
-       (when (:slot/items item)
-         [:span.chevron hs-ui.svg.chevron-right/svg])])))
+  [item]
+  [:a (utils/merge-props {:class (conj menu-item-class (when (:active item) "item-active"))} item)
+
+   (when-let [img (:slot/img item)]
+     [:figure {:class "min-w-[16px] w-[16px] min-h-[16px] h-[16px]"} img])
+
+
+   (when-let [title (:title item)]
+     [:span {:class "truncate text-[theme(colors.elements-readable)]"}
+      title])
+
+   (when (:slot/items item)
+     [:span.chevron hs-ui.svg.chevron-right/svg])])
 
 (defn menu-items
   [node]
@@ -132,15 +124,13 @@
       (cond
         (:slot/items item)
         [:details {:ref #(details-constructor % item)}
-         [:summary
-          (when (or (:open item) (open-before? item))
-            [:data {:hidden true :data-key :open} (:open item)])
-          [menu-item item]]
-         [:div.content [menu-items item]]]
+         [:summary [menu-item item]]
+         [:div {:class "border-l pt-[2px] ml-[18.5px]"}
+          [menu-items item]]]
+
         (:divider item)
         [:hr {:class divider-class}]
-        (:space item)
-        [:hr {:class "pb-4px"}]
+
         :else [menu-item item])])])
 
 (defn component
@@ -156,17 +146,15 @@
   - :divider (to add a dividing ruler)
   - :space (to add a ruler with some space around it)"
   [properties]
-  [:aside (utils/merge-props {:data-object ::component :class root-class}
-                             properties)
-   [:div {:class header-class}
-    (:slot/logo properties)
-    (:slot/header properties)]
+  [:aside (utils/merge-props {:class root-class} properties)
 
-   (when (:slot/subheader properties)
-     [:div {:class header-class}
-      (:slot/subheader properties)])
-   [:div {:data-object :menu :class content-class}
-    [menu-items (:slot/menu properties)]]
-   (when (:slot/submenu properties)
-     [:div {:class submenu-class :data-object :submenu}
-      [menu-items (:slot/submenu properties)]])])
+   (when-let [header (:slot/header properties)]
+     [:div {:class header-class} header])
+
+   (when-let [menu (:slot/menu properties)]
+     [:div {:class content-class}
+      [menu-items menu]])
+
+   (when-let [submenu (:slot/submenu properties)]
+     [:div {:class submenu-class}
+      [menu-items submenu]])])
