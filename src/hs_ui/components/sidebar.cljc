@@ -110,7 +110,7 @@
 
 
    (when-let [title (:title item)]
-     [:span {:class "truncate text-[theme(colors.elements-readable)]"}
+     [:span {:class "truncate text-[theme(colors.elements-readable)]" :data-key :label}
       title])
 
    (when (:slot/items item)
@@ -146,13 +146,13 @@
   - :divider (to add a dividing ruler)
   - :space (to add a ruler with some space around it)"
   [properties]
-  [:aside (utils/merge-props {:class root-class} properties)
+  [:aside (utils/merge-props {:class root-class :data-object ::component} properties)
 
    (when-let [header (:slot/header properties)]
      [:div {:class header-class} header])
 
    (when-let [menu (:slot/menu properties)]
-     [:div {:class content-class}
+     [:div {:class content-class :data-object :menu}
       [menu-items menu]])
 
    (when-let [submenu (:slot/submenu properties)]
