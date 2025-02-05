@@ -151,6 +151,9 @@
    (when-let [header (:slot/header properties)]
      [:div {:class header-class} header])
 
+   (when-let [subheader (:slot/subheader properties)]
+     [:div {:class header-class} subheader])
+
    (when-let [menu (:slot/menu properties)]
      [:div {:class content-class :data-object :menu}
       [menu-items menu]])
