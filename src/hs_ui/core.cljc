@@ -4,6 +4,7 @@
    [hs-ui.graphic]
 
    [hs-ui.elements.table]
+   [hs-ui.elements.diff-table]
 
    [hs-ui.components.button]
    [hs-ui.components.input]
@@ -39,7 +40,7 @@
 
 ;; Elements
 (def table hs-ui.elements.table/view)
-
+(def diff-table hs-ui.elements.diff-table/view)
 
 (def button   hs-ui.components.button/component)
 (def input    hs-ui.components.input/component)
