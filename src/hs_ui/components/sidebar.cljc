@@ -109,9 +109,9 @@
      [:figure {:class "min-w-[16px] w-[16px] min-h-[16px] h-[16px]"} img])
 
 
-   (when-let [title (:title item)]
+   (when-let [content (:slot/content item)]
      [:span {:class "truncate text-[theme(colors.elements-readable)]" :data-key :label}
-      title])
+      content])
 
    (when (:slot/items item)
      [:span.chevron hs-ui.svg.chevron-right/svg])])
@@ -137,7 +137,7 @@
   "A sidebar with possibly nested entries.
   Has :slot/logo, :slot/header, :slot/subheader, :slot/menu, and :slot/submenu.
   :slot/menu and :slot/submenu consist of elements (items) with:
-  - :title
+  - :slot/content
   - :id
   - :slot/items
   - :slot/img
