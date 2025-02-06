@@ -78,7 +78,7 @@
              (if
                (= 0 lvl)
                [:div {:class "min-w-[18px]"}]
-               [:div {:style {:margin-left (if (> 1 lvl) "0px" (str (* (- lvl 1) 27) "px"))}
+               [:div {:style {:margin-left (if (> 1 lvl) "0px" (str (* (- lvl 1) (if (> lvl 2) 23 27)) "px"))}
                       :class "absolute top-[10px] border-b border-dotted border-[#b3bac0] min-w-[15px]"}])
              [:div {:class "flex flex-row h-full"}
               [:div {:style {:margin-left (if (> 1 lvl) "0px" (str (* lvl 20) "px"))}
