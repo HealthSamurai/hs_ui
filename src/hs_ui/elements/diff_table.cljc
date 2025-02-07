@@ -29,147 +29,221 @@
    "text-[#010205]"
    "font-inter"])
 
-(def left-class
-  {:negative "after:left-[-13px]"
-   0 "after:left-[0px]"
-   1 "after:left-[7px]"
-   2 "after:left-[21px]"
-   3 "after:left-[28px]"
-   4 "after:left-[35px]"
-   5 "after:left-[42px]"
-   6 "after:left-[49px]"
-   7 "after:left-[56px]"
-   8 "after:left-[63px]"
-   9 "after:left-[70px]"
-   10 "after:left-[77px]"})
+(defn nest-by-level
+  [items]
+  (loop [result []
+         stack  []
+         [x & xs] items]
+    (if-not x
+      result
+      (let [node (assoc x :children [])
+            lvl  (:lvl x)]
+
+        (let [stack
+              (loop [st stack]
+                (if (empty? st)
+                  st
+                  (let [parent-lvl (:lvl (get-in result (peek st)))]
+                    (if (>= parent-lvl lvl)
+                      (recur (pop st))
+                      st))))]
+
+          (if (empty? stack)
+            (let [idx     (count result)
+                  result' (conj result node)]
+              (recur result'
+                     (conj stack [idx])
+                     xs))
+
+            (let [parent-path   (peek stack)
+                  parent        (get-in result parent-path)
+                  updated-parent (update parent :children conj node)
+                  result'        (assoc-in result parent-path updated-parent)
+                  new-child-idx  (dec (count (:children updated-parent)))
+                  child-path     (conj parent-path :children new-child-idx)]
+
+              (recur result'
+                     (conj stack child-path)
+                     xs))))))))
+
+(defn name-cell [element]
+  [:div {:class "flex pt-2 ml-1"}
+   [:div {:class "pt-[2px]"}
+    (cond
+      (or (:extension-url element)
+          (:slice-type element))
+      [:span {:class "text-[--color-elements-green]"} hs-ui.svg.slice-item/svg]
+      (= "primitive" (:type element))
+      hs-ui.svg.primitive/svg
+      (:union? element)
+      [:span {:class "text-[--color-cta]"} hs-ui.svg.choice/svg]
+      (= "Reference" (get element :datatype))
+      [:span {:class  "text-[--color-cta]"} hs-ui.svg.external-link/svg]
+      :else hs-ui.svg.datatype/svg)]
+   [:div {:class "pl-2"}
+    (:name element)
+    (when (:union? element) "[x]")]])
+
+(defn flags-cell [element]
+  [:div {:class "flex flex-row h-full"}
+   (when (contains? (:flags element) "mustSupport")
+     [:span {:class "px-[2px] max-h-[20px] mr-1 text-white bg-[--color-critical-default] rounded"}
+      "S"])
+   (when (contains? (:flags element) "summary")
+     [:span "Σ"])
+   (when (contains? (:flags element) "modifier")
+     [:span "!?"])])
+
+(defn cardinality-cell [element]
+  [:div {:class "flex flex-row h-full"}
+   (when-not (= 0 (:lvl element))
+     (str (or (:min element) 0) ".." (or (:max element) 1)))])
+
+(defn datatype-cell [element]
+  [:div {:class "flex flex-row h-full"}
+   (if (:coordinate element)
+     (let [[_ _ package-name package-version _ schema-name schema-version]
+           (str/split (:coordinate element) #"/")]
+       [:div
+        [:a {:href (str "#/ig/" package-name "#" package-version "/sd/" schema-name "_" schema-version)
+             :class "text-[#358FEA]"}
+         schema-name]
+        (:slice-type element)
+        (when (:refers element)
+          [:span {:class "space-x-2"}
+           " ("
+           (for [r (:refers element)] ^{:key (:name r)}
+             [:a {:href (str "#/ig/introspector/"
+                             (hs-ui.utils/encode-uri (:package r))
+                             "?url="
+                             (hs-ui.utils/encode-uri (:url r)))
+                  :class "text-[#358FEA]"}
+              (:name r)])
+           ")"])])
+     (:datatype element))])
+
+(defn description-cell [element]
+  [:<>
+   (when-let [v (:short element)]
+     [:div v])
+   (when-let [v (:extension-url element)]
+     [:div "URL: "
+      [:a {:href (let [[_ _ package-name package-version _ extension-name extension-version]
+                       (str/split (:extension-coordinate element) #"/")]
+                   (str "#/ig/" package-name "#" package-version "/sd/" extension-name "_" extension-version))
+           :class "text-[#358FEA]"} v]])
+   (when-let [v (:binding element)]
+     [:div "Binding: "
+      [:a {:href (let [[_ _ package-name package-version _ value-set-name value-set-version]
+                       (str/split (:vs-coordinate element) #"/")]
+                   (str "#/ig/" package-name "#" package-version "/vs/" value-set-name "_" value-set-version))
+           :class "text-[#358FEA]"}
+       (get v "valueSet") " (" (get v "strength") ")"]])])
+
+(defn tree-node [{:keys [name children flags min short union datatype binding lvl path] :as element} last-childs]
+  (if (empty? children)
+    (let [last-child? (->> last-childs
+                           (filter #(= path (:path %)))
+                           (not-empty))]
+      [:tr {:class "group"}
+       [:td {:class (utils/class-names td-class "flex h-full pl-[15px] py-0")}
+        [:div {:class "element flex h-full"}
+         (for [i (range lvl)]
+           ^{:key i}
+           [:span {:class "block li w-[15px] h-auto"}] )]
+        [:div {:class "z-10 bg-white group-even:bg-[#f7f7f8]"}
+         [name-cell element]
+         (when last-child?
+           [:div {:class "relative -left-[15px] h-full -top-[10px] border-l border-white group-even:border-[#f7f7f8]"}])]]
+       [:td {:class (utils/class-names td-class "space-x-2")}
+        [flags-cell element]]
+       [:td {:class td-class
+             :style {:font-family "JetBrains Mono"}}
+        [cardinality-cell element]]
+       [:td {:class td-class}
+        [datatype-cell element]]
+       [:td {:class (utils/class-names td-class "font-[12px]")}
+        [description-cell element]]])
+
+    [:<>
+     [:tr {:class "group"}
+      [:td {:class (utils/class-names td-class "flex h-full pl-[15px] py-0")}
+       [:div {:class "element flex h-full"}
+        (for [_ (range lvl)]
+          [:span {:class "block li w-[15px] h-auto"}])]
+       [:div {:class "z-50 bg-white group-even:bg-[#f7f7f8]"}
+        [name-cell element]
+        (when (not= 0 lvl)
+          [:div {:class "ml-[10px] h-[calc(100%-6px)] border-l border-dotted border-[#b3bac0]"}])]]
+      [:td {:class (utils/class-names td-class "space-x-2")}
+       [flags-cell element]]
+      [:td {:class td-class
+            :style {:font-family "JetBrains Mono"}}
+       [cardinality-cell element]]
+      [:td {:class td-class}
+        [datatype-cell element]]
+      [:td {:class (utils/class-names td-class "font-[12px]")}
+       [description-cell element]]]
+
+     (for [child children]
+       ^{:key (:name child)}
+       [tree-node child last-childs])]))
 
 (defn view [elements & [options]]
-  [:div {:class "pl-2"}
-   [:style ".fhir-structure tr:nth-child(even) {background-color: #f7f7f8;}"]
-   [:table.fhir-structure {:class table-class}
-    [:thead
-     [:tr {:class "sticky top-0 z-10"}
-      [:th {:class th-class} "Name"]
-      [:th {:class th-class} "Flags"]
-      [:th {:class th-class} "Card."]
-      [:th {:class th-class} "Type"]
-      [:th {:class th-class} "Description"]]]
-    [:tbody
-     (doall
-      (map-indexed
-       (fn [idx element]
-         ^{:key (or (:path element) (:type element))}
-         (let [lvl (:lvl element)
-               next-el-lvl (-> (nth elements (inc idx) 0)
-                               :lvl)
-               prev-el-lvl (-> (nth elements (dec idx) 0)
-                               :lvl)
-               has-children? (= (inc lvl) next-el-lvl)
-               first-child? (= (dec lvl) prev-el-lvl)
-               last-child? (or (= (dec lvl) next-el-lvl) (= 0 next-el-lvl))]
-           [:tr {:class "group"
-                 :style {:height "max-content"}}
-            [:td {:style {:margin-left (if (= 0 lvl) "0px" "25px")
-                          :margin-top "4px"
-                          :height "100%"}
-                  :class (utils/class-names "flex items-center relative align-top"
-                                            (when-not (= 0 lvl)
-                                              "relative after:content-[''] after:absolute after:top-0 after:left-0 after:h-full after:border-l after:border-dotted after:border-[#b3bac0]"))}
-             (if
-               (= 0 lvl)
-               [:div {:class "min-w-[18px]"}]
-               [:div {:style {:margin-left (if (> 1 lvl) "0px" (str (* (- lvl 1) (if (> lvl 2) 23 27)) "px"))}
-                      :class "absolute top-[10px] border-b border-dotted border-[#b3bac0] min-w-[15px]"}])
-             [:div {:class "flex flex-row h-full"}
-              [:div {:style {:margin-left (if (> 1 lvl) "0px" (str (* lvl 20) "px"))}
-                     :class (cond
-                              (or (and (not= 0 lvl) (< lvl next-el-lvl))
-                                  (and (< 1 lvl) (= (inc prev-el-lvl) lvl))
-                                  (and (< 1 lvl) (= prev-el-lvl next-el-lvl)))
+  (let [nested-elements (nest-by-level elements)
+        last-childs (->> elements
+                         (map-indexed vector)
+                         (filter (fn [[idx {lvl :lvl}]]
+                                   (let [next-el-lvl (-> (nth elements (inc idx) 0)
+                                                         :lvl)]
+                                (or (= (dec lvl) next-el-lvl) (= 0 next-el-lvl)))))
+                         (map second))]
 
-                              (utils/class-names  "relative after:content-[''] after:absolute after:top-[20px] after:h-full after:border-l after:border-dotted after:border-[#b3bac0]"
-                                                  (get left-class (cond
+    [:div {:class "pl-2"}
+     [:table {:class table-class}
+      [:style "table tr:nth-child(even) {background-color: #f7f7f8;}
 
-                                                                    has-children?
-                                                                    1
+   tbody.tree, tbody.tree tbody {
+    list-style: none;
+     margin: 0;
+     padding: 0;
+   }
+   tbody.tree .li {
+     margin: 0;
+    margin-left: 10px;
+     padding: 0 7px;
+     line-height: 20px;
+    font-family: Inter;
+     border-left:1px dotted #b3bac0;
+   }
+   tbody.tree li:last-child {
+       border-left: none;
+   }
 
-                                                                    (or (and (= prev-el-lvl next-el-lvl)
-                                                                             (< 1 lvl))
-                                                                        (and first-child? (< 1 lvl)))
-                                                                    :negative
+   tbody.tree > tr > td > .element > span:last-child {
+       color: red;
+   }
 
-                                                                    :else lvl)))
+   tbody.tree > tr > td > .element > span:last-child:before {
+      position:relative;
+      top:0.3em;
+      height:1em;
+      width:12px;
+      color:white;
+      border-bottom:1px dotted #b3bac0;
+      content: '';
+      display:inline-block;
+      left:-7px;
+   } "]
 
-                              last-child?
-                              (utils/class-names  "relative after:content-[''] after:absolute after:top-[10px] after:h-1/2 after:border-l after:border-white group-even:after:border-[#f7f7f8]"
-                                                  (get left-class :negative)))}
-
-
-               (cond
-                 (or (:extension-url element)
-                     (:slice-type element))
-                 [:span {:class "text-[--color-elements-green]"} hs-ui.svg.slice-item/svg]
-                 (= "primitive" (:type element))
-                 hs-ui.svg.primitive/svg
-                 (:union? element)
-                 [:span {:class "text-[--color-cta]"} hs-ui.svg.choice/svg]
-                 (= "Reference" (get element :datatype))
-                 [:span {:class  "text-[--color-cta]"} hs-ui.svg.external-link/svg]
-                 :else hs-ui.svg.datatype/svg)]
-              [:span {:class "pl-2"}
-               (:name element)
-               (when (:union? element) "[x]")]]]
-            [:td {:class "space-x-2 px-4"}
-             [:div {:class "flex flex-row h-full"}
-              (when (contains? (:flags element) "mustSupport")
-                [:span {:class "px-[2px] text-white bg-[--color-critical-default] rounded"}
-                 "S"])
-              (when (contains? (:flags element) "summary")
-                [:span "Σ"])
-              (when (contains? (:flags element) "modifier")
-                [:span "!?"])]]
-            [:td {:class (utils/class-names td-class "px-4 pt-0" )
-                  :style {:font-family "JetBrains Mono"}}
-             [:div {:class "flex flex-row h-full"}
-              (when-not (= 0 (:lvl element))
-                (str (or (:min element) 0) ".." (or (:max element) 1)))]]
-            [:td {:class (utils/class-names td-class "px-4 pt-0")}
-             [:div {:class "flex flex-row h-full"}
-              (if (:coordinate element)
-                (let [[_ _ package-name package-version _ schema-name schema-version]
-                      (str/split (:coordinate element) #"/")]
-                  [:div
-                   [:a {:href (str "#/ig/" package-name "#" package-version "/sd/" schema-name "_" schema-version)
-                        :class "text-[#358FEA]"}
-                    schema-name]
-                   (:slice-type element)
-                   (when (:refers element)
-                     [:span {:class "space-x-2"}
-                      " ("
-                      (for [r (:refers element)] ^{:key (:name r)}
-                        [:a {:href (str "#/ig/introspector/"
-                                        (hs-ui.utils/encode-uri (:package r))
-                                        "?url="
-                                        (hs-ui.utils/encode-uri (:url r)))
-                             :class "text-[#358FEA]"}
-                         (:name r)])
-                      ")"])])
-                (:datatype element))]]
-
-            [:td {:class (utils/class-names td-class "px-4 font-[12px]")}
-             (when-let [v (:short element)]
-               [:div v])
-             (when-let [v (:extension-url element)]
-               [:div "URL: "
-                [:a {:href (let [[_ _ package-name package-version _ extension-name extension-version]
-                                 (str/split (:extension-coordinate element) #"/")]
-                             (str "#/ig/" package-name "#" package-version "/sd/" extension-name "_" extension-version))
-                     :class "text-[#358FEA]"} v]])
-             (when-let [v (:binding element)]
-               [:div "Binding: "
-                [:a {:href (let [[_ _ package-name package-version _ value-set-name value-set-version]
-                                 (str/split (:vs-coordinate element) #"/")]
-                             (str "#/ig/" package-name "#" package-version "/vs/" value-set-name "_" value-set-version))
-                     :class "text-[#358FEA]"}
-                 (get v "valueSet") " (" (get v "strength") ")"]])]]))
-       elements))]]])
+      [:thead
+       [:tr {:class "sticky top-0 z-50"}
+        [:th {:class th-class} "Name"]
+        [:th {:class th-class} "Flags"]
+        [:th {:class th-class} "Card."]
+        [:th {:class th-class} "Type"]
+        [:th {:class th-class} "Description"]]]
+      [:tbody.tree
+       (for [node nested-elements]
+         ^{:key (:name node)}
+         [tree-node node last-childs])]]]))
