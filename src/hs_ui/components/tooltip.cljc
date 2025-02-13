@@ -119,8 +119,7 @@
                    :clj nil))]
 
         (fn [{:keys [tooltip class error?] :or {class ""}} & content]
-          [:div {:class "w-full overflow-hidden"
-                 :on-mouse-leave (fn [_]
+          [:div {:on-mouse-leave (fn [_]
                                    (reset! show? false))}
 
 

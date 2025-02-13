@@ -52,6 +52,7 @@
 (defn component
   "Properties:
   :c/root-class
+  :c/input-tooltip
   :data-invalid
   :disabled
   :type
@@ -63,12 +64,18 @@
               :disabled     (:disabled properties)}
    (when-let [slot-left (:slot/left properties)]
      [:div {:class slot-left-class} slot-left])
-   [:input (utils/merge-props {:class input-class
-                               :spellCheck false
-                               :onWheel   (when (= "number" (:type properties))
-                                            (fn [e]
-                                              (.blur (.-target e))))}
-                              properties)]
+
+   (let [tooltip-props (:c/input-tooltip properties)
+         input [:input (utils/merge-props {:class input-class
+                                           :spellCheck false
+                                           :onWheel   (when (= "number" (:type properties))
+                                                        (fn [e]
+                                                          (.blur (.-target e))))}
+                                          properties)]]
+     (if tooltip-props
+       [hs-ui.components.tooltip/component tooltip-props input]
+       input))
+
    (when (or (:slot/right properties)
              (:data-invalid properties))
      [:div {:class slot-right-class}
