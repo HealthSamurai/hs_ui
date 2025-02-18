@@ -43,8 +43,14 @@
      child]))
 
 (defn body
-  [props & children]
-  (into [:span (utils/merge-props {:class "txt-body text-[theme(colors.elements-readable)]"} props)] children))
+  [& attrs]
+  (let [props (utils/get-component-properties attrs)
+        child (utils/get-component-children attrs)]
+    [:span
+     (utils/merge-props
+      {:class "txt-body text-[theme(colors.elements-readable)]"}
+      props)
+     child]))
 
 (defn code
   [props & children]
