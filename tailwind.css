@@ -230,7 +230,7 @@ summary::-webkit-details-marker {
     background-color: var(--color-cta);
   }
   input:checked:disabled + .slide-toggle {
-    background-color: var(--color-cta);
+    background-color: var(--color-elements-assistive);
   }
   input:checked + .slide-toggle::before {
     transform: scale(0);
