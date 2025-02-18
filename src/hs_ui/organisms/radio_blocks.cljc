@@ -1,6 +1,7 @@
 (ns hs-ui.organisms.radio-blocks
-  (:require [hs-ui.components.radio-button]
-            [hs-ui.components.content-expand]
+  (:require [hs-ui.components.content-expand]
+            [hs-ui.components.radio-button]
+            [hs-ui.components.tooltip]
             [hs-ui.layout]))
 
 (defn component
@@ -9,12 +10,18 @@
     [hs-ui.layout/control
      {:class                (:c/root-layout-class props)
       :slot/control         [:div {:class "border border-border-default rounded-corner-m divide-y"}
-                             (for [option options] ^{:key (hash option)}
-                               [hs-ui.components.radio-button/component
-                                (merge
-                                 {:class "p-x2 pt-[19px]"
-                                  :disabled (:disabled props)}
-                                 option)])]
+                             (for [option options
+                                   :let [tooltip-props (:c/radio-tooltip props)
+                                         radio-button [hs-ui.components.radio-button/component
+                                                       (merge
+                                                        {:class "p-x2 pt-[19px]"
+                                                         :disabled (:disabled props)}
+                                                        option)]]]
+
+                               ^{:key (hash option)}
+                               (if tooltip-props
+                                 [hs-ui.components.tooltip/component tooltip-props radio-button]
+                                 radio-button))]
       :slot/label           (:slot/label props)
       :c/assistive-top?     true
       :slot/assistive       (:slot/assistive props)
