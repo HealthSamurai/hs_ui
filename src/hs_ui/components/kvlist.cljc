@@ -1,17 +1,21 @@
 (ns hs-ui.components.kvlist
   (:require
    [hs-ui.components.button]
+   [hs-ui.components.tooltip]
    [hs-ui.svg.check-3]
    [hs-ui.svg.copy]
    [hs-ui.text]
+   [hs-ui.svg.info-light]
    [hs-ui.utils]))
 
 (defn value-view
   [props item value]
-  [:div.flex.group
-   [hs-ui.text/value {:class "truncate"}
-    [:span {:class "text-[theme(colors.elements-assistive)] pr-1"} (str (:value/hint item))]
-    (str value)]
+  [:div.flex.group.items-center
+   [hs-ui.text/value {:class "truncate"} value]
+   (when (:c/value-tooltip? props)
+     [:span {:class "pl-2 cursor-pointer hover:text-[var(--color-cta)] invisible group-hover:visible"}
+      [hs-ui.components.tooltip/component {:place "top" :tooltip value}
+       hs-ui.svg.info-light/svg]])
    [:div.pl-2
     (when (or (:copy/copy item)
               (:copy/copy props))
