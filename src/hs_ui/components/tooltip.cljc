@@ -118,14 +118,15 @@
                                       :top  final-top})))
                    :clj nil))]
 
-        (fn [{:keys [tooltip class error?] :or {class ""}} & content]
+        (fn [{:keys [tooltip class error?] :or {class ""} :as props} & content]
           [:div {:on-mouse-leave (fn [_]
-                                   (reset! show? false))}
+                                   (reset! show? false))
+                 :class (:c/root-class props)}
 
 
            [:div
             {:ref            #(reset! parent-ref %)
-             :class          "truncate w-fit max-w-full"
+             :class          "truncate w-full max-w-full"
              :on-mouse-enter (fn [_]
                                (let [id #?(:cljs (js/setTimeout (fn []
                                                                 (reset! show? true)

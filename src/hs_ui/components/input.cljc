@@ -73,7 +73,7 @@
                                                           (.blur (.-target e))))}
                                           properties)]]
      (if tooltip-props
-       [hs-ui.components.tooltip/component tooltip-props input]
+       [hs-ui.components.tooltip/component (assoc tooltip-props :c/root-class "w-full") input]
        input))
 
    (when (or (:slot/right properties)
