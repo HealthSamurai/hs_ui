@@ -29,9 +29,10 @@
     (when (:negative? props)
       [:span {:class "font-semibold text-[theme(colors.illustrations-solid)]"}
        "NOT "])
-    [:span {:class (if (:valid? props)
-                     "text-[theme(colors.cta)]"
-                     "text-[theme(colors.illustrations-solid)]")}
+    [:span {:class (if (and (some? (:valid? props))
+                            (not (:valid? props)))
+                     "text-[theme(colors.illustrations-solid)]"
+                     "text-[theme(colors.cta)]")}
      (:key props)]
     [:span {:class "text-[theme(colors.elements-assistive)]"}
      "="]
