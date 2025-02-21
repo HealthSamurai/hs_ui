@@ -12,14 +12,16 @@
       :slot/control         [:div {:class "border border-border-default rounded-corner-m divide-y"}
                              (for [option options
                                    :let [tooltip-props (:c/radio-tooltip props)
-                                         radio-button [hs-ui.components.radio-button/component
-                                                       (merge
-                                                        {:class "p-x2 pt-[19px]"
-                                                         :disabled (:disabled props)}
-                                                        option)]]]
+                                         radio-button
+                                         ^{:key (hash option)}
+                                         [hs-ui.components.radio-button/component
+                                          (merge
+                                           {:class "p-x2 pt-[19px]"
+                                            :disabled (:disabled props)}
+                                           option)]]]
 
-                               ^{:key (hash option)}
                                (if tooltip-props
+                                 ^{:key (str (hash option) "-with-tooltip")}
                                  [hs-ui.components.tooltip/component tooltip-props radio-button]
                                  radio-button))]
       :slot/label           (:slot/label props)
