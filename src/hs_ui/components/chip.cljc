@@ -21,14 +21,17 @@
   :key
   :value
   :negative?
+  :valid?
   :on-delete-click"
   [props]
   [:div {:class (utils/class-names root-class (:c/root-class props))}
-   [:span {:class "txt-value"}
+   [:span {:class "txt-value" :title (when-not (:valid? props) "Invalid property")}
     (when (:negative? props)
       [:span {:class "font-semibold text-[theme(colors.illustrations-solid)]"}
        "NOT "])
-    [:span {:class "text-[theme(colors.cta)]"}
+    [:span {:class (if (:valid? props)
+                     "text-[theme(colors.cta)]"
+                     "text-[theme(colors.illustrations-solid)]")}
      (:key props)]
     [:span {:class "text-[theme(colors.elements-assistive)]"}
      "="]
