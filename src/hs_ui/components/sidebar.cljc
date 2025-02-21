@@ -149,7 +149,7 @@
   [:aside (utils/merge-props {:class root-class :data-object ::component} properties)
 
    (when-let [header (:slot/header properties)]
-     [:div {:class header-class} header])
+     [:div {:class (utils/class-names header-class (:class-header properties))} header])
 
    (when-let [subheader (:slot/subheader properties)]
      [:div {:class header-class} subheader])
