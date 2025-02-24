@@ -17,8 +17,7 @@
    ;; Invalid
    "data-[invalid=true]:border-[theme(colors.critical-default)]"
    ;; Disabled
-   "disabled:bg-[theme(colors.surface-1)]"
-   ])
+   "disabled:bg-[theme(colors.surface-1)]"])
 
 (def input-class
   ["outline-none"
@@ -33,7 +32,7 @@
    "data-[invalid=true]:text-[theme(colors.critical-default)]"
    ;; Disabled
    "disabled:text-[theme(colors.elements-assistive)]"
-   ])
+   "disabled:cursor-not-allowed"])
 
 (def slot-left-class
   ["flex"

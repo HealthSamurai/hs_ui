@@ -24,9 +24,9 @@
   [props & children]
   (let [input-id (str (:name props) "_" (:value props))]
     [:div
-     [:input (utils/merge-props {:id input-id :type "radio" :class "hidden"} (dissoc props :class))]
+     [:input (utils/merge-props {:id input-id :type "radio" :class "peer hidden"} (dissoc props :class))]
      (into
-      [:label {:for input-id :class (:class props)}
+      [:label {:for input-id :class ["peer-disabled:cursor-not-allowed" (:class props)]}
        [:div {:class (utils/class-names
                       default-class
                       (cond (and (:checked props)
