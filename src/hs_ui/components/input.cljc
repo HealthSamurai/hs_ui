@@ -56,7 +56,8 @@
   :disabled
   :type
   :slot/right
-  :c/error-message"
+  :c/error-message
+  :slot/suggestions (an array of :value+:description maps)"
   [properties]
   [:fieldset {:class        (utils/class-names root-class (:c/root-class properties))
               :data-invalid (:data-invalid properties)
@@ -65,15 +66,23 @@
      [:div {:class slot-left-class} slot-left])
 
    (let [tooltip-props (:c/input-tooltip properties)
+         suggestions (:slot/suggestions properties)
+         datalist-id (when suggestions (random-uuid))
          input [:input (utils/merge-props {:class input-class
                                            :spellCheck false
+                                           :list datalist-id
                                            :onWheel   (when (= "number" (:type properties))
                                                         (fn [e]
                                                           (.blur (.-target e))))}
                                           properties)]]
-     (if tooltip-props
-       [hs-ui.components.tooltip/component (assoc tooltip-props :c/root-class "w-full") input]
-       input))
+     [:<>
+      (when suggestions
+        [:datalist {:id datalist-id}
+         (for [{:keys [value description]} suggestions]
+           [:option {:value (or value description)} description])])
+      (if tooltip-props
+        [hs-ui.components.tooltip/component (assoc tooltip-props :c/root-class "w-full") input]
+        input)])
 
    (when (or (:slot/right properties)
              (:data-invalid properties))
