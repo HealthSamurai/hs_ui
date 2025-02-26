@@ -244,15 +244,18 @@ summary::-webkit-details-marker {
   input:disabled + .slide-toggle .lock-icon {
     display: block;
     position: absolute;
-    right: 5.5px;
+    left: 7.5px;
+    z-index: 2;
     top: 6px;
   }
+
   input:checked:disabled + .slide-toggle .lock-icon {
-    display: block;
+    display: flex;
+    justify-content: end;
     position: absolute;
-    left: 5.5px;
+    right: 7.5px;
+    z-index: 2;
     top: 6px;
-    color: var(--color-elements-readable-inv);
   }
   dialog::backdrop {
     background-color: rgb(107 114 128);
