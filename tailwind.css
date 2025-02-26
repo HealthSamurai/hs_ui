@@ -241,7 +241,6 @@ summary::-webkit-details-marker {
   input + .slide-toggle .lock-icon {
     display: none;
   }
-
   input:disabled + .slide-toggle .lock-icon {
     display: block;
     position: absolute;
@@ -258,7 +257,6 @@ summary::-webkit-details-marker {
     z-index: 2;
     top: 6px;
   }
-
   dialog::backdrop {
     background-color: rgb(107 114 128);
     opacity:   0.75;
