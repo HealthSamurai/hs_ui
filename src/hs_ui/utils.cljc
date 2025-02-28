@@ -207,18 +207,28 @@
 
 (defn fuse-search
   [fuse-options items search-string]
-  #?(:cljs
-     (->>
-      (js->clj
-       (.search (fuse. (clj->js items)
-                       (clj->js
-                        (merge
-                         {:threshold          0.5
-                          :minMatchCharLength 2}
-                         fuse-options)))
-                search-string)
-       :keywordize-keys true)
-      (mapv :item))))
+  (let [search-string-parts (filter seq (clojure.string/split (str search-string) #"\ "))]
+    #?(:cljs
+       (->>
+        (js->clj
+         (.search (fuse. (clj->js items)
+                         (clj->js
+                          (merge
+                           {:threshold 0.2
+                            :minMatchCharLength 2
+                            :ignoreLocation true}
+                           fuse-options)))
+                  (clj->js
+                   (reduce
+                    (fn [acc field]
+                      (let [field-name (if (string? field) field (:name field))]
+                        (update acc :$or (fnil conj [])
+                                {:$and (map (fn [part] {field-name part})
+                                            search-string-parts)})))
+                    {} (->> fuse-options :keys))))
+
+         :keywordize-keys true)
+        (mapv :item)))))
 
 (defn set-storage-item
   [keyname value]
