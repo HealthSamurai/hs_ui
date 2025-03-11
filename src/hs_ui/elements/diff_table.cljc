@@ -26,6 +26,7 @@
 (def td-class
   ["px-4"
    "py-2"
+   "align-top"
    "text-[#010205]"
    "font-inter"])
 
@@ -126,6 +127,9 @@
   [:<>
    (when-let [v (:short element)]
      [:div v])
+   (when (and (not (:short element))
+              (:desc element))
+     [:div (:desc element)])
    (when-let [v (:extension-url element)]
      [:div "URL: "
       [:a {:href (let [[_ _ package-name package-version _ extension-name extension-version]
