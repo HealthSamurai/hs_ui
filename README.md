@@ -42,3 +42,12 @@ make story
 make init
 make dev
 ```
+
+# Updating Tailwind styles
+
+```sh
+# To update tailwind.css
+clj scripts/sync_design_tokens.clj
+# To copy it to hs_ui.css
+make tailwind-release
+```
