@@ -15,31 +15,36 @@
         font-style: normal;
         color: #1D2331;
     }
-
     body {
-        {{lightThemeVars}}
+        {{lightThemeVars}};
     }
 
     body.dark {
-        {{darkThemeVars}}
+        {{darkThemeVars}};
     }
 
-    ::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
+    body ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
     }
 
-    ::-webkit-scrollbar-track {
+    body ::-webkit-scrollbar-track {
         background: transparent;
     }
 
-    ::-webkit-scrollbar-thumb {
-        background-color: var(--color-elements-assistive);
+    body ::-webkit-scrollbar-thumb {
+        background-color: var(--color-elements-disabled);
         border-radius: 4px;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background-color: var(--color-elements-readable);
+    body ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-elements-assistive);
+    }
+    @supports not selector(::-webkit-scrollbar) {
+        body {
+            scrollbar-color: var(--color-elements-disabled) rgba(0,0,0,0);
+            scrollbar-width: thin;
+        }
     }
 
 dialog {
