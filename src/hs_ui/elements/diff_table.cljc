@@ -106,7 +106,7 @@
      (let [[_ _ package-name package-version _ schema-name schema-version]
            (str/split (:coordinate element) #"/")]
        [:div
-        [:a {:href (str "#/ig/" package-name "#" package-version "/sd/" schema-name "_" schema-version)
+        [:a {:href (str "#/ig/" package-name "#" package-version "/sd/" schema-name "/" schema-version)
              :class "text-[#358FEA]"}
          schema-name]
         (:slice-type element)
@@ -134,7 +134,7 @@
      [:div "URL: "
       [:a {:href (let [[_ _ package-name package-version _ extension-name extension-version]
                        (str/split (:extension-coordinate element) #"/")]
-                   (str "#/ig/" package-name "#" package-version "/sd/" extension-name "_" extension-version))
+                   (str "#/ig/" package-name "#" package-version "/sd/" extension-name "/" extension-version))
            :class "text-[#358FEA]"} v]])
    (when-let [v (:binding element)]
      [:div "Binding: "
