@@ -36,7 +36,7 @@
    "[&_li_a]:pl-[12px]"
    "[&_li_li_a]:ml-[8px]"
    "[&_li_li_a]:pl-[8px]"
-   "[&_li_li_li_a]:pl-[64px]"
+   "[&_li_li_li_a]:pl-[8px]"
    "[&_li_li_li_a]:ml-[8px]"])
 
 (def menu-item-class
