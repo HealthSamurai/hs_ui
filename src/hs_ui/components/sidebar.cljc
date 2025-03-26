@@ -110,7 +110,7 @@
 
 
    (when-let [content (:slot/content item)]
-     [:span {:class "truncate text-[theme(colors.elements-readable)]" :data-key :label}
+     [:span {:class "truncate text-[theme(colors.elements-readable)] grow" :data-key :label}
       content])
 
    (when (:slot/items item)
