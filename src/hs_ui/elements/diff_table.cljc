@@ -7,7 +7,8 @@
    [hs-ui.svg.datatype]
    [hs-ui.svg.primitive]
    [hs-ui.svg.slice-item]
-   [hs-ui.svg.external-link]))
+   [hs-ui.svg.external-link]
+   [hs-ui.components.tooltip]))
 
 (def table-class
   ["w-full"
@@ -88,17 +89,17 @@
 (defn flags-cell [element]
   [:div {:class "flex flex-row h-full"}
    (when (contains? (:flags element) "mustSupport")
-     [:span {:class "px-[2px] max-h-[20px] mr-1 text-white bg-[--color-critical-default] rounded"
-             :title "Must be supported"}
-      "S"])
+     [:span {:class "px-[2px] max-h-[20px] text-white bg-[--color-critical-default] rounded"}
+      [hs-ui.components.tooltip/component {:tooltip [:pre "Must be supported"]}
+       "S"]])
    (when (contains? (:flags element) "summary")
-     [:span {:class "px-[2px] max-h-[20px] mr-1"
-             :title "Part of the summary set"}
-      "Σ"])
+     [:span {:class "px-[2px] max-h-[20px] mr-1"}
+      [hs-ui.components.tooltip/component {:tooltip [:pre "Part of the summary set"]}
+       "Σ"]])
    (when (contains? (:flags element) "modifier")
-     [:span {:class "px-[2px] max-h-[20px] mr-1"
-             :title "Modifying element"}
-      "!?"])])
+     [:span {:class "px-[2px] max-h-[20px] mr-1"}
+      [hs-ui.components.tooltip/component {:tooltip [:pre "Modifying element"]}
+       "!?"]])])
 
 (defn cardinality-cell [element]
   [:div {:class "flex flex-row h-full"}
