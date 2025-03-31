@@ -73,23 +73,33 @@
   [editor]
   #?(:cljs (.layout editor (clj->js {}))))
 
+(def open-errors (hs-ui.utils/ratom {}))
+
+(defn close-errors []
+  (run! (fn [[error closing-function]]
+          (closing-function error))
+        @open-errors)
+  (reset! open-errors {}))
+
 (defn error-item
   [_ _]
   (let [open? (hs-ui.utils/ratom false)]
     (fn [monaco-editor error]
       [:<>
-       [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]}
-        ;; TODO: add on click props for error (jump to code)
+       [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]
+             :on-click (fn []
+                         (swap! open? not)
+                         (close-errors)
+                         (when @open?
+                           (reset! open-errors {error #(reset! open? false)}))
+                         (recalc-monaco-layout @monaco-editor))}
         [:td {:class "max-w-[20vw] group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-critical-default)]"
               :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
                                                            :monaco-editor @monaco-editor}])}
          (:type error)]
         [:td {:class "max-w-[20vw] w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-elements-readable)] text-right"
-              :on-click (fn [& whatever]
-                          (swap! open? not)
-                          (recalc-monaco-layout @monaco-editor)
-                          (rf/dispatch [[::monaco-goto-line {:path (:path error)
-                                                             :monaco-editor @monaco-editor}]]))}
+              :on-click #(rf/dispatch [[::monaco-goto-line {:path (:path error)
+                                                            :monaco-editor @monaco-editor}]])}
          (:path error)]]
        (when @open?
          [:tr
