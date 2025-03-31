@@ -178,6 +178,7 @@
 (defn component [_]
   (let [monaco-editor (hs-ui.utils/ratom nil)] ;; Needs for recalculate monaco layout on expand
     (fn [{monaco-props :c/monaco-props validation-props :c/validation-result}]
+      ;; TODO: Use horizontal split view?
       [:div.flex.flex-col.h-full
        [monaco-editor-view monaco-editor monaco-props]
        [validation-result validation-props monaco-editor]])))
