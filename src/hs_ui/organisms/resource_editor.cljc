@@ -73,8 +73,8 @@
   [editor]
   #?(:cljs (.layout editor (clj->js {}))))
 
+;; Necessary to allow closing all validation errors except one.
 (def open-errors (hs-ui.utils/ratom {}))
-
 (defn close-errors []
   (run! (fn [[error closing-function]]
           (closing-function error))
