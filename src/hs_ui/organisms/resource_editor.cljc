@@ -8,6 +8,7 @@
    [hs-ui.svg.loading]
    [hs-ui.svg.check-2]
    [hs-ui.svg.chevron-double]
+   [hs-ui.svg.target]
    [re-frame.core :as rf]
    [clojure.string :as str]
    #?(:cljs ["@mischnic/json-sourcemap" :as jsonMap])
@@ -86,21 +87,21 @@
   (let [open? (hs-ui.utils/ratom false)]
     (fn [monaco-editor error]
       [:<>
-       [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]
-             :on-click (fn []
-                         (swap! open? not)
-                         (close-errors)
-                         (when @open?
-                           (reset! open-errors {error #(reset! open? false)}))
-                         (recalc-monaco-layout @monaco-editor))}
-        [:td {:class "max-w-[20vw] group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-critical-default)]"
+       [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]}
+        [:td {:class "w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-critical-default)]"
+              :on-click (fn []
+                          (swap! open? not)
+                          (close-errors)
+                          (when @open?
+                            (reset! open-errors {error #(reset! open? false)}))
+                          (recalc-monaco-layout @monaco-editor))}
+         (:type error) ": " [:span {:class "text-[var(--color-elements-readable)]"}
+                             (:path error)]]
+        [:td {:class ["max-w-[20vw] group-hover/error-item:underline cursor-pointer px-4 py-1 truncate"
+                      "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]
               :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
                                                            :monaco-editor @monaco-editor}])}
-         (:type error)]
-        [:td {:class "max-w-[20vw] w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-elements-readable)] text-right"
-              :on-click #(rf/dispatch [[::monaco-goto-line {:path (:path error)
-                                                            :monaco-editor @monaco-editor}]])}
-         (:path error)]]
+         hs-ui.svg.target/svg]]
        (when @open?
          [:tr
           [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
