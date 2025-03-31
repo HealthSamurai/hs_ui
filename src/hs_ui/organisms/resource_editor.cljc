@@ -166,13 +166,35 @@
     [error-result props monaco-editor]))
 
 (defn monaco-editor-view
-  [monaco-editor monaco-props]
+  [monaco-editor monaco-props validation-props]
   [:div.h-full.mb-1 {:class "bg-[var(--color-surface-1)] rounded-t-[var(--corner-corner-m)] p-1"}
+   [:style.glyph-styles
+    ".errorGlyph {
+	background: red;
+}
+.errorGlyphMargin {
+	background: rgba(173, 216, 230, 0.5);
+}"]
    [hs-ui.components.monaco/component
-    (assoc monaco-props :on-mount-fn
+    (assoc monaco-props
+           :on-mount-fn
            (fn [editor instance]
              (when-let [on-mount-fn (:on-mount-fn monaco-props)]
                (on-mount-fn editor instance))
+             #?(:cljs
+                (->> (:errors validation-props)
+                     (map :path)
+                     ;; Some of the errors have no path, so we ignore them here.
+                     (remove nil?)
+                     (map #(path->line editor %))
+                     (mapv (fn [[line column]]
+                             {:range (new js/monaco.Range 3 1 3 1)
+                              :options {:isWholeLine true
+                                        :className "errorGlyph"
+                                        :glyphMarginClassName "errorGlyphMargin"
+                                        :linesDecorationsClassName "errorGlyph"
+                                        }}))
+                     (.createDecorationsCollection ^js/Object editor)))
              (reset! monaco-editor editor)))]])
 
 (defn component [_]
@@ -180,5 +202,5 @@
     (fn [{monaco-props :c/monaco-props validation-props :c/validation-result}]
       ;; TODO: Use horizontal split view?
       [:div.flex.flex-col.h-full
-       [monaco-editor-view monaco-editor monaco-props]
+       [monaco-editor-view monaco-editor monaco-props validation-props]
        [validation-result validation-props monaco-editor]])))

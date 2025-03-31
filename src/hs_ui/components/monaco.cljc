@@ -45,7 +45,7 @@
                          :fontWeight                       "300"
                          :fontFamily                       "JetBrains Mono"
                          :overviewRulerLanes               0
-                         :glyphMargin                      false
+                         :glyphMargin                      true
                          :renderLineHighlight              "none"
                          :folding                          true
                          :renderIndentGuides               true
