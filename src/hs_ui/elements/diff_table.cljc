@@ -88,12 +88,17 @@
 (defn flags-cell [element]
   [:div {:class "flex flex-row h-full"}
    (when (contains? (:flags element) "mustSupport")
-     [:span {:class "px-[2px] max-h-[20px] mr-1 text-white bg-[--color-critical-default] rounded"}
+     [:span {:class "px-[2px] max-h-[20px] mr-1 text-white bg-[--color-critical-default] rounded"
+             :title "Must be supported"}
       "S"])
    (when (contains? (:flags element) "summary")
-     [:span "Σ"])
+     [:span {:class "px-[2px] max-h-[20px] mr-1"
+             :title "Part of the summary set"}
+      "Σ"])
    (when (contains? (:flags element) "modifier")
-     [:span "!?"])])
+     [:span {:class "px-[2px] max-h-[20px] mr-1"
+             :title "Modifying element"}
+      "!?"])])
 
 (defn cardinality-cell [element]
   [:div {:class "flex flex-row h-full"}
