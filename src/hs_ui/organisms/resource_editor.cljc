@@ -76,14 +76,12 @@
                                                            :monaco-editor @monaco-editor}])}
          (:type error)]
         [:td {:class "max-w-[20vw] w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-elements-readable)] text-right"
-              :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
-                                                           :monaco-editor @monaco-editor}])}
-         (:path error)]
-        [:td.group.py-1.px-2 {:class "min-w-[80px] user-select-none"}
-         [:span {:class "hidden group-hover/error-item:block"}
-          [hs-ui.components.content-expand/component
-           {:on-click #(do (swap! open? not)
-                           (recalc-monaco-layout @monaco-editor))}]]]]
+              :on-click (fn [& whatever]
+                          (swap! open? not)
+                          (recalc-monaco-layout @monaco-editor)
+                          (rf/dispatch [[::monaco-goto-line {:path (:path error)
+                                                             :monaco-editor @monaco-editor}]]))}
+         (:path error)]]
        (when @open?
          [:tr
           [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
