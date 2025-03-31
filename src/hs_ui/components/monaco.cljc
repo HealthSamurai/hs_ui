@@ -48,7 +48,7 @@
                          :glyphMargin                      false
                          :renderLineHighlight              "none"
                          :folding                          true
-                         :renderIndentGuides               false
+                         :renderIndentGuides               true
                          :lineDecorationsWidth             0
                          :tabSize                          2
                          ;; :lineNumbers          "off"
