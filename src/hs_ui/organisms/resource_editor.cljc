@@ -75,8 +75,7 @@
               :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
                                                            :monaco-editor @monaco-editor}])}
          (:type error)]
-        [:td {:class "max-w-[20vw] w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-elements-readable)]"
-              :style {:direction "rtl"}
+        [:td {:class "max-w-[20vw] w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-elements-readable)] text-right"
               :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
                                                            :monaco-editor @monaco-editor}])}
          (:path error)]
