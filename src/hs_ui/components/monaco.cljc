@@ -53,6 +53,7 @@
                          :tabSize                          2
                          ;; :lineNumbers                      "off"
                          :lineNumbersMinChars              4
+                         :scrollBeyondLastLine             false
                          }
                         (:options properties))
        :onMount
