@@ -171,6 +171,8 @@
     [error-result props monaco-editor]))
 
 (defn monaco-editor-view
+  ;; This abstraction is so leaky that it'd rather belong to Aidbox,
+  ;; and not HS-UI.
   [monaco-editor monaco-props validation-props]
   [:div.h-full.mb-1 {:class "bg-[var(--color-surface-1)] rounded-t-[var(--corner-corner-m)] p-1"}
    [:style ".glyph {
