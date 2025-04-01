@@ -36,6 +36,7 @@
 
 (def slot-left-class
   ["flex"
+   "h-full"
    "items-center"
    "space-x-[theme(spacing.x1)]"
    "pl-[12px]"
@@ -51,6 +52,8 @@
 (defn component
   "Properties:
   :c/root-class
+  :c/slot-left-class
+  :c/slot-right-class
   :c/input-tooltip
   :data-invalid
   :disabled
@@ -63,7 +66,7 @@
               :data-invalid (:data-invalid properties)
               :disabled     (:disabled properties)}
    (when-let [slot-left (:slot/left properties)]
-     [:div {:class slot-left-class} slot-left])
+     [:div {:class (utils/class-names slot-left-class (:c/slot-left-class properties))} slot-left])
 
    (let [tooltip-props (:c/input-tooltip properties)
          suggestions (:slot/suggestions properties)
@@ -86,7 +89,7 @@
 
    (when (or (:slot/right properties)
              (:data-invalid properties))
-     [:div {:class slot-right-class}
+     [:div {:class (utils/class-names slot-right-class (:c/slot-right-class properties))}
       (:slot/right properties)
       (when (:data-invalid properties)
         (if (:c/error-message properties)
