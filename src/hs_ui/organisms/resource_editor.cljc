@@ -89,21 +89,23 @@
   (let [open? (hs-ui.utils/ratom false)]
     (fn [monaco-editor error]
       [:<>
-       [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]}
+       [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]
+             :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
+                                                          :monaco-editor @monaco-editor}])}
         [:td {:class ["max-w-[20vw] group-hover/error-item:underline cursor-pointer px-2 py-1 truncate"
-                      "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]
-              :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
-                                                           :monaco-editor @monaco-editor}])}
+                      "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]}
          hs-ui.svg.target/svg]
-        [:td {:class "w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-critical-default)]"
+        [:td {:class "w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate"
               :on-click (fn []
                           (swap! open? not)
                           (close-errors)
                           (when @open?
                             (reset! open-errors {error #(reset! open? false)}))
-                          (recalc-monaco-layout @monaco-editor))}
-         (:type error) ": " [:span {:class "text-[var(--color-elements-readable)]"}
-                             (:path error)]]]
+                          ;; (recalc-monaco-layout @monaco-editor)
+                          )}
+         [:span {:class "text-[var(--color-critical-default)]"}  (:type error)]
+         ": "
+         [:span {:class "text-[var(--color-elements-readable)]"} (:path error)]]]
        (when @open?
          [:tr
           [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
