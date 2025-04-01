@@ -171,6 +171,12 @@
 (defn monaco-editor-view
   [monaco-editor monaco-props validation-props]
   [:div.h-full.mb-1 {:class "bg-[var(--color-surface-1)] rounded-t-[var(--corner-corner-m)] p-1"}
+   [:style ".glyph {
+  color: var(--color-illustrations-solid);
+}
+.glyph::after {
+  content: '●';
+}"]
    [hs-ui.components.monaco/component
     (assoc monaco-props
            :on-mount-fn
@@ -189,7 +195,7 @@
                                       :startColumn     1
                                       :endColumn       1}
                               :options {:isWholeLine true
-                                        :glyphMarginClassName "bg-red-200"}}))
+                                        :glyphMarginClassName "glyph"}}))
                      clj->js
                      (.deltaDecorations ^js/Object editor #js [])))
              (reset! monaco-editor editor)))]])
