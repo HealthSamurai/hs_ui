@@ -1,7 +1,8 @@
 (ns hs-ui.components.sidebar
   (:require
    [hs-ui.utils :as utils]
-   [hs-ui.svg.chevron-right]))
+   [hs-ui.svg.chevron-right]
+   [hs-ui.svg.external-link]))
 
 (def root-class
   ["w-[240px]"
@@ -113,6 +114,9 @@
      [:span {:class "truncate text-[theme(colors.elements-readable)] grow" :data-key :label}
       content])
 
+   (when (= "_blank" (:target item))
+     hs-ui.svg.external-link/svg)
+
    (when (:slot/items item)
      [:span.chevron hs-ui.svg.chevron-right/svg])])
 
@@ -144,7 +148,8 @@
   - :active (whether it's chosen)
   - :open
   - :divider (to add a dividing ruler)
-  - :space (to add a ruler with some space around it)"
+  - :space (to add a ruler with some space around it)
+  - :target (as in HTML <a> element)"
   [properties]
   [:aside (utils/merge-props {:class root-class :data-object ::component} properties)
 
