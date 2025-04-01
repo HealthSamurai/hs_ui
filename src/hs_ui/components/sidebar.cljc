@@ -111,7 +111,9 @@
 
 
    (when-let [content (:slot/content item)]
-     [:span {:class "truncate text-[theme(colors.elements-readable)] grow" :data-key :label}
+     [:span {:class ["truncate text-[theme(colors.elements-readable)]"
+                     (when (:slot/items item) "grow")]
+             :data-key :label}
       content])
 
    (when (= "_blank" (:target item))
