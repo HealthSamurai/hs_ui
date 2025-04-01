@@ -51,8 +51,8 @@
                          :renderIndentGuides               true
                          :lineDecorationsWidth             0
                          :tabSize                          2
-                         ;; :lineNumbers          "off"
-                         :lineNumbersMinChars 4
+                         ;; :lineNumbers                      "off"
+                         :lineNumbersMinChars              4
                          }
                         (:options properties))
        :onMount
