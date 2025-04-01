@@ -174,7 +174,7 @@
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
   [:button
-   {:class        "absolute cursor-ew-resize top-[30%] right-[-10px] hidden text-[var(--color-separator)] hover:text-[var(--color-cta)] active:text-[var(--color-cta)] group-hover:inline-block w-6 z-[1]"
+   {:class        "absolute cursor-ew-resize top-[30%] right-[-10px] hidden text-[var(--color-separator)] hover:text-[var(--color-cta)] active:text-[var(--color-cta)] group-hover:inline-block w-6 z-[1] px-2"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
