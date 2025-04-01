@@ -74,8 +74,10 @@
   [editor]
   #?(:cljs (.layout editor (clj->js {}))))
 
-;; Necessary to allow closing all validation errors except one.
-(def open-errors (hs-ui.utils/ratom {}))
+(def open-errors "A map from error objects to their closing functions.
+  Closing functions accept one argument—this same error object.
+  Necessary to allow closing all validation errors except one."
+  (hs-ui.utils/ratom {}))
 (defn close-errors []
   (run! (fn [[error closing-function]]
           (closing-function error))
@@ -88,6 +90,11 @@
     (fn [monaco-editor error]
       [:<>
        [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]}
+        [:td {:class ["max-w-[20vw] group-hover/error-item:underline cursor-pointer px-2 py-1 truncate"
+                      "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]
+              :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
+                                                           :monaco-editor @monaco-editor}])}
+         hs-ui.svg.target/svg]
         [:td {:class "w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate text-[var(--color-critical-default)]"
               :on-click (fn []
                           (swap! open? not)
@@ -96,12 +103,7 @@
                             (reset! open-errors {error #(reset! open? false)}))
                           (recalc-monaco-layout @monaco-editor))}
          (:type error) ": " [:span {:class "text-[var(--color-elements-readable)]"}
-                             (:path error)]]
-        [:td {:class ["max-w-[20vw] group-hover/error-item:underline cursor-pointer px-4 py-1 truncate"
-                      "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]
-              :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
-                                                           :monaco-editor @monaco-editor}])}
-         hs-ui.svg.target/svg]]
+                             (:path error)]]]
        (when @open?
          [:tr
           [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
@@ -169,13 +171,6 @@
 (defn monaco-editor-view
   [monaco-editor monaco-props validation-props]
   [:div.h-full.mb-1 {:class "bg-[var(--color-surface-1)] rounded-t-[var(--corner-corner-m)] p-1"}
-   [:style.glyph-styles
-    ".errorGlyph {
-	background: red;
-}
-.errorGlyphMargin {
-	background: rgba(173, 216, 230, 0.5);
-}"]
    [hs-ui.components.monaco/component
     (assoc monaco-props
            :on-mount-fn
@@ -189,13 +184,14 @@
                      (remove nil?)
                      (map #(path->line editor %))
                      (mapv (fn [[line column]]
-                             {:range (new js/monaco.Range 3 1 3 1)
+                             {:range {:startLineNumber line
+                                      :endLineNumber   line
+                                      :startColumn     1
+                                      :endColumn       1}
                               :options {:isWholeLine true
-                                        :className "errorGlyph"
-                                        :glyphMarginClassName "errorGlyphMargin"
-                                        :linesDecorationsClassName "errorGlyph"
-                                        }}))
-                     (.createDecorationsCollection ^js/Object editor)))
+                                        :glyphMarginClassName "bg-red-200"}}))
+                     clj->js
+                     (.deltaDecorations ^js/Object editor #js [])))
              (reset! monaco-editor editor)))]])
 
 (defn component [_]
