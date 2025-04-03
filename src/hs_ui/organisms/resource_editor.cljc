@@ -136,6 +136,9 @@
 (defn error-result
   [props monaco-editor]
   [:details {:class "group/item overflow-y-scroll"}
+   ;; This class is necessary because closed <summary> occupies
+   ;; one/two pixels more than the allocated space and causes the
+   ;; scrollbar to appear.
    [:style ".h-full-unless-open:not(:is(:open .h-full-unless-open)) {
      height: 100%;
 }"]
