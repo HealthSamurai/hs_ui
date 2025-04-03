@@ -135,7 +135,7 @@
 
 (defn error-result
   [props monaco-editor]
-  [:details {:class "group/item"}
+  [:details {:class "group/item overflow-scroll"}
    [:summary {:class "h-[32px] py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer rounded-b-[var(--corner-corner-m)] group-open/item:rounded-b-none"
               :on-click (fn [] (recalc-monaco-layout @monaco-editor))}
     [:span {:class "flex items-center"}
