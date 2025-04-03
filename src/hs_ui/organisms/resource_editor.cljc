@@ -135,8 +135,11 @@
 
 (defn error-result
   [props monaco-editor]
-  [:details {:class "group/item overflow-scroll"}
-   [:summary {:class "h-[32px] py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer rounded-b-[var(--corner-corner-m)] group-open/item:rounded-b-none"
+  [:details {:class "group/item overflow-y-scroll"}
+   [:style ".h-full-unless-open:not(:is(:open .h-full-unless-open)) {
+     height: 100%;
+}"]
+   [:summary {:class "h-full-unless-open py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer rounded-b-[var(--corner-corner-m)] group-open/item:rounded-b-none"
               :on-click (fn [] (recalc-monaco-layout @monaco-editor))}
     [:span {:class "flex items-center"}
      [hs-ui.text/assistive {:class "text-[var(--color-elements-readable-inv)]"} "Validation errors:"]
