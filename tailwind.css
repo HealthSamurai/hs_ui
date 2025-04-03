@@ -201,7 +201,7 @@ summary::-webkit-details-marker {
     width: 40px;
     height: 24.2px;
     border-radius: 30px;
-    background-color: #CCCED3;
+    background-color: var(--color-elements-assistive);
     cursor: pointer;
     transition: all 0.1s ease-in-out;
     z-index: 1;
@@ -215,7 +215,7 @@ summary::-webkit-details-marker {
     border-radius: 30px;
     height: 20px;
     width: 20px;
-    background-color: #CCCED3;
+    background-color: var(--color-elements-assistive);
     transform: translate3d(0, 0, 0);
     transition: 0.2s cubic-bezier(0, 1.1, 1, 1.1);
   }
@@ -230,6 +230,10 @@ summary::-webkit-details-marker {
     width: 20px;
     left: 2px;
     background-color: var(--color-elements-readable-inv);
+  }
+  input:disabled + .slide-toggle,
+  input:disabled + .slide-toggle::before {
+      background-color: #CCCED3;
   }
   input:checked + .slide-toggle {
     background-color: var(--color-cta);

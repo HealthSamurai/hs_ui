@@ -9,16 +9,19 @@
    "rounded-full"])
 
 (def unchecked-class
-  ["border"
-   "border-[theme(colors.border-default)]"])
+  "border")
 
 (def checked-class
-  ["border-[5px]"
-   "border-[theme(colors.cta)]"])
+  "border-[5px]")
 
-(def disabled-class
-  ["border-[5px]"
-   "border-[theme(colors.elements-assistive)]"])
+(def unchecked-border
+  "border-[theme(colors.elements-assistive)]")
+
+(def active-border
+  "border-[theme(colors.cta)]")
+
+(def disabled-border
+  "border-[theme(colors.border-default)]")
 
 (defn component
   [props & children]
@@ -29,12 +32,15 @@
       [:label {:for input-id :class ["cursor-pointer peer-disabled:cursor-not-allowed" (:class props)]}
        [:div {:class (utils/class-names
                       default-class
-                      (cond (and (:checked props)
-                                 (:disabled props))
-                            disabled-class
+                      [(if (:checked props)
+                         checked-class
+                         unchecked-class)
+                       (cond (:disabled props)
+                             disabled-border
 
-                            (:checked props)
-                            checked-class
+                             (:checked props)
+                             active-border
 
-                            :else unchecked-class))}]]
+                             :else unchecked-border)]
+                      )}]]
       children)]))
