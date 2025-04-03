@@ -139,7 +139,7 @@
    ;; This class is necessary because closed <summary> occupies
    ;; one/two pixels more than the allocated space and causes the
    ;; scrollbar to appear.
-   [:style ".h-full-unless-open:not(:is(:open .h-full-unless-open)) {
+   [:style ".h-full-unless-open:not(:is(:open > .h-full-unless-open)) {
      height: 100%;
 }"]
    [:summary {:class "h-full-unless-open py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer rounded-b-[var(--corner-corner-m)] group-open/item:rounded-b-none"
