@@ -252,7 +252,7 @@
                              :ref            resizer-ref
                              :on-mouse-down  mouse-down
                              :on-touch-start mouse-down}
-             [:div.separator-line {:class (into ["h-full w-0 absolute z-[100] [border: 1px solid #dbdde3]"]
+             [:div.separator-line {:class (into ["h-full w-0 absolute z-[100] [border:_1px_solid_#dbdde3]"]
                                                 (if (vector? class) class [class]))
                                    :style (when @resizing {:border "1px solid var(--color-cta)"})}]]])))))
 
@@ -336,7 +336,7 @@
                              :ref            resizer-ref
                              :on-mouse-down  mouse-down
                              :on-touch-start mouse-down}
-             [:div.separator-line {:class (into ["w-full h-0 absolute z-[100] [border: 1px solid #dbdde3]"]
+             [:div.separator-line {:class (into ["w-full h-0 absolute z-[100] [border:_1px_solid_#dbdde3]"]
                                                 (if (vector? class) class [class]))
                                    :style (when @resizing {:border "1px solid var(--color-cta)"})}]]])))))
 

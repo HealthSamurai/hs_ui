@@ -2,6 +2,7 @@
   (:require
    [hs-ui.text]
    [hs-ui.utils]
+   [hs-ui.layout]
    [hs-ui.components.monaco]
    [hs-ui.components.button]
    [hs-ui.components.content-expand]
@@ -135,11 +136,11 @@
 
 (defn error-result
   [props monaco-editor]
-  [:details {:class "group/item overflow-y-scroll"}
+  [:details {:class "group/item"}
    ;; This class is necessary because closed <summary> occupies
    ;; one/two pixels more than the allocated space and causes the
    ;; scrollbar to appear.
-   [:style ".h-full-unless-open:not(:is(:open > .h-full-unless-open)) {
+   [:style ".h-full-unless-open:not(:is(:open > .h-full-unless-open)):not(:is([open] > .h-full-unless-open)) {
      height: 100%;
 }"]
    [:summary {:class "h-full-unless-open py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer rounded-b-[var(--corner-corner-m)] group-open/item:rounded-b-none"
@@ -214,6 +215,11 @@
   (let [monaco-editor (hs-ui.utils/ratom nil)] ;; Needs for recalculate monaco layout on expand
     (fn [{monaco-props :c/monaco-props validation-props :c/validation-result}]
       ;; TODO: Use horizontal split view?
-      [:div.flex.flex-col.h-full
-       [monaco-editor-view monaco-editor monaco-props validation-props]
-       [validation-result validation-props monaco-editor]])))
+      [hs-ui.layout/horizontal-split-view {:c/min-lower-percent 7
+                                           :c/min-upper-percent 40}
+       [:div {:class ["w-full h-full"]
+              :style {:height "93%"}}
+        [monaco-editor-view monaco-editor monaco-props validation-props]]
+       [:div {:class ["w-full overflow-y-scroll"]
+              :style {:height "7%"}}
+        [validation-result validation-props monaco-editor]]])))
