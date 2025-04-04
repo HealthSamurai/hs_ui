@@ -423,7 +423,7 @@
     (fn [_ upper & [lower]]
       [:div (u/merge-props {:class horizontal-root-class} props)
        (cond-> upper
-         :always                 (assoc-prop-to-hiccup :ref #(reset! upper-el-ref %))
+         :always      (assoc-prop-to-hiccup :ref #(reset! upper-el-ref %))
          (nil? lower) (assoc-in-prop-to-hiccup [:style :height] "100%"))
 
        (when lower
