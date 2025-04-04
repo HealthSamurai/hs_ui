@@ -136,22 +136,12 @@
 
 (defn error-result
   [props monaco-editor]
-  [:details {:class "group/item"}
-   ;; This class is necessary because closed <summary> occupies
-   ;; one/two pixels more than the allocated space and causes the
-   ;; scrollbar to appear.
-   [:style ".h-full-unless-open:not(:is(:open > .h-full-unless-open)):not(:is([open] > .h-full-unless-open)) {
-     height: 100%;
-}"]
-   [:summary {:class "h-full-unless-open py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer rounded-b-[var(--corner-corner-m)] group-open/item:rounded-b-none"
-              :on-click (fn [] (recalc-monaco-layout @monaco-editor))}
+  [:div {:class "border border-t-0 border-[var(--color-critical-default)] rounded-b-[var(--corner-corner-m)]"}
+   [:div {:class "py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer"}
     [:span {:class "flex items-center"}
      [hs-ui.text/assistive {:class "text-[var(--color-elements-readable-inv)]"} "Validation errors:"]
      [hs-ui.text/counter {:class "ml-2 rounded-[29px] px-1 pt-[1px] bg-[var(--color-elements-readable-inv)]"}
       (count (:errors props))]]
-
-    [:span {:class "text-[var(--color-elements-readable-inv)] group-open/item:rotate-180"}
-     hs-ui.svg.chevron-double/svg]
 
     [hs-ui.components.button/xs-red {:class "px-2"
                                      :on-click (fn [e]
@@ -159,11 +149,10 @@
                                                  (when-let [validate-fn (:validate-fn props)]
                                                    (validate-fn)))}
      "VALIDATE"]]
-   [:div {:class "p-2 border border-t-0 border-[var(--color-critical-default)] rounded-b-[var(--corner-corner-m)]"}
-    [:table.table-auto.w-full
-     [:tbody
-      (for [error (:errors props)] ^{:key (hash error)}
-        [error-item monaco-editor error])]]]])
+   [:table.table-auto.w-full
+    [:tbody
+     (for [error (:errors props)] ^{:key (hash error)}
+       [error-item monaco-editor error])]]])
 
 (defn validation-result
   [props monaco-editor]
@@ -212,14 +201,15 @@
              (reset! monaco-editor editor)))]])
 
 (defn component [_]
-  (let [monaco-editor (hs-ui.utils/ratom nil)] ;; Needs for recalculate monaco layout on expand
+  (let [monaco-editor (hs-ui.utils/ratom nil)] ;; Needed for recalculation of monaco layout on expand
     (fn [{monaco-props :c/monaco-props validation-props :c/validation-result}]
       ;; TODO: Use horizontal split view?
-      [hs-ui.layout/horizontal-split-view {:c/min-lower-percent 7
-                                           :c/min-upper-percent 40}
-       [:div {:class ["w-full h-full"]
-              :style {:height "93%"}}
-        [monaco-editor-view monaco-editor monaco-props validation-props]]
-       [:div {:class ["w-full overflow-y-scroll"]
-              :style {:height "7%"}}
-        [validation-result validation-props monaco-editor]]])))
+      (let [validation-percent (if (:errors validation-props) 40 7)]
+        [hs-ui.layout/horizontal-split-view {:c/min-lower-percent 7
+                                             :c/min-upper-percent 40}
+         [:div {:class ["w-full h-full"]
+                :style {:height (str (- 100 validation-percent) "%")}}
+          [monaco-editor-view monaco-editor monaco-props validation-props]]
+         [:div {:class ["w-full overflow-y-scroll"]
+                :style {:height (str validation-percent "%")}}
+          [validation-result validation-props monaco-editor]]]))))
