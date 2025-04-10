@@ -21,7 +21,7 @@
 (defn navbar
   [props]
   [:div (u/merge-props
-         {:class "flex border-b border-separator items-center h-[64px] justify-between w-full px-x3"}
+         {:class "flex border-b border-separator items-center min-h-[64px] h-[64px] justify-between w-full px-x3"}
          props)
    [:div (:slot/left props)]
    [:div (:slot/middle props)]
@@ -242,9 +242,7 @@
          ;; In this component there should be a general design.
          (fn [_]
            [:<>
-            [:style ".separator:hover .separator-line {border: 1px solid var(--color-cta)}
-                     .hover-separator:hover .separator {display: block;}"]
-            [:div.separator {:class          (cond-> ["px-4 mx-[-1rem] z-[100] cursor-col-resize"]
+            [:div.separator {:class          (cond-> ["px-4 mx-[-1rem] z-[100] cursor-col-resize group"]
 
                                                visible-on-hover
                                                (conj "opacity-0 hover:opacity-100 transition-opacity duration-300"))
@@ -252,7 +250,8 @@
                              :ref            resizer-ref
                              :on-mouse-down  mouse-down
                              :on-touch-start mouse-down}
-             [:div.separator-line {:class (into ["h-full w-0 absolute z-[100] [border:_1px_solid_#dbdde3]"]
+             [:div.separator-line {:class (into ["h-full w-0 absolute z-[100] [border:_1px_solid_#dbdde3]"
+                                                 "group-hover:border group-hover:border-1 group-hover:border-[var(--color-cta)]"]
                                                 (if (vector? class) class [class]))
                                    :style (when @resizing {:border "1px solid var(--color-cta)"})}]]])))))
 
@@ -263,7 +262,8 @@
            min-lower-percent
            upper-el-ref
            lower-el-ref
-           on-resize]}]
+           on-resize
+           disable-separator-hover-color]}]
   (let [resizing             (u/ratom false)
         initial-upper-height (atom nil)
         initial-lower-height (atom nil)
@@ -330,15 +330,17 @@
                  (.addEventListener js/document "touchend" mouse-up))]
          (fn [_]
            [:<>
-            [:style ".separator:hover .separator-line {border: 1px solid var(--color-cta)}"]
-            [:div.separator {:class          "py-4 my-[-1rem] cursor-row-resize z-[200]"
+            [:div.separator {:class          "py-4 my-[-1rem] cursor-row-resize z-[200] group"
                              :style          {:bottom (str default-lower-percent "%")}
                              :ref            resizer-ref
                              :on-mouse-down  mouse-down
                              :on-touch-start mouse-down}
-             [:div.separator-line {:class (into ["w-full h-0 absolute z-[100] [border:_1px_solid_#dbdde3]"]
+             [:div.separator-line {:class (into ["w-full h-0 absolute z-[100]"
+                                                 (when-not disable-separator-hover-color
+                                                   "[border:_1px_solid_#dbdde3] group-hover:border group-hover:border-1 group-hover:border-[var(--color-cta)]")]
                                                 (if (vector? class) class [class]))
-                                   :style (when @resizing {:border "1px solid var(--color-cta)"})}]]])))))
+                                   :style (when-not disable-separator-hover-color
+                                            (when @resizing {:border "1px solid var(--color-cta)"}))}]]])))))
 
 (defn- assoc-prop-to-hiccup [hiccup prop-key prop-val]
   (let [el-name      (first hiccup)
@@ -412,6 +414,7 @@
   :c/min-upper-percent
   :c/min-lower-percent
   :c/visible-on-hover
+  :c/disable-separator-hover-color
 
   :class and the other regular properties/attributes are allowed too."
   [props upper & [lower]]
@@ -434,5 +437,7 @@
                         :default-lower-percent default-lower-percent
                         :min-upper-percent (or (:c/min-upper-percent props) 10)
                         :min-lower-percent (or (:c/min-lower-percent props) 10)
-                        :visible-on-hover  (:c/visible-on-hover props)}]
+                        :visible-on-hover  (:c/visible-on-hover props)
+                        :disable-separator-hover-color (:c/disable-separator-hover-color props)}]
+
           (assoc-prop-to-hiccup lower :ref #(reset! lower-el-ref %))])])))

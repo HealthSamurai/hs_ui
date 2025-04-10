@@ -90,13 +90,16 @@
   (let [open? (hs-ui.utils/ratom false)]
     (fn [monaco-editor error]
       [:<>
-       [:tr {:class ["w-fit group/error-item hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]
-             :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
-                                                          :monaco-editor @monaco-editor}])}
-        [:td {:class ["max-w-[20vw] group-hover/error-item:underline cursor-pointer px-2 py-1 truncate"
-                      "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]}
+       [:tr {:class ["w-fit hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]
+             :on-click #(when @open?
+                          (rf/dispatch [::monaco-goto-line {:path (:path error)
+                                                            :monaco-editor @monaco-editor}]))}
+        [:td {:class ["peer max-w-[20vw] cursor-pointer px-2 py-1 truncate"
+                      "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]
+              :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
+                                                           :monaco-editor @monaco-editor}])}
          hs-ui.svg.target/svg]
-        [:td {:class "w-full group-hover/error-item:underline cursor-pointer px-2 py-1 truncate"
+        [:td {:class "w-full cursor-pointer px-2 py-1 truncate  group/error-item"
               :on-click (fn []
                           (swap! open? not)
                           (close-errors)
@@ -104,13 +107,13 @@
                             (reset! open-errors {error #(reset! open? false)}))
                           ;; (recalc-monaco-layout @monaco-editor)
                           )}
-         [:span {:class "text-[var(--color-critical-default)]"}  (:type error)]
+         [:span {:class "group-hover/error-item:underline text-[var(--color-critical-default)]"}  (:type error)]
          ": "
          [:span {:class "text-[var(--color-elements-readable)]"} (:path error)]]]
        (when @open?
          [:tr
           [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
-           [:pre {:class "pl-2 bg-white txt-code pb-2 text-wrap"}
+           [:pre {:class "pl-2 txt-code pb-2 text-wrap"}
             (hs-ui.utils/edn->json-pretty error)]]])])))
 
 (defn valid-result
@@ -136,7 +139,7 @@
 
 (defn error-result
   [props monaco-editor]
-  [:div {:class "border border-t-0 border-[var(--color-critical-default)] rounded-b-[var(--corner-corner-m)]"}
+  [:div {:class "h-full border border-t-0 border-[var(--color-critical-default)] rounded-b-[var(--corner-corner-m)]"}
    [:div {:class "py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer"}
     [:span {:class "flex items-center"}
      [hs-ui.text/assistive {:class "text-[var(--color-elements-readable-inv)]"} "Validation errors:"]
@@ -149,10 +152,11 @@
                                                  (when-let [validate-fn (:validate-fn props)]
                                                    (validate-fn)))}
      "VALIDATE"]]
-   [:table.table-auto.w-full
-    [:tbody
-     (for [error (:errors props)] ^{:key (hash error)}
-       [error-item monaco-editor error])]]])
+   [:div.h-full.w-full.overflow-y-auto
+    [:table.table-auto.w-full {:class "mb-[100px]"}
+     [:tbody
+      (for [error (:errors props)] ^{:key (hash error)}
+        [error-item monaco-editor error])]]]])
 
 (defn validation-result
   [props monaco-editor]
@@ -166,6 +170,32 @@
     (seq (:errors props))
     [error-result props monaco-editor]))
 
+(defn show-glyphs [editor validation-props]
+  #?(:cljs
+     (when editor
+       (try
+         (if (seq (:errors validation-props))
+           (->> (:errors validation-props)
+                (map :path)
+                ;; Some of the errors have no path, so we ignore them here.
+                (remove nil?)
+                (map #(path->line editor %))
+                (keep (fn [[line column]]
+                        (when-not (= [line column] [1 1])
+                          {:range {:startLineNumber line
+                                   :endLineNumber   line
+                                   :startColumn     1
+                                   :endColumn       1}
+                           :options {:isWholeLine true
+                                     :glyphMarginClassName "glyph"}})))
+                clj->js
+                (.deltaDecorations ^js/Object editor #js []))
+           (.deltaDecorations ^js/Object editor
+                              (clj->js (map #(.-id %) (.getAllDecorations (.getModel ^js/Object editor))))
+                              #js []))
+         (catch js/Error e (prn e)))
+       nil)))
+
 (defn monaco-editor-view
   ;; This abstraction is so leaky that it'd rather belong to Aidbox,
   ;; and not HS-UI.
@@ -177,27 +207,17 @@
 .glyph::after {
   content: '●';
 }"]
+   (show-glyphs @monaco-editor validation-props)
    [hs-ui.components.monaco/component
     (assoc monaco-props
+           :onChange (fn [value]
+                       (when-let [on-change-fn (:onChange monaco-props)]
+                         (on-change-fn value)))
            :on-mount-fn
            (fn [editor instance]
              (when-let [on-mount-fn (:on-mount-fn monaco-props)]
                (on-mount-fn editor instance))
-             #?(:cljs
-                (->> (:errors validation-props)
-                     (map :path)
-                     ;; Some of the errors have no path, so we ignore them here.
-                     (remove nil?)
-                     (map #(path->line editor %))
-                     (mapv (fn [[line column]]
-                             {:range {:startLineNumber line
-                                      :endLineNumber   line
-                                      :startColumn     1
-                                      :endColumn       1}
-                              :options {:isWholeLine true
-                                        :glyphMarginClassName "glyph"}}))
-                     clj->js
-                     (.deltaDecorations ^js/Object editor #js [])))
+             (show-glyphs editor validation-props)
              (reset! monaco-editor editor)))]])
 
 (defn component [_]
@@ -206,10 +226,11 @@
       ;; TODO: Use horizontal split view?
       (let [validation-percent (if (:errors validation-props) 40 7)]
         [hs-ui.layout/horizontal-split-view {:c/min-lower-percent 7
-                                             :c/min-upper-percent 40}
+                                             :c/min-upper-percent 40
+                                             :c/disable-separator-hover-color true}
          [:div {:class ["w-full h-full"]
                 :style {:height (str (- 100 validation-percent) "%")}}
           [monaco-editor-view monaco-editor monaco-props validation-props]]
-         [:div {:class ["w-full overflow-y-scroll"]
+         [:div {:class ["w-full overflow-y-hidden"]
                 :style {:height (str validation-percent "%")}}
           [validation-result validation-props monaco-editor]]]))))
