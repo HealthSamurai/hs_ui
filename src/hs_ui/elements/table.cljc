@@ -598,7 +598,7 @@
             (fn [view-idx _]
               (let [model-idx (extract-col-model state-atom view-idx)
                     info      (get-col-info col-model model-idx)]
-                ^{:key view-idx}
+                ^{:key (str model-idx "-table-column")}
                 [header-cell
                  info
                  view-idx
