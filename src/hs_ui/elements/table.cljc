@@ -224,7 +224,6 @@
                             (:width col-info)
 
                             :else "200px")]
-
     [:th
      {:ref         (fn [el]
                      (reset! cell-ref el)
@@ -298,28 +297,15 @@
        [resizer-handle cell-ref model-idx state-atom (:table-name cfg)])]))
 
 (defn last-column-index?
-  [state-atom col-model index]
-  (let [total-column-indexes (range (count col-model))
-        visible-columns      (filter #(not (get (:col-hidden @state-atom) (keyword (str %))))
-                                     total-column-indexes)]
-    (= index (last visible-columns))))
+  [state-atom column-name]
+  (->> (:col-index-to-model @state-atom)
+       (remove #(get-in @state-atom [:col-hidden (keyword %)]))
+       (last)
+       (= column-name)))
 
 (defn get-col-info [col-model model-idx]
   (-> (filter #(= model-idx (:header %)) col-model)
       (first)))
-
-(defn render-header-row
-  [col-model cfg state-atom]
-  [:<>
-   [:tr
-    (doall
-     (map-indexed
-      (fn [view-idx _]
-        (let [model-idx (extract-col-model state-atom view-idx)
-              info       (get-col-info col-model model-idx)]
-          ^{:key view-idx}
-          [header-cell info view-idx model-idx cfg state-atom (last-column-index? state-atom col-model view-idx)]))
-      col-model))]])
 
 (defn resolve-cell-data
   [row cell-def]
@@ -619,7 +605,7 @@
                  model-idx
                  cfg
                  state-atom
-                 (last-column-index? state-atom col-model view-idx)]))
+                 (last-column-index? state-atom model-idx)]))
             col-model))]]
 
         [:tbody
