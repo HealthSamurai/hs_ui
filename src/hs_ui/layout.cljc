@@ -257,6 +257,7 @@
 
 (defn- h-separator
   [{:keys [class
+           disabled?
            default-lower-percent
            min-upper-percent
            min-lower-percent
@@ -328,10 +329,12 @@
                  (.addEventListener js/document "mouseup" mouse-up)
                  (.addEventListener js/document "touchmove" mouse-move)
                  (.addEventListener js/document "touchend" mouse-up))]
-         (fn [_]
+         (fn [orig-props]
            [:<>
             [:div.separator {:class          "py-4 my-[-1rem] cursor-row-resize z-[200] group"
-                             :style          {:bottom (str default-lower-percent "%")}
+                             :style         {:bottom (str default-lower-percent "%")
+                                             :display (when (:disabled? orig-props)
+                                                        "none")}
                              :ref            resizer-ref
                              :on-mouse-down  mouse-down
                              :on-touch-start mouse-down}
@@ -423,7 +426,7 @@
         default-lower-percent (if (:c/default-upper-percent props)
                                 (- 100 (:c/default-upper-percent props))
                                 (:c/default-lower-percent props))]
-    (fn [_ upper & [lower]]
+    (fn [orig-props upper & [lower]]
       [:div (u/merge-props {:class horizontal-root-class} props)
        (cond-> upper
          :always      (assoc-prop-to-hiccup :ref #(reset! upper-el-ref %))
@@ -432,6 +435,7 @@
        (when lower
          [:<>
           [h-separator {:class             (u/class-names horizontal-separator-class (:c/separator-class props))
+                        :disabled?         (:c/disabled? orig-props)
                         :upper-el-ref      upper-el-ref
                         :lower-el-ref      lower-el-ref
                         :default-lower-percent default-lower-percent

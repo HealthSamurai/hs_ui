@@ -99,7 +99,7 @@
               :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
                                                            :monaco-editor @monaco-editor}])}
          hs-ui.svg.target/svg]
-        [:td {:class "w-full cursor-pointer px-2 py-1 truncate  group/error-item"
+        [:td {:class "w-full cursor-pointer px-2 py-1 group/error-item"
               :on-click (fn []
                           (swap! open? not)
                           (close-errors)
@@ -107,9 +107,10 @@
                             (reset! open-errors {error #(reset! open? false)}))
                           ;; (recalc-monaco-layout @monaco-editor)
                           )}
-         [:span {:class "group-hover/error-item:underline text-[var(--color-critical-default)]"}  (:type error)]
-         ": "
-         [:span {:class "text-[var(--color-elements-readable)]"} (:path error)]]]
+         [:div.truncate
+          [:span {:class "group-hover/error-item:underline text-[var(--color-critical-default)]"}  (:type error)]
+          ": "
+          [:span {:class "text-[var(--color-elements-readable)]"} (:path error)]]]]
        (when @open?
          [:tr
           [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
@@ -139,7 +140,7 @@
 
 (defn error-result
   [props monaco-editor]
-  [:div {:class "h-full border border-t-0 border-[var(--color-critical-default)] rounded-b-[var(--corner-corner-m)]"}
+  [:div {:class "w-full overflow-y-hidden pb-[30px] h-full border border-t-0 border-[var(--color-critical-default)] rounded-b-[var(--corner-corner-m)]"}
    [:div {:class "py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer"}
     [:span {:class "flex items-center"}
      [hs-ui.text/assistive {:class "text-[var(--color-elements-readable-inv)]"} "Validation errors:"]
@@ -152,8 +153,8 @@
                                                  (when-let [validate-fn (:validate-fn props)]
                                                    (validate-fn)))}
      "VALIDATE"]]
-   [:div.h-full.w-full.overflow-y-auto
-    [:table.table-auto.w-full {:class "mb-[100px]"}
+   [:div {:class "w-full h-full overflow-y-auto overflow-x-auto"}
+    [:table {:class "table-auto w-full"}
      [:tbody
       (for [error (:errors props)] ^{:key (hash error)}
         [error-item monaco-editor error])]]]])
@@ -204,6 +205,7 @@
    [:style ".glyph {
   color: var(--color-illustrations-solid);
 }
+.line-numbers {text-align: left !important; padding-left: 5px}
 .glyph::after {
   content: '●';
 }"]
@@ -227,10 +229,9 @@
       (let [validation-percent (if (:errors validation-props) 40 7)]
         [hs-ui.layout/horizontal-split-view {:c/min-lower-percent 7
                                              :c/min-upper-percent 40
-                                             :c/disable-separator-hover-color true}
-         [:div {:class ["w-full h-full"]
-                :style {:height (str (- 100 validation-percent) "%")}}
+                                             :c/disable-separator-hover-color true
+                                             :c/disabled? (empty? (:errors validation-props))}
+         [:div {:class ["w-full" "h-full" "overflow-y-hidden"]}
           [monaco-editor-view monaco-editor monaco-props validation-props]]
-         [:div {:class ["w-full overflow-y-hidden"]
-                :style {:height (str validation-percent "%")}}
+         [:div {:class ["w-full"]}
           [validation-result validation-props monaco-editor]]]))))
