@@ -398,11 +398,12 @@
                 :tooltip [:pre (or (:tooltip value) (:title value) (str (:value value)))]}
                (:value value)]
               [:div {:class text-class} (or (:value value) "-")])
-            [cell-toolbar
-             (map
-              (fn [icon]
-                (update icon :on-click partial model-idx (:value value)))
-              (:cell-toolbar-icons cfg))]]))
+            (when (seq (:cell-toolbar-icons cfg))
+              [cell-toolbar
+               (map
+                (fn [icon]
+                  (update icon :on-click partial model-idx (:value value)))
+                (:cell-toolbar-icons cfg))])]))
        (or model row)))]))
 
 (defn render-all-rows
