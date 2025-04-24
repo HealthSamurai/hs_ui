@@ -62,7 +62,10 @@
   [:div {:class (cond-> selected-item-class
                   (:disabled props)
                   (hs-ui.utils/class-names disabled-class))
-         :on-click (when-not (:disabled props) (:c/on-open props))}
+         :on-click (when-not (:disabled props)
+                     (if (:c/open? props)
+                       (:c/on-close props)
+                       (:c/on-open props)))}
    [:div.flex.items-center
     (when (:slot/left selected-item)
       [:span {:class selected-item-slot-left} (:slot/left selected-item)])
