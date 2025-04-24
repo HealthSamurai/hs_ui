@@ -29,6 +29,7 @@
 (def select-class
   ["w-full"
    "outline-none"
+   "bg-white"
    "txt-value"
    "text-[theme(colors.elements-readable)]"
    "cursor-pointer"])
