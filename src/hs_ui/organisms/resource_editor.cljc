@@ -4,6 +4,7 @@
    [hs-ui.utils]
    [hs-ui.layout]
    [hs-ui.components.monaco]
+   [hs-ui.components.kvlist]
    [hs-ui.components.button]
    [hs-ui.components.content-expand]
    [hs-ui.svg.loading]
@@ -86,8 +87,10 @@
   (reset! open-errors {}))
 
 (defn error-item
-  [_ _]
-  (let [open? (hs-ui.utils/ratom false)]
+  [_ error index]
+  (let [open? (hs-ui.utils/ratom (zero? index))
+        _ (when @open?
+            (reset! open-errors {error #(reset! open? false)}))]
     (fn [monaco-editor error]
       [:<>
        [:tr {:class ["w-fit hover:bg-[var(--color-surface-1)]" (when @open? "bg-[var(--color-surface-1)]")]
@@ -114,8 +117,10 @@
        (when @open?
          [:tr
           [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
-           [:pre {:class "pl-2 txt-code pb-2 text-wrap"}
-            (hs-ui.utils/edn->json-pretty error)]]])])))
+           [:div {:class "px-[36px]"}
+            (when-let [url (:schema-id error)]
+              (str url ": "))
+            (:message error)]]])])))
 
 (defn valid-result
   [props]
@@ -156,8 +161,11 @@
    [:div {:class "w-full h-full overflow-y-auto overflow-x-auto"}
     [:table {:class "table-auto w-full"}
      [:tbody
-      (for [error (:errors props)] ^{:key (hash error)}
-        [error-item monaco-editor error])]]]])
+      (doall
+       (map-indexed
+        (fn [index error] ^{:key (str index "-" (hash error))}
+          [error-item monaco-editor error index])
+        (:errors props)))]]]])
 
 (defn validation-result
   [props monaco-editor]
