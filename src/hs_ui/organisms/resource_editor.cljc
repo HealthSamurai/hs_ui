@@ -179,29 +179,34 @@
     (seq (:errors props))
     [error-result props monaco-editor]))
 
+(defonce decorations (atom [])) ;; храним текущие ID
+
 (defn show-glyphs [editor validation-props]
   #?(:cljs
      (when editor
        (try
-         (if (seq (:errors validation-props))
-           (->> (:errors validation-props)
-                (map :path)
-                ;; Some of the errors have no path, so we ignore them here.
-                (remove nil?)
-                (map #(path->line editor %))
-                (keep (fn [[line column]]
-                        (when-not (= [line column] [1 1])
-                          {:range {:startLineNumber line
-                                   :endLineNumber   line
-                                   :startColumn     1
-                                   :endColumn       1}
-                           :options {:isWholeLine true
-                                     :glyphMarginClassName "glyph"}})))
-                clj->js
-                (.deltaDecorations ^js/Object editor #js []))
-           (.deltaDecorations ^js/Object editor
-                              (clj->js (map #(.-id %) (.getAllDecorations (.getModel ^js/Object editor))))
-                              #js []))
+         (let [model (.getModel ^js/Object editor)
+               new-decorations
+               (if (seq (:errors validation-props))
+                 (->> (:errors validation-props)
+                      (map :path)
+                      (remove nil?)
+                      (map #(path->line editor %))
+                      (keep (fn [[line column]]
+                              (when-not (= [line column] [1 1])
+                                {:range {:startLineNumber line
+                                         :endLineNumber   line
+                                         :startColumn     1
+                                         :endColumn       1}
+                                 :options {:isWholeLine true
+                                           :glyphMarginClassName "glyph"}})))
+                      clj->js)
+                 #js [])]
+           ;; Заменяем старые декорации на новые
+           (reset! decorations
+                   (.deltaDecorations ^js/Object editor
+                                      (clj->js @decorations)
+                                      new-decorations)))
          (catch js/Error e (prn e)))
        nil)))
 
