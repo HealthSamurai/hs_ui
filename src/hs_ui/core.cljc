@@ -3,6 +3,7 @@
    [hs-ui.text]
    [hs-ui.graphic]
 
+   [hs-ui.elements.breadcrumb]
    [hs-ui.elements.table]
    [hs-ui.elements.diff-table]
 
@@ -36,7 +37,11 @@
    [hs-ui.organisms.tabs]
    [hs-ui.organisms.resource-editor]
 
-   [hs-ui.layout]))
+   [hs-ui.layout]
+
+   [hs-ui.svg.upload]
+   [hs-ui.svg.external-link]
+   [hs-ui.svg.file-check]))
 
 ;; Elements
 (def table hs-ui.elements.table/view)
@@ -50,6 +55,7 @@
 (def checkbox hs-ui.components.checkbox/component)
 (def content-expand hs-ui.components.content-expand/component)
 (def breadcrumbs hs-ui.components.breadcrumbs/component)
+(def breadcrumbs-items hs-ui.elements.breadcrumb/view)
 (def chip hs-ui.components.chip/component)
 (def tab         hs-ui.components.tab/component)
 
@@ -93,6 +99,7 @@
 (def layout-control             hs-ui.layout/control)
 (def layout-vertical-split-view hs-ui.layout/vertical-split-view)
 (def layout-horizontal-split-view hs-ui.layout/horizontal-split-view)
+(def layout-dropdown hs-ui.layout/dropdown)
 
 (def button-primary   hs-ui.components.button/primary)
 (def button-critical  hs-ui.components.button/critical)
@@ -102,6 +109,7 @@
 (def button-xs-red    hs-ui.components.button/xs-red)
 (def button-slim      hs-ui.components.button/slim)
 
+
 (def dialog          hs-ui.components.dialog/component)
 (def dialog-template hs-ui.components.dialog/template)
 
@@ -110,3 +118,7 @@
 (def monaco hs-ui.components.monaco/component)
 
 (def sidebar hs-ui.components.sidebar/component)
+
+(def icon-upload hs-ui.svg.upload/svg)
+(def icon-link hs-ui.svg.external-link/svg)
+(def icon-file-check hs-ui.svg.file-check/svg)
