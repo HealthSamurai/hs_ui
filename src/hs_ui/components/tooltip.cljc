@@ -51,7 +51,7 @@
                                  t-height   (.-height tooltip-rect)
 
                                  ;; Offsets
-                                 offset        8
+                                 offset        4
                                  min-left-dist  300
                                  min-right-dist 300
 
@@ -131,7 +131,8 @@
                                (let [id #?(:cljs (js/setTimeout (fn []
                                                                 (reset! show? true)
                                                                 (reset! tooltip-placement nil)
-                                                                (r/after-render update-position!)) 300)
+                                                                (r/after-render update-position!))
+                                                                (:show-timeout props 300))
                                            :clj nil)]
                                  (reset! timeout-id id)))
              :on-mouse-leave (fn [_]
@@ -147,10 +148,22 @@
              [:div
               {:ref   #(reset! tooltip-ref %)
                :class (hs-ui.utils/class-names
-                       ["text-sm p-2 rounded shadow-xl z-[999]"
+                       ["text-sm p-2 rounded shadow-xl z-[999] relative"
                         (if error?
                           "text-white bg-[var(--color-critical-default)]"
                           "text-[var(--color-elements-readable-inv)] bg-[var(--color-elements-assistive)]")]
                        class)
                :style (merge {:position "fixed"} @tooltip-pos)}
-              tooltip])])))))
+              tooltip
+              ;; Arrow element
+              [:div
+               {:class (str "absolute w-2 h-2 transform rotate-45 rounded-[2px] "
+                           (case @tooltip-placement
+                             :top "bottom-[-3px] left-1/2 -translate-x-1/2 "
+                             :bottom "top-[-3px] left-1/2 -translate-x-1/2 "
+                             :left "right-[-3px] top-1/2 -translate-y-1/2 "
+                             :right "left-[-3px] top-1/2 -translate-y-1/2 "
+                             "")
+                           (if error?
+                             "bg-[var(--color-critical-default)]"
+                             "bg-[var(--color-elements-assistive)]"))}]])])))))
