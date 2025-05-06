@@ -41,7 +41,8 @@
 
    [hs-ui.svg.upload]
    [hs-ui.svg.external-link]
-   [hs-ui.svg.file-check]))
+   [hs-ui.svg.file-check]
+   [hs-ui.svg.plus]))
 
 ;; Elements
 (def table hs-ui.elements.table/view)
@@ -120,5 +121,8 @@
 (def sidebar hs-ui.components.sidebar/component)
 
 (def icon-upload hs-ui.svg.upload/svg)
+(def icon-upload-2 hs-ui.svg.upload/svg-2)
 (def icon-link hs-ui.svg.external-link/svg)
 (def icon-file-check hs-ui.svg.file-check/svg)
+(def icon-plus hs-ui.svg.plus/svg)
+(def icon-plus-2 hs-ui.svg.plus/svg-2)

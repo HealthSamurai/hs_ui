@@ -23,9 +23,9 @@
   [:div (u/merge-props
          {:class "flex border-b border-separator items-center min-h-[60px] h-[60px] justify-between w-full px-x3"}
          props)
-   [:div (:slot/left props)]
-   [:div (:slot/middle props)]
-   [:div (:slot/right props)]])
+   (:slot/left props)
+   (:slot/middle props)
+   (:slot/right props)])
 
 (defn control
   [props]
