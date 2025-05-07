@@ -72,13 +72,14 @@
     [hs-ui.text/value {:class (when (:disabled props) "text-elements-assistive")}
      (:slot/label selected-item)]]
    [:div.flex.items-center.space-x-2
-    (when selected-item
-      [:span {:class "group-hover:block hidden text-[#CCCED3] cursor-pointer"
-              :on-click (fn [e]
-                          (when-let [on-clean (:c/on-clean props)]
-                            (u/stop-propagation e)
-                            (on-clean e)))}
-       hs-ui.svg.close/svg])
+    (when-not (:c/disable-clear props)
+      (when selected-item
+        [:span {:class "group-hover:block hidden text-[#CCCED3] cursor-pointer"
+                :on-click (fn [e]
+                            (when-let [on-clean (:c/on-clean props)]
+                              (u/stop-propagation e)
+                              (on-clean e)))}
+         hs-ui.svg.close/svg]))
     (when-not (:disabled props)
       [:span {:class "text-[#727885]"} hs-ui.svg.chevron-down/svg])]])
 
@@ -94,7 +95,8 @@
      (when open?
        [:div {:class menu-class}
         [hs-ui.organisms.search-input/component
-         {:c/root-class search-input-class
+         {:c/root-class [search-input-class (when (:c/disable-search props)
+                                              "opacity-0 h-0")]
           :ref          #(when % (.focus %))
           :on-change    (:c/on-search props)
           :value        (:c/search-value props)

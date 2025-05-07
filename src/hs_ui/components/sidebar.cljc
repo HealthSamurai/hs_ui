@@ -162,7 +162,7 @@
      [:div {:class header-class} subheader])
 
    (when-let [menu (:slot/menu properties)]
-     [:div {:class content-class :data-object :menu}
+     [:div {:class [content-class (:class-menu properties)] :data-object :menu}
       [menu-items menu]])
 
    (when-let [submenu (:slot/submenu properties)]

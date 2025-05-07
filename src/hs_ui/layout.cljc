@@ -21,7 +21,7 @@
 (defn navbar
   [props]
   [:div (u/merge-props
-         {:class "flex border-b border-separator items-center min-h-[60px] h-[60px] justify-between w-full px-x3"}
+         {:class "flex border-b border-separator items-center min-h-[60px] h-[60px] justify-between w-full px-x3 gap-2"}
          props)
    (:slot/left props)
    (:slot/middle props)
@@ -446,10 +446,10 @@
 
           (assoc-prop-to-hiccup lower :ref #(reset! lower-el-ref %))])])))
 
-(defn dropdown [target overlay]
+(defn dropdown [props target overlay]
   [:div {:class "relative inline-block group"}
    target
-   [:div {:class "hidden group-hover:block absolute w-full z-10"}
+   [:div {:class (u/class-names "hidden group-hover:block absolute w-full z-10" (:class-overlay props))}
     [:div {:class "h-[8px]"}]
     [:div {:class "w-full bg-white border border-gray-200 rounded shadow-lg z-10"}
      overlay]]])

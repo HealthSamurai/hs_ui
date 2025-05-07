@@ -14,7 +14,7 @@
 
 (defn view [items]
   (let [last-index (dec (count items))]
-    [:div {:class "flex items-center space-x-2"}
+    [:div {:class "flex items-center space-x-2 overflow-x-auto text-nowrap"}
      (mapcat
       (fn [[idx item]]
         (let [is-last?  (= idx last-index)

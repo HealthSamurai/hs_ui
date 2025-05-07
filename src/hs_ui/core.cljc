@@ -42,7 +42,8 @@
    [hs-ui.svg.upload]
    [hs-ui.svg.external-link]
    [hs-ui.svg.file-check]
-   [hs-ui.svg.plus]))
+   [hs-ui.svg.plus]
+   [hs-ui.svg.chevron-down]))
 
 ;; Elements
 (def table hs-ui.elements.table/view)
@@ -126,3 +127,4 @@
 (def icon-file-check hs-ui.svg.file-check/svg)
 (def icon-plus hs-ui.svg.plus/svg)
 (def icon-plus-2 hs-ui.svg.plus/svg-2)
+(def icon-chevron-down hs-ui.svg.chevron-down/svg)
