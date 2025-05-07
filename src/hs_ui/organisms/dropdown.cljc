@@ -95,15 +95,17 @@
      (when open?
        [:div {:class menu-class}
         [hs-ui.organisms.search-input/component
-         {:c/root-class [search-input-class (when (:c/disable-search props)
-                                              "opacity-0 h-0")]
-          :ref          #(when % (.focus %))
-          :on-change    (:c/on-search props)
-          :value        (:c/search-value props)
-          :on-blur      (fn [e]
-                          (when-let [on-close (:c/on-close props)]
-                            (on-close e)))
-          :placeholder  "Search"}]
+         (cond->
+           {:c/root-class [search-input-class (when (:c/disable-search props)
+                                                "opacity-0 h-0")]
+            :ref          #(when % (.focus %))
+            :on-change    (:c/on-search props)
+            :on-blur      (fn [e]
+                            (when-let [on-close (:c/on-close props)]
+                              (on-close e)))
+            :placeholder  "Search"}
+           (contains? props :c/search-value)
+           (assoc :value (:c/search-value props)))]
         [hs-ui.components.list-items/component {:class list-items-class}
          (let [options (if (seq (:c/options props))
                          (:c/options props)
