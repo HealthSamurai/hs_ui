@@ -126,8 +126,11 @@
                              (hs-ui.utils/encode-uri (:url r)))
                   :class "text-[#358FEA]"}
               (:name r)])
-           ")"])])
-     (:datatype element))])
+           ")"])
+        ])
+     (or (when-let [path (:element-reference element)]
+           (str "see " path))
+         (:datatype element)))])
 
 (defn description-cell [element]
   [:<>
