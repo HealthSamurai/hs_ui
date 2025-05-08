@@ -60,10 +60,6 @@
    "data-[role=link]:cursor-pointer"
    "data-[role=link]:hover:text[var(--color-elements-readable)]"
    "data-[role=link]:hover:bg-[rgba(34,120,225,0.10)]"
-   "data-[role=link]:hover:outline"
-   "data-[role=link]:hover:outline-1"
-   "data-[role=link]:hover:-outline-offset-1"
-   "data-[role=link]:hover:outline-[var(--color-border-XS-regular)]"
    "group/row"])
 
 (def text-class
