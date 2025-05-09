@@ -223,7 +223,7 @@
     [:th
      {:ref         (fn [el]
                      (reset! cell-ref el)
-                     (when (and el last-child (not= 0 (.-clientWidth el)) (not (table-wider-than-vw? table-name)))
+                     (when (and el last-child (not= 0 (.-clientWidth el)) #_(not (table-wider-than-vw? table-name)))
                        (set! (.-width (.-style el)) "100%")))
       :class       column-name-class
       :draggable   draggable?

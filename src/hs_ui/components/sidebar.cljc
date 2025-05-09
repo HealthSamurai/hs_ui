@@ -11,7 +11,8 @@
    "text-[theme(colors.elements-readable)]"
    "bg-white"
    "font-normal"
-   "[border-right:1px_solid_#dbdde3]"
+   "border-r"
+   "border-[var(--color-separator)]"
    "[flex-flow:column]"
    "[line-height:20px]"
    "[font-size:14px]"])
@@ -123,21 +124,26 @@
      [:span.chevron hs-ui.svg.chevron-right/svg])])
 
 (defn menu-items
-  [node]
+  [node & [properties]]
   [:ul {:class content-items-class :data-array :items}
-   (for [item (:slot/items node)]
-     [:li {:class content-item-class :key (or (:id item) (:title item) (hash item))}
-      (cond
-        (:slot/items item)
-        [:details {:ref #(details-constructor % item)}
-         [:summary [menu-item item]]
-         [:div {:class "border-l pt-[2px] ml-[18.5px]"}
-          [menu-items item]]]
+   (if (:loading? properties)
+     (map
+      (fn [index]
+        [menu-item {:slot/content [:span.skeleton "################"]}])
+      (range 30))
+     (for [item (:slot/items node)]
+       [:li {:class content-item-class :key (or (:id item) (:title item) (hash item))}
+        (cond
+          (:slot/items item)
+          [:details {:ref #(details-constructor % item)}
+           [:summary [menu-item item]]
+           [:div {:class "border-l pt-[2px] ml-[18.5px]"}
+            [menu-items item]]]
 
-        (:divider item)
-        [:hr {:class divider-class}]
+          (:divider item)
+          [:hr {:class divider-class}]
 
-        :else [menu-item item])])])
+          :else [menu-item item])]))])
 
 (defn component
   "A sidebar with possibly nested entries.
@@ -151,7 +157,8 @@
   - :open
   - :divider (to add a dividing ruler)
   - :space (to add a ruler with some space around it)
-  - :target (as in HTML <a> element)"
+  - :target (as in HTML <a> element)
+  - :loading?"
   [properties]
   [:aside (utils/merge-props {:class root-class :data-object ::component} properties)
 
@@ -163,7 +170,7 @@
 
    (when-let [menu (:slot/menu properties)]
      [:div {:class [content-class (:class-menu properties)] :data-object :menu}
-      [menu-items menu]])
+      [menu-items menu properties]])
 
    (when-let [submenu (:slot/submenu properties)]
      [:div {:class submenu-class}
