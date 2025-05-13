@@ -30,6 +30,9 @@
    "bg-[theme(colors.surface-info)]"
    "text-[theme(colors.cta)]"])
 
+(def info-message-class
+  ["text-[theme(colors.cta)]"])
+
 (def error-message-class
   ["text-[theme(colors.critical-default)]"])
 
@@ -45,7 +48,9 @@
                                      (= "warning-message" (:severity props))
                                      (utils/class-names warning-message-class)
                                      (= "info" (:severity props))
-                                     (utils/class-names info-class))}
+                                     (utils/class-names info-class)
+                                     (= "info-message" (:severity props))
+                                     (utils/class-names info-message-class))}
                            props)
    (some->>
     (cond
