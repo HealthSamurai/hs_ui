@@ -283,15 +283,7 @@
                   {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "1rem"})))}
 
       [:span {:class "block overflow-hidden"}
-<<<<<<< Updated upstream
        (or (:value col-info) (:header col-info) model-idx)]
-
-||||||| Stash base
-       (or (:header col-info) model-idx)]
-
-=======
-       (or (:header col-info) model-idx)]
->>>>>>> Stashed changes
      ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
      (when-not (:action? col-info)
        (when-not (and cur-border-side
@@ -396,13 +388,7 @@
                                   ;; TODO: fix color to var
                                   (assoc :background "rgba(113, 118, 132, 0.10)"))]
                       style)}
-<<<<<<< Updated upstream
-            (if (and (need-tooltip? (:value value)) (not= false (:need-tooltip? value)))
-||||||| Stash base
-            (if (need-tooltip? (:value value))
-=======
             (if (and (:tooltip value) (need-tooltip? (:value value)))
->>>>>>> Stashed changes
               [hs-ui.components.tooltip/component
                {:class   (:c/tooltip-style cfg)
                 :tooltip [:pre (or (:tooltip value) (:title value) (str (:value value)))]}
@@ -625,31 +611,15 @@
 (defn generate-cols
   [cols-data]
   (mapv
-<<<<<<< Updated upstream
-   (fn [{:keys [name width value]}]
-     (let [key (if (empty? name) "" (keyword name))]
-       {:path   [key]
-        :header name
-        :key    key
-        :width  width
-        :value  value}))
-||||||| Stash base
-   (fn [{:keys [name width]}]
-     (let [key (if (empty? name) "" (keyword name))]
-       {:path   [key]
-        :header name
-        :key    key
-        :width  width}))
-=======
-   (fn [{:keys [name width keyname action? th-class container-class]}]
+   (fn [{:keys [name width keyname action? th-class container-class value]}]
      (let [key (or keyname (if (empty? name) "" (keyword name)))]
        {:path     [key]
         :header   name
         :action?  action?
         :th-class th-class
+        :value    value
         :key      key
         :width    width}))
->>>>>>> Stashed changes
    cols-data))
 
 (defn merge-model-indexes [new from-ls]
