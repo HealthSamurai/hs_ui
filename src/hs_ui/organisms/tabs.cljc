@@ -19,3 +19,14 @@
   [:div (u/merge-props {:class root-class} props)
    (for [item (:c/items props)] ^{:key (:id item)}
      [hs-ui.components.tab/component (assoc item :name (:name props))])])
+
+(defn secondary-tab-item [{:keys [id label active?]}]
+  [:button {:key id :class ["px-[12px] py-[6px] leading-[15px]"
+                        (when active?
+                          "text-[var(--color-elements-readable)] rounded-[6px] border")]}
+   label])
+
+(defn secondary-tabs [{:keys [class items]}]
+  [:nav {:class (u/class-names "bg-[#F9F9F9] py-[6px] flex font-medium text-[var(--color-elements-assistive)]" class)}
+   (for [item items]
+     (secondary-tab-item item))])

@@ -44,7 +44,8 @@
    [hs-ui.svg.external-link]
    [hs-ui.svg.file-check]
    [hs-ui.svg.plus]
-   [hs-ui.svg.chevron-down]))
+   [hs-ui.svg.chevron-down]
+   [hs-ui.svg.pin]))
 
 ;; Elements
 (def table hs-ui.elements.table/view)
@@ -79,6 +80,7 @@
 (def org-dropdown        hs-ui.organisms.dropdown/component)
 (def org-header          hs-ui.organisms.header/component)
 (def org-tabs            hs-ui.organisms.tabs/component)
+(def org-secondary-tabs  hs-ui.organisms.tabs/secondary-tabs)
 (def org-resource-editor hs-ui.organisms.resource-editor/component)
 
 (def text-page-header          hs-ui.text/page-header)
@@ -130,3 +132,4 @@
 (def icon-plus hs-ui.svg.plus/svg)
 (def icon-plus-2 hs-ui.svg.plus/svg-2)
 (def icon-chevron-down hs-ui.svg.chevron-down/svg)
+(def icon-pin hs-ui.svg.pin/svg)

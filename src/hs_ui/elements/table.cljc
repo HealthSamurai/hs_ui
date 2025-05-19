@@ -26,8 +26,8 @@
    "z-[1]"])
 
 (def column-name-class
-  ["px-5"
-   "py-4"
+  ["px-[8px]"
+   "py-[9px]"
    "font-medium"
    "text-nowrap"
    "text-left"
@@ -38,7 +38,7 @@
    "top-0"])
 
 (def table-cell-class
-  ["px-[14px]"
+  ["px-[4.5px]"
    "py-2"
    "border-x-[3.5px]"
    "border-transparent"
@@ -170,7 +170,7 @@
   "Handle that resizes the column at `model-idx` in `state-atom` when dragged."
   [cell-ref model-idx state-atom table-name]
   [:button
-   {:class        "absolute cursor-ew-resize top-[30%] right-[-10px] hidden text-[var(--color-separator)] hover:text-[var(--color-cta)] active:text-[var(--color-cta)] group-hover:inline-block w-6 z-[1] px-2"
+   {:class        "absolute cursor-ew-resize top-[9px] right-[-10px] hidden text-[var(--color-separator)] hover:text-[var(--color-cta)] active:text-[var(--color-cta)] group-hover:inline-block w-6 z-[1] px-2"
     :on-click     #(.stopPropagation %)
     :on-mouse-down
     (fn [evt]
@@ -225,7 +225,7 @@
                      (reset! cell-ref el)
                      (when (and el last-child (not= 0 (.-clientWidth el)) #_(not (table-wider-than-vw? table-name)))
                        (set! (.-width (.-style el)) "100%")))
-      :class       column-name-class
+      :class       (utils/class-names column-name-class (:th-class col-info))
       :draggable   draggable?
       :on-drag-start (fn [e]
                        (set! (.. e -dataTransfer -effectAllowed) "move")
@@ -283,14 +283,22 @@
                   {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "1rem"})))}
 
       [:span {:class "block overflow-hidden"}
+<<<<<<< Updated upstream
        (or (:value col-info) (:header col-info) model-idx)]
 
+||||||| Stash base
+       (or (:header col-info) model-idx)]
+
+=======
+       (or (:header col-info) model-idx)]
+>>>>>>> Stashed changes
      ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
-     (when-not (and cur-border-side
-                    (:col-reordering st)
-                    (= visible-idx (if (= cur-border-side :border-right) (:col-hover st) (dec (:col-hover st))))
-                    (not= (:dragging-column st) model-idx))
-       [resizer-handle cell-ref model-idx state-atom (:table-name cfg)])]))
+     (when-not (:action? col-info)
+       (when-not (and cur-border-side
+                      (:col-reordering st)
+                      (= visible-idx (if (= cur-border-side :border-right) (:col-hover st) (dec (:col-hover st))))
+                      (not= (:dragging-column st) model-idx))
+         [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]))]))
 
 (defn last-column-index?
   [state-atom column-name]
@@ -388,7 +396,13 @@
                                   ;; TODO: fix color to var
                                   (assoc :background "rgba(113, 118, 132, 0.10)"))]
                       style)}
+<<<<<<< Updated upstream
             (if (and (need-tooltip? (:value value)) (not= false (:need-tooltip? value)))
+||||||| Stash base
+            (if (need-tooltip? (:value value))
+=======
+            (if (and (:tooltip value) (need-tooltip? (:value value)))
+>>>>>>> Stashed changes
               [hs-ui.components.tooltip/component
                {:class   (:c/tooltip-style cfg)
                 :tooltip [:pre (or (:tooltip value) (:title value) (str (:value value)))]}
@@ -431,7 +445,7 @@
             hidden-cols #?(:cljs (r/cursor state-atom [:col-hidden])
                            :clj nil)]
 
-        [:div {:class "relative inline-block w-full mt-1.5 dropdown-container"}
+        [:div {:class "relative inline-block w-full mt-1 dropdown-container"}
          [:div {:class "w-full flex justify-start"}
           [:div {:on-click #(swap! menu-open? not)
                  :class
@@ -611,6 +625,7 @@
 (defn generate-cols
   [cols-data]
   (mapv
+<<<<<<< Updated upstream
    (fn [{:keys [name width value]}]
      (let [key (if (empty? name) "" (keyword name))]
        {:path   [key]
@@ -618,6 +633,23 @@
         :key    key
         :width  width
         :value  value}))
+||||||| Stash base
+   (fn [{:keys [name width]}]
+     (let [key (if (empty? name) "" (keyword name))]
+       {:path   [key]
+        :header name
+        :key    key
+        :width  width}))
+=======
+   (fn [{:keys [name width keyname action? th-class container-class]}]
+     (let [key (or keyname (if (empty? name) "" (keyword name)))]
+       {:path     [key]
+        :header   name
+        :action?  action?
+        :th-class th-class
+        :key      key
+        :width    width}))
+>>>>>>> Stashed changes
    cols-data))
 
 (defn merge-model-indexes [new from-ls]
@@ -649,6 +681,6 @@
         local-state (utils/ratom (:table-state cfg))]
     [:div {:class "w-full relative"}
      (when (:visibility-ctrl props)
-       [:div {:class "fixed right-0 z-10 w-[45px] h-[48px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
+       [:div {:class "fixed right-0 z-10 w-[45px] h-[38px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
         [column-visibility-dropdown local-state col-defs cfg]])
      [core-table cfg col-defs row-data local-state]]))
