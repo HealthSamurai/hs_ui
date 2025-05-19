@@ -18,5 +18,4 @@
                          (when-let [on-change-fn (:on-change props)]
                            (on-change-fn event (.. event -target -checked))))}]
    [:div.slide-toggle {:class (when (:disabled props) "cursor-not-allowed")}
-    [:div.text-elements-assistive.lock-icon hs-ui.svg.lock/svg]]
-   ])
+    [:div.text-elements-assistive.lock-icon hs-ui.svg.lock/svg]]])

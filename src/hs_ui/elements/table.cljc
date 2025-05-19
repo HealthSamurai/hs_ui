@@ -283,7 +283,7 @@
                   {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "1rem"})))}
 
       [:span {:class "block overflow-hidden"}
-       (or (:header col-info) model-idx)]
+       (or (:value col-info) (:header col-info) model-idx)]
 
      ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
      (when-not (and cur-border-side
@@ -388,7 +388,7 @@
                                   ;; TODO: fix color to var
                                   (assoc :background "rgba(113, 118, 132, 0.10)"))]
                       style)}
-            (if (need-tooltip? (:value value))
+            (if (and (need-tooltip? (:value value)) (not= false (:need-tooltip? value)))
               [hs-ui.components.tooltip/component
                {:class   (:c/tooltip-style cfg)
                 :tooltip [:pre (or (:tooltip value) (:title value) (str (:value value)))]}
@@ -611,12 +611,13 @@
 (defn generate-cols
   [cols-data]
   (mapv
-   (fn [{:keys [name width]}]
+   (fn [{:keys [name width value]}]
      (let [key (if (empty? name) "" (keyword name))]
        {:path   [key]
         :header name
         :key    key
-        :width  width}))
+        :width  width
+        :value  value}))
    cols-data))
 
 (defn merge-model-indexes [new from-ls]

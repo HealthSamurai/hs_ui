@@ -10,6 +10,7 @@
    [hs-ui.components.button]
    [hs-ui.components.input]
    [hs-ui.components.checkbox]
+   [hs-ui.components.checkbox-square]
    [hs-ui.components.content-expand]
    [hs-ui.components.breadcrumbs]
    [hs-ui.components.list-item]
@@ -55,6 +56,7 @@
 (def radio    hs-ui.components.radio/component)
 (def radio-button hs-ui.components.radio-button/component)
 (def checkbox hs-ui.components.checkbox/component)
+(def checkbox-square hs-ui.components.checkbox-square/component)
 (def content-expand hs-ui.components.content-expand/component)
 (def breadcrumbs hs-ui.components.breadcrumbs/component)
 (def breadcrumbs-items hs-ui.elements.breadcrumb/view)
