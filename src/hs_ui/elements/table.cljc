@@ -283,7 +283,7 @@
                   {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "1rem"})))}
 
       [:span {:class "block overflow-hidden"}
-       (or (:value col-info) (:header col-info) model-idx)]
+       (or (:icon col-info) (:value col-info) (:header col-info) model-idx)]
      ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
      (when-not (:action? col-info)
        (when-not (and cur-border-side
@@ -360,7 +360,6 @@
                table-name (:table-name cfg)
                previous-visible-idx (get-in @position-on-drag [table-name :previous-visible-idx])
                cur-border-side (get-in @position-on-drag [table-name :border-side])]
-
            ^{:key (col-key row row-idx model-idx)}
            [:td
             {:class (if (:cell-toolbar-active? cfg)
@@ -451,7 +450,6 @@
                        hidden-cell #?(:cljs (r/cursor hidden-cols [(keyword (str model-idx))])
                                       :clj nil)
                        cur-border-side (get-in @position-on-drag [table-name :control-border-side])]
-
                    [hs-ui.components.list-item/component {:key view-idx
                                                           :on-click (fn []
                                                                       (swap! hidden-cell not)
@@ -537,7 +535,7 @@
   [headers]
   (into [] (map (fn [header]
                   (or (:header header) "empty"))
-                        headers)))
+                headers)))
 (defn core-table
   []
   (fn [cfg col-model data state-atom]
@@ -611,10 +609,11 @@
 (defn generate-cols
   [cols-data]
   (mapv
-   (fn [{:keys [name width keyname action? th-class container-class value]}]
+   (fn [{:keys [name width keyname action? th-class container-class value icon]}]
      (let [key (or keyname (if (empty? name) "" (keyword name)))]
        {:path     [key]
         :header   name
+        :icon     icon
         :action?  action?
         :th-class th-class
         :value    value

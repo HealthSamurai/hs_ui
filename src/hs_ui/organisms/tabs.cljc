@@ -20,10 +20,13 @@
    (for [item (:c/items props)] ^{:key (:id item)}
      [hs-ui.components.tab/component (assoc item :name (:name props))])])
 
-(defn secondary-tab-item [{:keys [id label active?]}]
-  [:button {:key id :class ["px-[12px] py-[6px] leading-[15px]"
-                        (when active?
-                          "text-[var(--color-elements-readable)] rounded-[6px] border")]}
+(defn secondary-tab-item [{:keys [id label active? on-click]}]
+  [:div {:key id
+         :on-click on-click
+         :class ["px-[12px] py-[6px] leading-[15px] cursor-pointer border"
+                 (if active?
+                   "text-[var(--color-elements-readable)] rounded-[6px]"
+                   "border-transparent")]}
    label])
 
 (defn secondary-tabs [{:keys [class items]}]
