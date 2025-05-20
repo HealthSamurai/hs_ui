@@ -282,8 +282,11 @@
                              (inc visible-idx)))
                   {:border-right "0.25rem solid var(--color-elements-assistive)" :padding-right "1rem"})))}
 
+     [:span.flex.items-center {:class (when (:icon col-info) "justify-center")}
       [:span {:class "block overflow-hidden"}
        (or (:icon col-info) (:value col-info) (:header col-info) model-idx)]
+      (when (:right-icon col-info)
+        [:span {:class "ml-2"}(:right-icon col-info)])]
      ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
      (when-not (:action? col-info)
        (when-not (and cur-border-side
@@ -348,7 +351,7 @@
         model       (:column-model cfg)
         on-row-click (:on-row-click cfg)]
     ^{:key (row-key-fn row row-idx)}
-    [:tr {:class body-row-class
+    [:tr {:class (utils/class-names body-row-class (:tr-class row))
           :data-role     (when on-row-click "link")
           :on-click      (when on-row-click #(on-row-click row))
           :aria-selected (:selected? row)}
@@ -609,11 +612,12 @@
 (defn generate-cols
   [cols-data]
   (mapv
-   (fn [{:keys [name width keyname action? th-class container-class value icon]}]
+   (fn [{:keys [name width keyname action? th-class container-class value icon right-icon]}]
      (let [key (or keyname (if (empty? name) "" (keyword name)))]
        {:path     [key]
         :header   name
         :icon     icon
+        :right-icon right-icon
         :action?  action?
         :th-class th-class
         :value    value
