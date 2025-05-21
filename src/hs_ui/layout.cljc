@@ -331,7 +331,8 @@
                  (.addEventListener js/document "touchend" mouse-up))]
          (fn [orig-props]
            [:<>
-            [:div.separator {:class          "py-4 my-[-1rem] cursor-row-resize z-[200] group"
+            [:div.separator {:class          (into ["py-4 my-[-1rem] cursor-row-resize z-[200] group"]
+                                                   (if (vector? class) class [class]))
                              :style         {:bottom (str default-lower-percent "%")
                                              :display (when (:disabled? orig-props)
                                                         "none")}
