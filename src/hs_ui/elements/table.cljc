@@ -56,10 +56,10 @@
 
 (def body-row-class
   ["even:bg-[var(--color-surface-1)]"
-   "aria-selected:bg-[var(--color-surface-selected)]"
+   "aria-selected:!bg-[var(--color-surface-selected)]"
    "data-[role=link]:cursor-pointer"
    "data-[role=link]:hover:text[var(--color-elements-readable)]"
-   "data-[role=link]:hover:bg-[rgba(34,120,225,0.10)]"
+   "data-[role=link]:hover:!bg-[rgba(34,120,225,0.10)]"
    "group/row"])
 
 (def text-class
