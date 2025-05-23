@@ -11,7 +11,7 @@
    ;; Hovered
    "hover:text-[theme(colors.elements-readable)]"
    "data-[hovered=true]:text-[theme(colors.elements-readable)]"
-   "border-b"
+   "border-b-[2px]"
    "border-transparent"
 
    ;; Selected

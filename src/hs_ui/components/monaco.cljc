@@ -52,7 +52,7 @@
                          :lineDecorationsWidth             0
                          :tabSize                          2
                          ;; :lineNumbers                      "off"
-                         :lineNumbersMinChars              4
+                         :lineNumbersMinChars              3
                          :scrollBeyondLastLine             false
                          }
                         (:options properties))
@@ -66,19 +66,45 @@
            (before-mount-fn instance))
          (when (:schemas properties)
            (set-json-defaults instance (:schemas properties) (:defaultPath properties)))
+         (.setMonarchTokensProvider (.-languages ^js/Object instance) "yaml"
+                                    (clj->js
+                                     {:tokenPostfix nil
+
+                                      :escapes #"\\(?:[abefnrtv0_NLP\\\"]|(?:x[\dA-Fa-f]{2})|(?:u[\dA-Fa-f]{4})|(?:U[\dA-Fa-f]{8}))"
+
+                                      :tokenizer
+                                      {:root [[#"(^\s*)([a-z_$][\w$-]*)(:(?: |$))" ["white" "property-name" "operator"]]
+                                              [#"#.*?$" "comment"]
+                                              [#"[ \t\r\n]+" "white"]
+                                              [#"'" {:token "string.quote" :bracket "@open" :next "litstring"}]
+                                              [#"\"([^\"\\]|\\.)*$" "string.invalid"]
+                                              [#"\"" {:token "string.quote" :bracket "@open" :next "string"}]]
+
+                                       :string [[#"[^\\\"]+" "string"]
+                                                ["@escapes" "string.escape"]
+                                                [#"\\." "string.escape.invalid"]
+                                                [#"\"" {:token "string.quote" :bracket "@close" :next "@pop"}]]
+
+                                       :litstring [[#"[^']+" "string"]
+                                                   [#"''" "string.escape"]
+                                                   [#"'" {:token "string.quote" :bracket "@close" :next "@pop"}]]}}))
          #?(:cljs
             (.defineTheme (.-editor ^js/Object instance)
                           "hs-ui-theme"
                           (clj->js {:base    "vs"
                                     :inherit true
                                     :rules   [{:token "string.key.json" :foreground "#EA4A35"}
+                                              {:token "property-name" :foreground "#EA4A35"}
+                                              {:token "litstring" :foreground "#EA4A35"}
+                                              {:token "white" :foreground "#EA4A35"}
                                               {:token "string.value.json" :foreground "#405CBF"}
                                               {:token "string" :foreground "#405CBF"}
                                               {:token "number" :foreground "#00A984"}
                                               {:token "key.json" :foreground "#00A984"}]
-                                    :colors  {"editor.background" "#F9F9F9"
-                                              "editorLineNumber.foreground" "#616471"
-                                              "editorLineNumber.activeForeground" "#616471"
+                                    :colors  {"editor.background" "#FFFFFF"
+                                              "editor.foreground" "#405CBF"
+                                              "editorLineNumber.foreground" "#83868E"
+                                              "editorLineNumber.activeForeground" "#000000"
                                               "scrollbar.shadow"  "#ffffff00"
                                               "scrollbarSlider.background" "#83868E"
                                               "scrollbarSlider.activeBackground" "#212636"

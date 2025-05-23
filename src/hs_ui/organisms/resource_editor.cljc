@@ -214,11 +214,11 @@
   ;; This abstraction is so leaky that it'd rather belong to Aidbox,
   ;; and not HS-UI.
   [monaco-editor monaco-props validation-props]
-  [:div.h-full.mb-1 {:class "bg-[var(--color-surface-1)] rounded-t-[var(--corner-corner-m)] p-1"}
+  [:div.h-full.mb-1 {:class "bg-[var(--color-surface-1)] rounded-t-[var(--corner-corner-m)]"}
    [:style ".glyph {
   color: var(--color-illustrations-solid);
 }
-.line-numbers {text-align: left !important; padding-left: 5px}
+.line-numbers {text-align: left !important; padding-left: 2px}
 .glyph::after {
   content: '●';
 }"]
