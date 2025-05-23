@@ -66,28 +66,30 @@
            (before-mount-fn instance))
          (when (:schemas properties)
            (set-json-defaults instance (:schemas properties) (:defaultPath properties)))
-         (.setMonarchTokensProvider (.-languages ^js/Object instance) "yaml"
-                                    (clj->js
-                                     {:tokenPostfix nil
+         #?(:clj nil
+            :cljs
+            (.setMonarchTokensProvider (.-languages ^js/Object instance) "yaml"
+                                       (clj->js
+                                        {:tokenPostfix nil
 
-                                      :escapes #"\\(?:[abefnrtv0_NLP\\\"]|(?:x[\dA-Fa-f]{2})|(?:u[\dA-Fa-f]{4})|(?:U[\dA-Fa-f]{8}))"
+                                         :escapes #"\\(?:[abefnrtv0_NLP\\\"]|(?:x[\dA-Fa-f]{2})|(?:u[\dA-Fa-f]{4})|(?:U[\dA-Fa-f]{8}))"
 
-                                      :tokenizer
-                                      {:root [[#"(^\s*)([a-z_$][\w$-]*)(:(?: |$))" ["white" "property-name" "operator"]]
-                                              [#"#.*?$" "comment"]
-                                              [#"[ \t\r\n]+" "white"]
-                                              [#"'" {:token "string.quote" :bracket "@open" :next "litstring"}]
-                                              [#"\"([^\"\\]|\\.)*$" "string.invalid"]
-                                              [#"\"" {:token "string.quote" :bracket "@open" :next "string"}]]
+                                         :tokenizer
+                                         {:root [[#"(^\s*)([a-z_$][\w$-]*)(:(?: |$))" ["white" "property-name" "operator"]]
+                                                 [#"#.*?$" "comment"]
+                                                 [#"[ \t\r\n]+" "white"]
+                                                 [#"'" {:token "string.quote" :bracket "@open" :next "litstring"}]
+                                                 [#"\"([^\"\\]|\\.)*$" "string.invalid"]
+                                                 [#"\"" {:token "string.quote" :bracket "@open" :next "string"}]]
 
-                                       :string [[#"[^\\\"]+" "string"]
-                                                ["@escapes" "string.escape"]
-                                                [#"\\." "string.escape.invalid"]
-                                                [#"\"" {:token "string.quote" :bracket "@close" :next "@pop"}]]
+                                          :string [[#"[^\\\"]+" "string"]
+                                                   ["@escapes" "string.escape"]
+                                                   [#"\\." "string.escape.invalid"]
+                                                   [#"\"" {:token "string.quote" :bracket "@close" :next "@pop"}]]
 
-                                       :litstring [[#"[^']+" "string"]
-                                                   [#"''" "string.escape"]
-                                                   [#"'" {:token "string.quote" :bracket "@close" :next "@pop"}]]}}))
+                                          :litstring [[#"[^']+" "string"]
+                                                      [#"''" "string.escape"]
+                                                      [#"'" {:token "string.quote" :bracket "@close" :next "@pop"}]]}})))
          #?(:cljs
             (.defineTheme (.-editor ^js/Object instance)
                           "hs-ui-theme"
