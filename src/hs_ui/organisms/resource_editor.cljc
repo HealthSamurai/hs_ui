@@ -179,7 +179,7 @@
     (seq (:errors props))
     [error-result props monaco-editor]))
 
-(defonce decorations (atom [])) ;; храним текущие ID
+(defonce decorations (atom []))
 
 (defn show-glyphs [editor validation-props]
   #?(:cljs
@@ -202,7 +202,6 @@
                                            :glyphMarginClassName "glyph"}})))
                       clj->js)
                  #js [])]
-           ;; Заменяем старые декорации на новые
            (reset! decorations
                    (.deltaDecorations ^js/Object editor
                                       (clj->js @decorations)
@@ -247,4 +246,5 @@
          [:div {:class ["w-full" "h-full" "overflow-y-hidden"]}
           [monaco-editor-view monaco-editor monaco-props validation-props]]
          [:div {:class ["w-full"]}
-          [validation-result validation-props monaco-editor]]]))))
+          (when validation-props
+            [validation-result validation-props monaco-editor])]]))))

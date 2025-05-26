@@ -46,8 +46,9 @@
    [hs-ui.svg.plus]
    [hs-ui.svg.chevron-down]
    [hs-ui.svg.pin]
-   [hs-ui.svg.cross]
-   [hs-ui.svg.ban]))
+   [hs-ui.svg.ban]
+   [hs-ui.svg.trash]
+   [hs-ui.svg.cross]))
 
 ;; Elements
 (def table hs-ui.elements.table/view)
@@ -137,3 +138,4 @@
 (def icon-pin hs-ui.svg.pin/svg)
 (def icon-cross hs-ui.svg.cross/svg)
 (def icon-ban hs-ui.svg.ban/svg)
+(def icon-trash hs-ui.svg.trash/svg)
