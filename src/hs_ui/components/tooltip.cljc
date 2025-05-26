@@ -153,7 +153,11 @@
                           "text-white bg-[var(--color-critical-default)]"
                           "text-[var(--color-elements-readable-inv)] bg-[var(--color-elements-assistive)]")]
                        class)
-               :style (merge {:position "fixed"} @tooltip-pos)}
+               :style (merge {:position "fixed"
+                              :left -9999
+                              :top -9999
+                              :visibility (when (nil? @tooltip-pos) "hidden")}
+                             @tooltip-pos)}
               tooltip
               ;; Arrow element
               [:div
