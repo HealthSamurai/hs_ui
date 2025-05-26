@@ -286,7 +286,12 @@
       [:span {:class "block overflow-hidden"}
        (or (:icon col-info) (:value col-info) (:header col-info) model-idx)]
       (when (:right-icon col-info)
-        [:span {:class "ml-2"}(:right-icon col-info)])]
+        (if (:right-icon-tooltip col-info)
+          [hs-ui.components.tooltip/component
+           {:class "ml-1"
+            :tooltip [:pre (:right-icon-tooltip col-info)]}
+           [:div {:class "ml-2"} (:right-icon col-info)]]
+          [:div {:class "ml-2"}(:right-icon col-info)]))]
      ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
      (when-not (:action? col-info)
        (when-not (and cur-border-side
@@ -612,12 +617,13 @@
 (defn generate-cols
   [cols-data]
   (mapv
-   (fn [{:keys [name width keyname action? th-class container-class value icon right-icon]}]
+   (fn [{:keys [name width keyname action? th-class container-class value icon right-icon right-icon-tooltip]}]
      (let [key (or keyname (if (empty? name) "" (keyword name)))]
        {:path     [key]
         :header   name
         :icon     icon
         :right-icon right-icon
+        :right-icon-tooltip right-icon-tooltip
         :action?  action?
         :th-class th-class
         :value    value
