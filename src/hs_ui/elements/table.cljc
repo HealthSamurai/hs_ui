@@ -293,12 +293,13 @@
            [:div {:class "ml-2"} (:right-icon col-info)]]
           [:div {:class "ml-2"}(:right-icon col-info)]))]
      ;; This hide resize control during dragging prosses on cells with "dragging position stick" a.k.a. left or right border
-     (when-not (:action? col-info)
-       (when-not (and cur-border-side
-                      (:col-reordering st)
-                      (= visible-idx (if (= cur-border-side :border-right) (:col-hover st) (dec (:col-hover st))))
-                      (not= (:dragging-column st) model-idx))
-         [resizer-handle cell-ref model-idx state-atom (:table-name cfg)]))]))
+     (when-not last-child
+       (when-not (:action? col-info)
+         (when-not (and cur-border-side
+                        (:col-reordering st)
+                        (= visible-idx (if (= cur-border-side :border-right) (:col-hover st) (dec (:col-hover st))))
+                        (not= (:dragging-column st) model-idx))
+           [resizer-handle cell-ref model-idx state-atom (:table-name cfg)])))]))
 
 (defn last-column-index?
   [state-atom column-name]

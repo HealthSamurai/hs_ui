@@ -97,7 +97,7 @@
              :on-click #(when @open?
                           (rf/dispatch [::monaco-goto-line {:path (:path error)
                                                             :monaco-editor @monaco-editor}]))}
-        [:td {:class ["peer max-w-[20vw] cursor-pointer px-2 py-1 truncate"
+        [:td {:class ["peer max-w-[20vw] cursor-pointer pl-[16px] pr-2 py-1 truncate"
                       "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]
               :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
                                                            :monaco-editor @monaco-editor}])}
@@ -117,21 +117,21 @@
        (when @open?
          [:tr
           [:td {:colSpan 3 :class "overflow-x-auto max-w-[100px]"}
-           [:div {:class "px-[36px]"}
+           [:div {:class "px-[45px]"}
             (when-let [url (:schema-id error)]
               (str url ": "))
             (:message error)]]])])))
 
 (defn valid-result
   [props]
-  [:div {:class "py-2 px-4 flex space-x-2 bg-[var(--color-surface-1)] rounded-b-[var(--corner-corner-m)]"}
+  [:div {:class "py-2 px-4 flex space-x-2 bg-[var(--color-surface-1)]"}
    [:span {:class "text-[var(--color-elements-green)]"} hs-ui.svg.check-2/svg]
    [hs-ui.text/assistive (:valid-result-text props)]])
 
 (defn result-loading
   [props]
   (let [has-errors? (not-empty (:errors props))]
-    [:div {:class ["py-2 px-4 flex space-x-2 rounded-b-[var(--corner-corner-m)] items-center"
+    [:div {:class ["py-2 px-4 flex space-x-2 items-center"
                    (if has-errors?
                      "bg-[var(--color-critical-default)]"
                      "bg-[var(--color-surface-1)]")]}
@@ -145,11 +145,11 @@
 
 (defn error-result
   [props monaco-editor]
-  [:div {:class "w-full overflow-y-hidden pb-[30px] h-full border border-t-0 border-[var(--color-critical-default)] rounded-b-[var(--corner-corner-m)]"}
-   [:div {:class "py-2 px-4 flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer"}
-    [:span {:class "flex items-center"}
-     [hs-ui.text/assistive {:class "text-[var(--color-elements-readable-inv)]"} "Validation errors:"]
-     [hs-ui.text/counter {:class "ml-2 rounded-[29px] px-1 pt-[1px] bg-[var(--color-elements-readable-inv)]"}
+  [:div {:class "w-full overflow-y-hidden pb-[12px] h-full border border-t-0 border-[var(--color-critical-default)]"}
+   [:div {:class "py-2 px-[16px] flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer"}
+    [:span {:class "flex items-baseline"}
+     [:span {:class "font-medium text-[var(--color-elements-readable-inv)]"} "Validation errors:"]
+     [hs-ui.text/counter {:class "ml-2 rounded-full px-1.5 bg-[var(--color-elements-readable-inv)]"}
       (count (:errors props))]]
 
     [hs-ui.components.button/xs-red {:class "px-2"
