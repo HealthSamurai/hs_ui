@@ -206,29 +206,31 @@
     content)])
 
 (defn fuse-search
-  [fuse-options items search-string]
+  [fuse-options items search-string & [row-result]]
   (let [search-string-parts (filter seq (clojure.string/split (str search-string) #"\ "))]
     #?(:cljs
-       (->>
-        (js->clj
-         (.search (fuse. (clj->js items)
-                         (clj->js
-                          (merge
-                           {:threshold 0.2
-                            :minMatchCharLength 2
-                            :ignoreLocation true}
-                           fuse-options)))
-                  (clj->js
-                   (reduce
-                    (fn [acc field]
-                      (let [field-name (if (string? field) field (:name field))]
-                        (update acc :$or (fnil conj [])
-                                {:$and (map (fn [part] {field-name part})
-                                            search-string-parts)})))
-                    {} (->> fuse-options :keys))))
+       (cond->>
+         (js->clj
+          (.search (fuse. (clj->js items)
+                          (clj->js
+                           (merge
+                            {:threshold 0.2
+                             :minMatchCharLength 2
+                             :ignoreLocation true}
+                            fuse-options)))
+                   (clj->js
+                    (or (:custom-search-setting fuse-options)
+                        (reduce
+                         (fn [acc field]
+                           (let [field-name (if (string? field) field (:name field))]
+                             (update acc :$or (fnil conj [])
+                                     {:$and (map (fn [part] {field-name part})
+                                                 search-string-parts)})))
+                         {} (->> fuse-options :keys)))))
 
-         :keywordize-keys true)
-        (mapv :item)))))
+          :keywordize-keys true)
+         (not row-result)
+         (mapv :item)))))
 
 (defn set-storage-item
   [keyname value]
