@@ -97,7 +97,7 @@
              :on-click #(when @open?
                           (rf/dispatch [::monaco-goto-line {:path (:path error)
                                                             :monaco-editor @monaco-editor}]))}
-        [:td {:class ["peer max-w-[20vw] cursor-pointer pl-[16px] pr-2 py-1 truncate"
+        [:td {:class ["peer max-w-[20vw] cursor-pointer pl-[15px] pr-2 py-1 truncate"
                       "text-[var(--color-elements-assistive)] hover:text-[var(--color-cta)] text-right"]
               :on-click #(rf/dispatch [::monaco-goto-line {:path (:path error)
                                                            :monaco-editor @monaco-editor}])}
@@ -146,7 +146,7 @@
 (defn error-result
   [props monaco-editor]
   [:div {:class "w-full overflow-y-hidden pb-[12px] h-full border border-t-0 border-[var(--color-critical-default)]"}
-   [:div {:class "py-2 px-[16px] flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer"}
+   [:div {:class "py-2 px-[18px] flex items-center justify-between bg-[var(--color-critical-default)] cursor-pointer"}
     [:span {:class "flex items-baseline"}
      [:span {:class "font-medium text-[var(--color-elements-readable-inv)]"} "Validation errors:"]
      [hs-ui.text/counter {:class "ml-2 rounded-full px-1.5 bg-[var(--color-elements-readable-inv)]"}

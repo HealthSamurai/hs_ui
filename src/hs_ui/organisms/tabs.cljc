@@ -5,7 +5,7 @@
 
 (def root-class
   ["flex"
-   "space-x-[theme(spacing.x3)]"])
+   "space-x-[4px]"])
 
 (defn component
   "Accepts a vector of maps (:c/items), each map might have
@@ -23,7 +23,7 @@
 (defn secondary-tab-item [{:keys [id label active? on-click class]}]
   [:div {:key id
          :on-click on-click
-         :class ["px-[12px] py-[6px] leading-[15px] cursor-pointer border"
+         :class ["px-[12px] py-[6px] leading-[15px] cursor-pointer border shrink-0"
                  (if active?
                    "text-[var(--color-elements-readable)] rounded-[6px] bg-[var(--color-surface-0)]"
                    "border-transparent")
@@ -31,6 +31,6 @@
    label])
 
 (defn secondary-tabs [{:keys [class items]}]
-  [:nav {:class (u/class-names "bg-[#F9F9F9] py-[6px] flex font-medium text-[var(--color-elements-assistive)]" class)}
+  [:nav {:class (u/class-names "bg-[#F9F9F9] py-[6px] flex font-medium text-[var(--color-elements-assistive)] overflow-x-auto" class)}
    (for [item items]
      (secondary-tab-item item))])

@@ -28,6 +28,7 @@
 (def column-name-class
   ["px-[8px]"
    "py-[9px]"
+   "pb-[10px]"
    "font-medium"
    "text-nowrap"
    "text-left"

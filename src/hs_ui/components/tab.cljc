@@ -6,6 +6,7 @@
    "text-[theme(colors.elements-assistive)]"
    "pt-[6px]"
    "pb-[5px]"
+   "px-[7px]"
    "text-nowrap"
    "cursor-pointer"
    ;; Hovered
