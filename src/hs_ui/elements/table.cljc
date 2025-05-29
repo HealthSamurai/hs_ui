@@ -42,6 +42,7 @@
   ["px-[4.5px]"
    "py-2"
    "border-x-[3.5px]"
+   "text-[#212636]"
    "border-transparent"
    "whitespace-nowrap"
    "break-all"
@@ -207,7 +208,7 @@
   [col-info visible-idx model-idx cfg state-atom last-child]
   (let [st           @state-atom
         hidden-cols  (:col-hidden st)
-        draggable?   (:draggable st)
+        draggable?   (and (not (:action? col-info)) (:draggable st))
         table-name   (:table-name cfg)
         previous-visible-idx (get-in @position-on-drag [table-name :previous-visible-idx])
         cur-border-side (get-in @position-on-drag [table-name :border-side])

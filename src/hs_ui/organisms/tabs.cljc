@@ -5,7 +5,7 @@
 
 (def root-class
   ["flex"
-   "space-x-[4px]"])
+   "gap-x-[4px]"])
 
 (defn component
   "Accepts a vector of maps (:c/items), each map might have
