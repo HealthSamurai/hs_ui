@@ -85,7 +85,7 @@
   [props]
   [:label {:class page-item-class
            :on-click (if (and (:on-click props) (not (:disabled? props)))
-                       (fn [_] ((:on-click props) (:id props)))
+                       (fn [e] (.preventDefault e) ((:on-click props) (:id props)))
                        (fn [e] (.preventDefault e)))}
    [:input.hidden {:type     "radio"
                    :checked  (boolean (:selected? props))
