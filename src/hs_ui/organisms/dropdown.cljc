@@ -61,7 +61,9 @@
   [props selected-item]
   [:div {:class (cond-> selected-item-class
                   (:disabled props)
-                  (hs-ui.utils/class-names disabled-class))
+                  (hs-ui.utils/class-names disabled-class)
+                  (:c/root-selected-option-class props)
+                  (hs-ui.utils/class-names (:c/root-selected-option-class props)))
          :on-click (when-not (:disabled props)
                      (if (:c/open? props)
                        (:c/on-close props)

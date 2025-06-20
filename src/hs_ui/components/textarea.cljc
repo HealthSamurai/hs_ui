@@ -57,7 +57,7 @@
   [:div {:class (hs-ui.utils/class-names root-class (:c/root-class properties))}
    (when-let [slot-left (:slot/left properties)]
      [:div {:class slot-left-class} slot-left])
-   [:fieldset {:class        fieldset-class
+   [:fieldset {:class        (hs-ui.utils/class-names fieldset-class (:c/fiedset-class properties))
                :data-invalid (:data-invalid properties)
                :disabled     (:disabled properties)}
     [:textarea (hs-ui.utils/merge-props {:class input-class

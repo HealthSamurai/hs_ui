@@ -2,6 +2,7 @@
   (:require [hs-ui.components.content-expand]
             [hs-ui.components.radio-button]
             [hs-ui.components.tooltip]
+            [hs-ui.utils]
             [hs-ui.layout]))
 
 (defn component
@@ -9,7 +10,8 @@
   (let [options (:c/options props)]
     [hs-ui.layout/control
      {:class                (:c/root-layout-class props)
-      :slot/control         [:div {:class "border border-border-default rounded-corner-m divide-y"}
+      :slot/control         [:div {:class (hs-ui.utils/class-names "border border-border-default rounded-corner-m divide-y"
+                                                                   (:c/root-control-class props))}
                              (for [option options
                                    :let [tooltip-props (:c/radio-tooltip props)
                                          radio-button
