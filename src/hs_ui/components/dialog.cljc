@@ -20,7 +20,7 @@
                          (close (:id properties)))}
       properties)
 
-     [:div {:on-click #(utils/stop-propagation %)}
+     [:div {:on-click #(utils/stop-propagation %) :class "h-full"}
       children]]))
 
 (defn template
