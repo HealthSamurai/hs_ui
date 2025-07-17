@@ -408,7 +408,8 @@
               [cell-toolbar
                (map
                 (fn [icon]
-                  (update icon :on-click partial model-idx (:value value)))
+                  (update icon :on-click partial model-idx (or (:search-value value)
+                                                               (:value value))))
                 (:cell-toolbar-icons cfg))])]))
        (or model row)))]))
 
