@@ -43,14 +43,13 @@
    "pt-[7px]"
    "rounded-corner-m"
    "mt-[4px]"
-   "z-10"
+   "z-[9999]"
    "shadow-dropdown"
    ])
 
 (def list-items-class
   ["overflow-y-auto"
    "mb-x1"
-   "pr-half"
    "max-h-[338px]"])
 
 (def search-input-class
