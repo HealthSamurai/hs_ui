@@ -8,7 +8,7 @@
   ["w-[240px]"
    "h-full"
    "flex"
-   "text-[theme(colors.elements-readable)]"
+   "text-[var(--color-elements-assistive)]"
    "bg-white"
    "font-normal"
    "border-r"
@@ -51,7 +51,9 @@
    "rounded"
    "cursor-pointer"
    "hover:[text-decoration:none]"
-   "[&.item-active]:bg-[theme(colors.surface-selected)]"
+   "[&.item-active]:bg-[#FDEDEB]"
+   "[&.item-active]:!text-[var(--color-elements-readable)]"
+   "[&.item-active_svg]:!text-[#EA4A35]"
    "[&:not(.item-active)]:hover:text-inherit"
    "[&:not(.item-active)]:hover:bg-[theme(colors.surface-1)]"])
 
@@ -112,8 +114,7 @@
 
 
    (when-let [content (:slot/content item)]
-     [:span {:class ["truncate text-[theme(colors.elements-readable)]"
-                     (when (:slot/items item) "grow")]
+     [:span {:class ["truncate" (when (:slot/items item) "grow")]
              :data-key :label}
       content])
 

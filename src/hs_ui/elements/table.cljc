@@ -111,6 +111,13 @@
        (js/localStorage.setItem key (js/JSON.stringify (clj->js st))))
      :clj nil))
 
+(defn first-column-index?
+  [state-atom column-name]
+  (->> (:col-index-to-model @state-atom)
+       (remove #(get-in @state-atom [:col-hidden (keyword %)]))
+       (first)
+       (= column-name)))
+
 
 (defn handle-drag-move
   [on-move]
@@ -228,6 +235,7 @@
                      (when (and el last-child (not= 0 (.-clientWidth el)) #_(not (table-wider-than-vw? table-name)))
                        (set! (.-width (.-style el)) "100%")))
       :class       (utils/class-names column-name-class (:th-class col-info))
+      :data-first-col (first-column-index? state-atom model-idx)
       :draggable   draggable?
       :on-drag-start (fn [e]
                        (set! (.. e -dataTransfer -effectAllowed) "move")
@@ -376,6 +384,7 @@
             {:class (if (:cell-toolbar-active? cfg)
                       (concat table-cell-class table-cell-border-class)
                       table-cell-class)
+             :data-first-col (first-column-index? state-atom model-idx)
              :style (let [style (cond-> {:display (when (get hidden-map (keyword (str model-idx))) "none")}
 
                                   (and (:col-reordering st)
@@ -630,6 +639,7 @@
         :right-icon right-icon
         :right-icon-tooltip right-icon-tooltip
         :action?  action?
+        :hidden-by-default? (:hidden-by-default? col)
         :hidden-in-dropdown? (:hidden-in-dropdown? col)
         :th-class th-class
         :value    value
@@ -663,9 +673,19 @@
                     :on-row-click (:on-row-click props)
                     :cell-toolbar-active? (seq (:cell-toolbar-icons props))
                     :cell-toolbar-icons (:cell-toolbar-icons props)}
-        local-state (utils/ratom (:table-state cfg))]
-    [:div {:class "w-full relative"}
-     (when (:visibility-ctrl props)
-       [:div {:class "fixed right-0 z-10 w-[45px] h-[38px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
-        [column-visibility-dropdown local-state col-defs cfg]])
-     [core-table cfg col-defs row-data local-state]]))
+        local-state (utils/ratom (update (:table-state cfg) :col-hidden
+                                         (fn [x]
+                                           (merge (reduce (fn [acc y]
+                                                            (if (:hidden-by-default? y)
+                                                              (assoc acc (:key y) true)
+                                                              acc))
+                                                          {} col-defs)
+                                                  x))))]
+    [:<>
+     [:style "table th[data-first-col='true'] {padding-left: 24px !important}
+              table td[data-first-col='true'] {padding-left: 21px !important}"]
+     [:div {:class "w-full relative"}
+      (when (:visibility-ctrl props)
+        [:div {:class "fixed right-0 z-10 w-[45px] h-[38px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
+         [column-visibility-dropdown local-state col-defs cfg]])
+      [core-table cfg col-defs row-data local-state]]]))
