@@ -546,7 +546,7 @@
                                       (write-table-state! table-name @state-atom))
                          :c/root-class "w-auto"
                          :c/small true}]
-                       [:div {:class "mr-4 flex justify-start w-full"} (or (:header info) model-idx)]
+                       [:div {:class "mr-4 flex justify-start w-full text-nowrap"} (or (:header info) model-idx)]
                        [:div {:class "w-[23px] flex items-center"}
                         [:div {:class (utils/class-names "hidden group-hover:block cursor-grab"
                                                          (if (:control-col-reordering st) "text-[--color-cta] !cursor-grabbing" ""))}
