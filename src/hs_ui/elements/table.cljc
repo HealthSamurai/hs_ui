@@ -686,6 +686,6 @@
               table td[data-first-col='true'] {padding-left: 21px !important}"]
      [:div {:class "w-full relative"}
       (when (:visibility-ctrl props)
-        [:div {:class "fixed right-0 z-10 w-[45px] h-[38px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
+        [:div {:class "visibility-ctrl fixed right-0 z-10 w-[45px] h-[38px] bg-white shadow-[-8px_0px_4px_0px_rgba(255,255,255,0.70)]"}
          [column-visibility-dropdown local-state col-defs cfg]])
       [core-table cfg col-defs row-data local-state]]]))
