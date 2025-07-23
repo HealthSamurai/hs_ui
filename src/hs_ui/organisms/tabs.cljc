@@ -24,7 +24,7 @@
   [:div {:key id
          :on-click on-click
          :data-active active?
-         :class ["px-[12px] py-[6px] leading-[15px] cursor-pointer border"
+         :class ["px-[12px] py-[6px] leading-[15px] cursor-pointer border text-nowrap"
                  (if active?
                    "text-[var(--color-elements-readable)] rounded-[6px] bg-[var(--color-surface-0)]"
                    "border-transparent")
