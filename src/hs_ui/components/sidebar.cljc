@@ -82,7 +82,7 @@
 
 (defn on-open-menu
   [item]
-  (hs-ui.utils/set-storage-item (:title item) true))
+  (hs-ui.utils/set-storage-item (hash (:slot/content item)) true))
 
 (defn on-close-menu
   [item]
@@ -90,7 +90,7 @@
 
 (defn open-before?
   [item]
-  (hs-ui.utils/get-storage-item (:title item)))
+  (hs-ui.utils/get-storage-item (hash (:slot/content item))))
 
 (defn details-constructor
   [element item]
@@ -102,8 +102,10 @@
                  (if (= "open" (.-newState event))
                    (on-open-menu item)
                    (on-close-menu item))))
-         (when (or (:open item) (open-before? item))
-           (set! (.-open element) true))))))
+         (if (some? (open-before? item))
+           (set! (.-open element) (open-before? item))
+           (when (:open item)
+             (set! (.-open element) true)))))))
 
 (defn menu-item
   [item]
