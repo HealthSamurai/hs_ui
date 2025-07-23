@@ -8,8 +8,8 @@
 
 (defn title-view [{:keys [title]}]
   [hs-ui.components.tooltip/component
-   {:place "bottom" :tooltip title}
-   [:span {:class "text-gray-900 font-medium text-[20px] text-[var(--color-elements-readable)] leading-6"}
+   {:place "bottom" :tooltip title :c/root-class "grid min-w-0"}
+   [:span {:class "text-gray-900 font-medium text-[20px] text-[var(--color-elements-readable)] leading-6 "}
     title]])
 
 (defn separator []
