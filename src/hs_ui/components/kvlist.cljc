@@ -41,5 +41,8 @@
        [:td {:class "align-top"}
         [hs-ui.text/value {:class "text-elements-assistive text-nowrap"} (str (:key/value item))]]
        [:td {:class "pl-2 group grid grid-cols-[auto_1fr] flex items-center"}
-        [hs-ui.text/value {:class "truncate"} (or (:value/title item) (:value/value item))]
+        [hs-ui.text/value {:class "truncate"}
+         [hs-ui.components.tooltip/component
+          {:tooltip (or (:value/title item) (:value/value item))}
+          (or (:value/title item) (:value/value item))]]
         [value-view props item (:value/value item)]]])]])
