@@ -5,6 +5,7 @@
    [hs-ui.svg.diamond]
    [hs-ui.svg.choice]
    [hs-ui.svg.datatype]
+   [hs-ui.svg.resource]
    [hs-ui.svg.primitive]
    [hs-ui.svg.slice-item]
    [hs-ui.svg.external-link]
@@ -21,8 +22,9 @@
   ["px-4"
    "py-2"
    "text-left"
-   "bg-white"
-   "text-[#616471]"])
+   "font-normal"
+   "bg-[var(--color-surface-1)]"
+   "text-[#1D2331]"])
 
 (def td-class
   ["px-4"
@@ -69,13 +71,16 @@
                      xs))))))))
 
 (defn name-cell [element]
-  [:div {:class "flex pt-2 ml-1"}
+  [:div {:class "flex pt-2 pb-1 ml-1"}
    [:div {:class "pt-[2px]"}
     (cond
+      (= "root" (:type element))
+      hs-ui.svg.resource/svg
       (or (:extension-url element)
           (:slice-type element))
       [:span {:class "text-[--color-elements-green]"} hs-ui.svg.slice-item/svg]
-      (= "primitive" (:type element))
+      (contains? #{"boolean" "integer" "string" "decimal" "uri" "url" "canonical" "base64Binary" "instant" "date" "dateTime" "time" "code" "oid" "id" "markdown" "unsignedInt" "positiveInt" "uuid" "xhtml"}
+                 (:datatype element))
       hs-ui.svg.primitive/svg
       (:union? element)
       [:span {:class "text-[--color-cta]"} hs-ui.svg.choice/svg]
@@ -184,7 +189,7 @@
        [:div {:class "element flex h-full"}
         (for [_ (range lvl)]
           [:span {:class "block li w-[15px] h-auto"}])]
-       [:div {:class "z-50 bg-white group-even:bg-[#f7f7f8]"}
+       [:div {:class "z-10 bg-white group-even:bg-[#f7f7f8]"}
         [name-cell element]
         (when (not= 0 lvl)
           [:div {:class "ml-[10px] h-[calc(100%-6px)] border-l border-dotted border-[#b3bac0]"}])]]
