@@ -217,9 +217,8 @@
                                 (or (= (dec lvl) next-el-lvl) (= 0 next-el-lvl)))))
                          (map second))]
 
-    [:div {:class "pl-2"}
-     [:table {:class table-class}
-      [:style "table tr:nth-child(even) {background-color: #f7f7f8;}
+    [:table {:class table-class}
+     [:style "table tr:nth-child(even) {background-color: #f7f7f8;}
 
    tbody.tree, tbody.tree tbody {
     list-style: none;
@@ -254,14 +253,14 @@
       left:-7px;
    } "]
 
-      [:thead
-       [:tr {:class "sticky top-0 z-50"}
-        [:th {:class th-class} "Name"]
-        [:th {:class th-class} "Flags"]
-        [:th {:class th-class} "Card."]
-        [:th {:class th-class} "Type"]
-        [:th {:class th-class} "Description"]]]
-      [:tbody.tree
-       (for [node nested-elements]
-         ^{:key (:name node)}
-         [tree-node node last-childs])]]]))
+     [:thead
+      [:tr {:class "sticky top-0 z-50"}
+       [:th {:class th-class} "Name"]
+       [:th {:class th-class} "Flags"]
+       [:th {:class th-class} "Card."]
+       [:th {:class th-class} "Type"]
+       [:th {:class th-class} "Description"]]]
+     [:tbody.tree
+      (for [node nested-elements]
+        ^{:key (:name node)}
+        [tree-node node last-childs])]]))
