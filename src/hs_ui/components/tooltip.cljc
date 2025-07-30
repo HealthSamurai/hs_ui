@@ -23,7 +23,7 @@
         tooltip-placement (utils/ratom nil)
         timeout-id        (utils/ratom nil)]
 
-    (fn [{:keys [tooltip class error?]
+    (fn [{:keys [tooltip class error? place]
           :or   {class ""}}
          & content]
 
@@ -60,8 +60,10 @@
                                  is-big?       (> t-height big-threshold)
 
                                  ;; If we haven't decided a placement yet, pick one now:
+                                 ;; If :place is provided, use it; otherwise, use dynamic logic
                                  chosen-placement
                                  (or @tooltip-placement
+                                     place
                                      (if is-big?
                                        (if (< p-center-x (/ doc-width 2))
                                          :right
@@ -93,11 +95,11 @@
                                    :top
                                    (let [above-top       (- p-top offset t-height)
                                          below-top       (+ p-bottom offset)
-                                         top             (if (neg? above-top)
-                                                           below-top  ; flip to bottom if no space
+                                         top             (if (and (not place) (neg? above-top))
+                                                           below-top  ; flip to bottom if no space and no fixed place
                                                            above-top)
                                          left            (- p-center-x (/ t-width 2))
-                                         final-placement (if (neg? above-top) :bottom :top)]
+                                         final-placement (if (and (not place) (neg? above-top)) :bottom chosen-placement)]
                                      [left top final-placement])
 
                                    (let [below-top (+ p-bottom offset)
@@ -118,7 +120,7 @@
                                       :top  final-top})))
                    :clj nil))]
 
-        (fn [{:keys [tooltip class error?] :or {class ""} :as props} & content]
+        (fn [{:keys [tooltip class error? place] :or {class ""} :as props} & content]
           [:div {:on-mouse-leave (fn [_]
                                    (reset! show? false))
                  :class (:c/root-class props)}
@@ -129,9 +131,9 @@
              :class          "truncate w-full max-w-full"
              :on-mouse-enter (fn [_]
                                (let [id #?(:cljs (js/setTimeout (fn []
-                                                                (reset! show? true)
-                                                                (reset! tooltip-placement nil)
-                                                                (r/after-render update-position!))
+                                                                  (reset! show? true)
+                                                                  (reset! tooltip-placement place)
+                                                                  (r/after-render update-position!))
                                                                 (:show-timeout props 300))
                                            :clj nil)]
                                  (reset! timeout-id id)))
@@ -162,7 +164,7 @@
               ;; Arrow element
               [:div
                {:class (str "absolute w-2 h-2 transform rotate-45 rounded-[2px] "
-                           (case @tooltip-placement
+                            (case @tooltip-placement
                              :top "bottom-[-3px] left-1/2 -translate-x-1/2 "
                              :bottom "top-[-3px] left-1/2 -translate-x-1/2 "
                              :left "right-[-3px] top-1/2 -translate-y-1/2 "

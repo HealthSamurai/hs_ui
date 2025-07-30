@@ -299,6 +299,7 @@
         (if (:right-icon-tooltip col-info)
           [hs-ui.components.tooltip/component
            {:class "ml-1"
+            :place (:right-icon-tooltip-place col-info)
             :tooltip [:pre (:right-icon-tooltip col-info)]}
            [:div {:class "ml-2"} (:right-icon col-info)]]
           [:div {:class "ml-2"}(:right-icon col-info)]))]
@@ -638,6 +639,7 @@
         :icon     icon
         :right-icon right-icon
         :right-icon-tooltip right-icon-tooltip
+        :right-icon-tooltip-place (:right-icon-tooltip-place col)
         :action?  action?
         :hidden-by-default? (:hidden-by-default? col)
         :hidden-in-dropdown? (:hidden-in-dropdown? col)
