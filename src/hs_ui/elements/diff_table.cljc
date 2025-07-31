@@ -152,10 +152,10 @@
            :class "text-[#358FEA]"} v]])
    (when-let [v (:binding element)]
      [:div "Binding: "
-      [:a {:href (let [[_ _ package-name package-version _ value-set-name value-set-version]
-                       (str/split (:vs-coordinate element) #"/")]
-                   (str "#/ig/" package-name "#" package-version "/vs/" value-set-name "_" value-set-version))
-           :class "text-[#358FEA]"}
+      [:span #_{:href (let [[_ _ package-name package-version _ value-set-name value-set-version]
+                          (str/split (:vs-coordinate element) #"/")]
+                      (str "#/ig/" package-name "#" package-version "/vs/" value-set-name "_" value-set-version))
+              :class "text-[#358FEA]"}
        (get v "valueSet") " (" (get v "strength") ")"]])])
 
 (defn tree-node [{:keys [name children flags min short union datatype binding lvl path] :as element} last-childs]
