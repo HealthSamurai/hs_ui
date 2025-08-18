@@ -7,8 +7,8 @@
     :height "16"
     :viewBox "0 0 64 64"
     :fill "none"}
-   [:g {:stroke "#000" :stroke-width "3" :stroke-linecap "round" :stroke-linejoin "round"}
-    [:rect {:x "27.27" :y "6.04" :width "8" :height "10" :fill "#000"}]
+   [:g {:stroke "currentColor" :stroke-width "3" :stroke-linecap "round" :stroke-linejoin "round"}
+    [:rect {:x "27.27" :y "6.04" :width "8" :height "10" :fill "currentColor"}]
 
     [:line {:x1 "21" :y1 "40.04" :x2 "41" :y2 "40.04"}]
     [:line {:x1 "21" :y1 "48.04" :x2 "41" :y2 "48.04"}]
