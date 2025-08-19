@@ -2,20 +2,17 @@
 
 (def svg
   [:svg
-   {:xmlns "http://www.w3.org/2000/svg"
-    :width "16"
-    :height "16"
-    :viewBox "0 0 64 64"
-    :fill "none"}
-   [:g {:stroke "currentColor" :stroke-width "3" :stroke-linecap "round" :stroke-linejoin "round"}
-    [:rect {:x "27.27" :y "6.04" :width "8" :height "10" :fill "currentColor"}]
-
-    [:line {:x1 "21" :y1 "40.04" :x2 "41" :y2 "40.04"}]
-    [:line {:x1 "21" :y1 "48.04" :x2 "41" :y2 "48.04"}]
-
-    [:rect {:x "14" :y "32.04" :width "34" :height "22"}]
-
-    [:path
-     {:d "M49.38,0.04H7c-2.21,0-4,1.79-4,4v56c0,2.21,1.79,4,4,4h50c2.21,0,4-1.79,4-4V11.7L49.38,0.04z
-        M39.96,2.08v17.92H14.04V2.08h25.92z
-        M59,60c0,1.1-0.9,2-2,2H7c-1.1,0-2-0.9-2-2V4c0-1.1,0.9-2,2-2h5v20.04h30V2h6.51L59,12.52V60z"}]]])
+   {:stroke "currentColor",
+    :fill "none",
+    :stroke-linejoin "round",
+    :width "16",
+    :xmlns "http://www.w3.org/2000/svg",
+    :stroke-linecap "round",
+    :stroke-width "2",
+    :viewBox "0 0 24 24",
+    :height "16"}
+   [:path
+    {:d
+     "M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"}]
+   [:path {:d "M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"}]
+   [:path {:d "M7 3v4a1 1 0 0 0 1 1h7"}]])
