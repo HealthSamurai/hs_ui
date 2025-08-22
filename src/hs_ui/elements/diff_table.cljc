@@ -114,12 +114,15 @@
 (defn datatype-cell [element]
   [:div {:class "flex flex-row h-full"}
    (if (:coordinate element)
-     (let [[_ _ package-name package-version _ schema-name schema-version]
-           (str/split (:coordinate element) #"/")]
+     (let [{id :id lbl :label
+            {package-name :name package-version :version} :package-spec}
+           (:coordinate element)]
        [:div
-        [:a {:href (str "#/ig/" package-name "#" package-version "/sd/" schema-name "/" schema-version)
-             :class "text-[#358FEA]"}
-         schema-name]
+        [:a (if id
+              {:href (str "#/ig/" package-name "#" package-version "/sd/" id )
+               :class "text-[#358FEA]"}
+              {:class "text-red-700"})
+         lbl]
         (:slice-type element)
         (when (:refers element)
           [:span {:class "space-x-2"}
@@ -146,17 +149,24 @@
      [:div (:desc element)])
    (when-let [v (:extension-url element)]
      [:div "URL: "
-      [:a {:href (let [[_ _ package-name package-version _ extension-name extension-version]
-                       (str/split (:extension-coordinate element) #"/")]
-                   (str "#/ig/" package-name "#" package-version "/sd/" extension-name "/" extension-version))
-           :class "text-[#358FEA]"} v]])
+      (let [{id :id lbl :label
+             {package-name :name package-version :version} :package-spec}
+            (:extension-coordinate element)]
+        [:a (if id
+              {:href (str "#/ig/" package-name "#" package-version "/sd/" id)
+               :class "text-[#358FEA]"}
+              {:class "text-red-700"})
+         lbl])])
    (when-let [v (:binding element)]
      [:div "Binding: "
-      [:span #_{:href (let [[_ _ package-name package-version _ value-set-name value-set-version]
-                          (str/split (:vs-coordinate element) #"/")]
-                      (str "#/ig/" package-name "#" package-version "/vs/" value-set-name "_" value-set-version))
-              :class "text-[#358FEA]"}
-       (get v "valueSet") " (" (get v "strength") ")"]])])
+      (let [{id :id lbl :label
+             {package-name :name package-version :version} :package-spec}
+            (:vs-coordinate element)]
+        [:a (if id
+              {:href (str "#/ig/" package-name "#" package-version "/vs/" id )
+               :class "text-[#358FEA]"}
+              {:class "text-red-700"})
+         lbl])])])
 
 (defn tree-node [{:keys [name children flags min short union datatype binding lvl path] :as element} last-childs]
   (if (empty? children)
