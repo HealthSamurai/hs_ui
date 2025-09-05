@@ -452,5 +452,5 @@
    target
    [:div {:class (u/class-names "hidden group-hover:block absolute w-full z-10" (:class-overlay props))}
     [:div {:class "h-[8px]"}]
-    [:div {:class "w-full bg-white border border-gray-200 rounded shadow-lg z-10"}
+    [:div {:class (u/class-names "w-full bg-white border border-gray-200 rounded shadow-lg z-10" (:class-content-overlay props))}
      overlay]]])
