@@ -14,13 +14,13 @@
         this       (utils/ratom nil)]
     [:dialog
      (utils/merge-properties
-      {:class         "z-10 inset-0 rounded-lg p-0 backdrop-blur-md"
+      {:class         "z-10 inset-0 rounded-lg p-0 backdrop-blur-md h-fit"
        :ref           #(when % (reset! this %))
        :on-mouse-down #(when (identical? (utils/get-event-target %) @this)
                          (close (:id properties)))}
       properties)
 
-     [:div {:on-click #(utils/stop-propagation %) :class "h-full"}
+     [:div {:on-click #(utils/stop-propagation %) :class "min-h-full"}
       children]]))
 
 (defn template
