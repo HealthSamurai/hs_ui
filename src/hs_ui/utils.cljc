@@ -24,9 +24,14 @@
   (str prefix "_" (:key x (hash x))))
 
 
+(defn stringify-key [k]
+  (if-let [kns (namespace k)]
+    (str kns "/" (name k))
+    (name k)))
+
 (defn edn->json-pretty
   [edn]
-  #?(:cljs (js/JSON.stringify (clj->js edn) nil 2)
+  #?(:cljs (js/JSON.stringify (clj->js edn :keyword-fn stringify-key) nil 2)
      :clj  (cheshire.core/generate-string edn {:pretty true})))
 
 (defn json-string->edn
